@@ -10,7 +10,7 @@ class SignupsController < ApplicationController
 
     @signup = Signup.new
     @signup.plan_id = @plan.id
-    @signup.signup_months = signUpMonths    
+    @signup.signup_months = signUpMonths
   end
   
   def create
@@ -40,5 +40,11 @@ class SignupsController < ApplicationController
   
   def show
     @signup = Signup.find(params[:id])
+  end
+  
+  def compute
+    @plan = Plan.find(params[:plan_id])
+
+    render :partial => 'payment', :locals => { :plan => @plan, :signup_months => params[:signup_months].to_i, :coupon_id => params[:coupon_id].to_i }
   end
 end

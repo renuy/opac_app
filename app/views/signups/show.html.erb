@@ -54,10 +54,6 @@ This is the Registration confirmation email sent to your email id : <b><%= @sign
 				<td ><%= @signup.signup_months %> months</td>
 			</tr>
 			<tr>
-				<td ><u>Reading Fee:</u></td>
-				<td ><%= @signup.plan.reading_fee_for_term(@signup.signup_months) %> Rs.</td>
-			</tr>
-			<tr>
 				<td ><u>From:</u></td>
 				<td ><%= @signup.created_at.strftime("%m-%d-%Y")  %></td>
 			</tr>
@@ -70,12 +66,24 @@ This is the Registration confirmation email sent to your email id : <b><%= @sign
 				<td > <%= @signup.security_deposit %> Rs.</td>
 			</tr>
 			<tr>
+				<td ><u>Reading Fee:</u></td>
+				<td ><%= @signup.plan.reading_fee_for_term(@signup.signup_months) %> Rs.</td>
+			</tr>
+			<tr>
 				<td ><u>Other Fees:</u></td>
 				<td > <%= @signup.registration_fee %> Rs.</td>
 			</tr>
 			<tr>
+				<td ><u>Discount:</u></td>
+				<td > - <%= @signup.discount %> Rs.</td>
+			</tr>
+			<tr>
+				<td ><u>Coupon Amount:</u></td>
+				<td > - <%= @signup.coupon_amt %> Rs.</td>
+			</tr>
+			<tr>
 				<td ><u>Amt to be recd:</u></td>
-				<td bgcolor= "yellow" ><%= @signup.plan.total_due_for_term(@signup.signup_months) %> Rs.</td>
+				<td bgcolor= "yellow" ><%= @signup.plan.total_due_for_term(@signup.signup_months, @signup.coupon_id) %> Rs.</td>
 			</tr>
 			<tr>
 				<td ><u>Amt paid:</u></td>

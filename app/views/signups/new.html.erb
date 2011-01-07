@@ -19,7 +19,7 @@
 		
 		
 		
-		<%= form_for @signup do |f| -%>
+		<%= form_for @signup, :html => {:autocomplete => :off} do |f| -%>
 		
 			<%= f.hidden_field :signup_months %>
 			<%= f.hidden_field :plan_id %>
@@ -70,32 +70,22 @@
 				<% end -%>
 				for the <b><%= @plan.name %></b> plan. Changed your mind? <%= link_to 'Back to plans', :controller => "plans", :signUpMonths => @signup.signup_months %> .</em>
 			</div>
-			
+
 			<br/>
-			<div class='span-10' >
-				<div class='span-6' style='text-align:left'><%= f.label :security_deposit %> </div>
-				<div class='span-3 last' style='text-align:right'><%= f.label @plan.security_deposit  %></div>
-				<div class='span-6' style='text-align:left'><%= f.label :registration_fee %> </div>
-				<div class='span-3 last' style='text-align:right'><%= f.label @plan.registration_fee  %></div>
-				
-				<div class='span-6' style='text-align:left'><%= f.label :reading_fee %>  
-					<% if @plan.subscription -%>
-						( <%= @plan.monthly_amount %> for <%= pluralize(@plan.pay_months_for_term(@signup.signup_months), 'month') %> )
-					<% end -%>
-				</div>
-				<div class='span-3 last' style='text-align:right'><%= f.label @plan.reading_fee_for_term(@signup.signup_months)  %></div>
-				
-				<div class='span-6' style='text-align:left'><%= f.label :discount %></div>
-				<div class='span-3 last' style='text-align:right'><%= f.number_field :discount, :disabled => true, :class => 'title simple', :style => 'width:50px'  %></div>
-				
-				<div class='span-6' style='text-align:left'><%= f.label 'Total' %></div>
-				<div class='span-3 last' style='text-align:right'><%= f.label @plan.total_due_for_term(@signup.signup_months) %></div>
-				<br/>
+			<div class='span-10'>
+				<% if @plan.coupons.length > 0 -%>
+				<div class='span-5' style='text-align:left'><%= f.collection_select(:coupon_id, @plan.coupons, :id, :name, {:include_blank => 'Select Discount Coupon'} ) %></div>
+				<% end -%>
+			</div>
+
+			<div class='span-10' id='payment_div'>
+				<%= render :partial => 'payment', :locals => { :plan => @plan, :signup_months => @signup.signup_months, :coupon_id => @signup.coupon_id } %>
 			</div>
 			
 			<hr/>
-			<div class='span-17'>
+			<div class='span-20'>
 					<div class='span-2'>Paid By</div>
+					<div class='span-4' style='text-align:left;display:none' id='signup_coupon_no_div'><%= 'Coupon:' %><%= f.text_field :coupon_no, :class => 'text simple', :style => 'width:80px;font-size:85%', :maxlength => 10 %></div>
 					<div class='span-12'>
 						Cash <%= f.radio_button :payment_mode, Signup::PAYMENT_MODES[:cash], {:checked => true} %>
 						<span>

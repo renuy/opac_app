@@ -1,8 +1,6 @@
 Opac::Application.routes.draw do
 
-  resources :signups
-
-  resources :plans
+  match '/signups/compute' => 'signups#compute'
   
   match '/dashboard' => 'dashboard#show'
 
@@ -11,12 +9,12 @@ Opac::Application.routes.draw do
   get "stock/show"
 
   devise_for :users, :path => 'accounts', :controllers => {:registrations => 'registrations'}
-  resources :authentications
 
   match '/auth/failure' => 'Ibtrs#index'
 
   match 'ibtrs/search' => 'ibtrs#search'
-  resources :titles, :authors, :ibtrs, :branch, :stock, :stockitems
+
+  resources :titles, :authors, :ibtrs, :branch, :stock, :stockitems, :authentications, :signups, :plans, :coupons
   
   match 'statistics/:title_id' => 'statistics#view'
   

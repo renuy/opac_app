@@ -99,3 +99,16 @@ $('#new_signup input[name="signup[payment_mode]"]:radio').live('change', functio
 	$('#new_signup #signup_check_no').val('');
 	$('#new_signup input[name="signup[payment_mode]"]:radio:checked ~ span').show();
 });
+
+$('#new_signup #signup_coupon_id').live('change', function() {
+	$.get('/signups/compute?' + 'signup_months=' + $('#signup_signup_months').val() + '&plan_id=' + $('#signup_plan_id').val() + '&coupon_id=' + $(this).val(),
+		function(data) {
+			$('#new_signup #payment_div').html(data);
+		});
+
+	if ( $(this).val() != '' )
+		$('#new_signup #signup_coupon_no_div').show();
+	else {
+		$('#new_signup #signup_coupon_no_div').hide();
+	};
+});

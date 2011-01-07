@@ -1,0 +1,32 @@
+<div class='span-6' style='text-align:left'>Security Deposit</div>
+<div class='span-3 last' style='text-align:right'><%= plan.security_deposit  %></div>
+<div class='span-6' style='text-align:left'>Registration Fee</div>
+<div class='span-3 last' style='text-align:right'><%= plan.registration_fee  %></div>
+
+<div class='span-6' style='text-align:left'>Reading Fee
+	<% if plan.subscription -%>
+		( <%= plan.monthly_amount %> for <%= pluralize(plan.pay_months_for_term(signup_months), 'month') %> )
+	<% end -%>
+</div>
+<div class='span-3 last' style='text-align:right'><%= plan.reading_fee_for_term(signup_months)  %></div>
+
+<div class='span-6' style='text-align:left'>Discount</div>
+<div class='span-3 last' style='text-align:right'>
+	<% if !coupon_id.nil? && coupon_id > 0 %>
+		(- <%= plan.coupons.find(coupon_id).discount %>)
+	<% end -%>
+</div>
+
+<div class='span-6' style='text-align:left'>Coupon Amount</div>
+<div class='span-3 last' style='text-align:right'>
+	<% if !coupon_id.nil? && coupon_id > 0 %>
+		(- <%= plan.coupons.find(coupon_id).amount %>)
+	<% end -%>
+</div>
+
+
+<div class='span-6' style='text-align:left'>Total</div>
+<div class='span-3 last' style='text-align:right'><%= plan.total_due_for_term(signup_months, coupon_id) %></div>
+<br/>
+
+

@@ -7,7 +7,9 @@ class Signup < ActiveRecord::Base
   }  
   
   attr_accessor :check_no, :card_no
-  attr_accessible :name, :address, :mphone, :lphone, :email, :referrer_member_id, :employee_no, :plan_id, :branch_id, :signup_months, :payment_mode, :membership_no, :application_no
+  attr_accessible :name, :address, :mphone, :lphone, :email, :referrer_member_id, 
+    :employee_no, :plan_id, :branch_id, :signup_months, :payment_mode, :membership_no, 
+    :application_no, :coupon_no, :coupon_id, :coupon_amt
   
   belongs_to :user, :foreign_key => 'created_by'
   belongs_to :user, :foreign_key => 'modified_by'
@@ -25,9 +27,15 @@ class Signup < ActiveRecord::Base
   validates :email, :email => true
   validate :payment_ref_should_not_be_blank
   validate :atleast_one_phone_number_required
+  validate :coupon_no_should_not_be_blank
   
   before_save :set_defaults
   
+  def coupon_no_should_not_be_blank
+      if coupon_no.blank?
+        errors.add(:coupon_no, "should not be blank") unless coupon_id.nil?
+      end
+    end
   
   def payment_ref_should_not_be_blank
     if payment_ref.blank? 
@@ -57,18 +65,26 @@ class Signup < ActiveRecord::Base
   
   def set_defaults
     plan = Plan.find(plan_id)
+    coupon = plan.coupons.find(self.coupon_id)
     
     self.referrer_cust_id = nil
     self.application_no = '1'
+    
+    unless self.coupon_id.nil?
+      self.discount = coupon.discount
+      self.coupon_amt = coupon.amount
+    else
+      self.discount = 0
+      self.coupon_amt = 0
+    end
 
     # these values are possibly allowed to be changed during sign-up
     # dont have time to do this
     self.security_deposit = plan.security_deposit
     self.registration_fee = plan.registration_fee
     self.reading_fee = plan.reading_fee_for_term(self.signup_months)
-    self.discount = 0
     self.advance_amt = 0
-    self.paid_amt = self.security_deposit + self.registration_fee + self.reading_fee - self.discount + self.advance_amt
+    self.paid_amt = self.security_deposit + self.registration_fee + self.reading_fee - (self.discount + self.coupon_amt) + self.advance_amt
     self.overdue_amt = 0
     self.start_date = Date.today
     if plan.subscription
