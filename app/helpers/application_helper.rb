@@ -14,4 +14,17 @@ module ApplicationHelper
     sortdir = column == sort_column && sort_direction == "asc" ? "desc" : "asc"
     link_to title, params.merge(:sort => column, :sortdir => sortdir, :page => nil), {:class => css_class}
   end
+  
+  def image_url(titleId)
+    if titleId then
+      "http://justbooksclc.com/images#{titleId/10000}/titles#{titleId/10000}/#{titleId}.jpg"
+    else
+      "#"
+    end
+  end
+  
+  def default_image_url
+    "http://justbooksclc.com/images/noimage.jpg"
+  end
+  
 end

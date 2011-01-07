@@ -1,11 +1,4 @@
 module IbtrHelper  
-  def image_url(titleId)
-    if titleId then
-      "http://justbooksclc.com/images#{titleId/10000}/titles#{titleId/10000}/#{titleId}.jpg"
-    else
-      "#"
-    end
-  end
   
   def action_buttons(state, edit_id, edit_event_id)
     buttons = ""

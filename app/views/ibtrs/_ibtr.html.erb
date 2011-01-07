@@ -33,7 +33,7 @@
 			</div>
 
 			<div class="span-1 push-1">
-				<%= image_tag image_url(ibtr.title_id), :size => "100x150", :alt => 'No Image', :id => "img_#{ibtr.id}" %>
+				<%= image_tag image_url(ibtr.title_id), :size => "100x150", :alt => 'No Image', :id => "img_#{ibtr.id}", :onerror => "this.src='#{default_image_url}';" %>
 			</div>
 
 			<br/>
