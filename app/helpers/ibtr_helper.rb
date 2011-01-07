@@ -1,7 +1,7 @@
 module IbtrHelper  
   def image_url(titleId)
     if titleId then
-      "http://justbooksclc.com/images/titles/#{titleId}.jpg"
+      "http://justbooksclc.com/images#{titleId/10000}/titles#{titleId/10000}/#{titleId}.jpg"
     else
       "#"
     end
