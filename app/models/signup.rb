@@ -65,17 +65,18 @@ class Signup < ActiveRecord::Base
   
   def set_defaults
     plan = Plan.find(plan_id)
-    coupon = plan.coupons.find(self.coupon_id)
     
     self.referrer_cust_id = nil
     self.application_no = '1'
     
     unless self.coupon_id.nil?
+      coupon = plan.coupons.find(self.coupon_id)
       self.discount = coupon.discount
       self.coupon_amt = coupon.amount
     else
       self.discount = 0
       self.coupon_amt = 0
+      self.coupon_no = nil
     end
 
     # these values are possibly allowed to be changed during sign-up

@@ -2,6 +2,7 @@
 	$('#current_branch').html('<%= user_session['current_branch'].name %>');
 <% end -%>
 
+
 <div class="span-17">
 	<div class="span-17">
 		
@@ -104,3 +105,10 @@
 	</div>
 
 </div>
+<%= javascript_tag :defer => 'defer' do -%>
+	if ( $('#new_signup #signup_coupon_id').val() != '' )
+		$('#new_signup #signup_coupon_no_div').show();
+	else {
+		$('#new_signup #signup_coupon_no_div').hide();
+	};	
+<% end -%>			
