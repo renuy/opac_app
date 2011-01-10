@@ -1,13 +1,13 @@
 <%= content_tag :div, :class=> "span-24", :id => "div_#{searchResult.id}" do -%>
 	<div class="span-1"><%= searchResult_counter + 1 %></div>
 	<div class="span-5"><%= searchResult.created_at.strftime('%d-%b-%y') %>
-											(<%= distance_of_time_in_words(searchResult.created_at, Time.now) %> ago)<br/></div>
+											(<%= distance_of_time_in_words(searchResult.created_at, Time.zone.now) %> ago)<br/></div>
 	<div class="span-2"><%= searchResult.member_id %><br/></div>
 	<div class="span-2"><%= searchResult.card_id %><br/></div>
 	<div class="span-2"><%= searchResult.branch_id %><br/></div>
 	<div class="span-2"><%= searchResult.state %><br/></div>
 	<div class="span-2"><%= searchResult.respondent_id %><br/></div>
 	<div class="span-5"><%= searchResult.updated_at.strftime('%d-%b-%y') %>
-											(<%= distance_of_time_in_words(searchResult.updated_at, Time.now) %> ago)<br/></div>
+											(<%= distance_of_time_in_words(searchResult.updated_at, Time.zone.now) %> ago)<br/></div>
 	<div class="span-2"><%= link_to(searchResult.versions.count, '#') %><br/></div>
 <% end -%>

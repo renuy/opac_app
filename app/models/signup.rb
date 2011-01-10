@@ -87,7 +87,7 @@ class Signup < ActiveRecord::Base
     self.advance_amt = 0
     self.paid_amt = self.security_deposit + self.registration_fee + self.reading_fee - (self.discount + self.coupon_amt) + self.advance_amt
     self.overdue_amt = 0
-    self.start_date = Date.today
+    self.start_date = Time.zone.today
     if plan.subscription
       self.expiry_date = self.start_date.months_since(self.signup_months)
     else

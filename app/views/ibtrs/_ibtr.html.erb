@@ -4,7 +4,7 @@
 			<h4><%= "#{ibtr.state} Request: #{ibtr.id}" %></h4>
 		</div>
 		<div class="span-8">
-			<h5 style="float:right"><%= distance_of_time_in_words(ibtr.created_at, Time.now) %> ago</h5>
+			<h5 style="float:right"><%= distance_of_time_in_words(ibtr.created_at, Time.zone.now) %> ago</h5>
 		</div>
 	</div>
 	<div id = "<%= "flash_#{ibtr.id}" %>" class="span-8">
