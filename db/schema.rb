@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110107102411) do
+ActiveRecord::Schema.define(:version => 20110111045013) do
 
   create_table "addresses", :force => true do |t|
     t.string   "address",     :limit => 900
@@ -46,6 +46,19 @@ ActiveRecord::Schema.define(:version => 20110107102411) do
 
   # unrecognized index "index_authors_on_name" with type ActiveRecord::ConnectionAdapters::IndexDefinition
 
+  create_table "books", :force => true do |t|
+    t.string   "book_no"
+    t.string   "shelf_location"
+    t.integer  "branch_id"
+    t.integer  "catalogued_branch_id"
+    t.string   "state"
+    t.integer  "title_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  # unrecognized index "index_books_on_book_no" with type ActiveRecord::ConnectionAdapters::IndexDefinition
+
   create_table "branches", :force => true do |t|
     t.string   "name"
     t.string   "address"
@@ -57,6 +70,7 @@ ActiveRecord::Schema.define(:version => 20110107102411) do
     t.string   "parent_name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "card_id"
   end
 
   create_table "cards", :force => true do |t|
@@ -85,13 +99,30 @@ ActiveRecord::Schema.define(:version => 20110107102411) do
     t.datetime "updated_at"
   end
 
+  create_table "consignments", :force => true do |t|
+    t.string   "consignor"
+    t.string   "consignee"
+    t.integer  "origin_id"
+    t.integer  "destination_id"
+    t.string   "waybill_no"
+    t.string   "origin_address"
+    t.string   "destination_address"
+    t.integer  "goods_count"
+    t.integer  "goods_delivered_count"
+    t.string   "state"
+    t.datetime "pickup_date"
+    t.datetime "delivery_date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "coupons", :force => true do |t|
     t.string   "name"
-    t.decimal  "amount"
+    t.decimal  "amount",     :precision => 10, :scale => 0
     t.string   "status"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.decimal  "discount"
+    t.decimal  "discount",   :precision => 10, :scale => 0
   end
 
   create_table "coupons_plans", :id => false, :force => true do |t|
@@ -115,6 +146,16 @@ ActiveRecord::Schema.define(:version => 20110107102411) do
     t.string   "groups_info_level",     :limit => 2
     t.string   "favorites_info_level",  :limit => 2
     t.string   "customer_type",         :limit => 2
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "goods", :force => true do |t|
+    t.string   "book_no"
+    t.integer  "title_id"
+    t.integer  "ibtr_id"
+    t.integer  "consignment_id"
+    t.string   "state"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -195,37 +236,37 @@ ActiveRecord::Schema.define(:version => 20110107102411) do
   # unrecognized index "index_publishers_on_name" with type ActiveRecord::ConnectionAdapters::IndexDefinition
 
   create_table "signups", :force => true do |t|
-    t.string   "name",                                                               :null => false
-    t.string   "address",                                                            :null => false
+    t.string   "name",                                :null => false
+    t.string   "address",                             :null => false
     t.integer  "mphone"
     t.integer  "lphone"
-    t.string   "email",                                                              :null => false
+    t.string   "email",                               :null => false
     t.string   "referrer_member_id"
     t.integer  "referrer_cust_id"
-    t.integer  "plan_id",                                                            :null => false
+    t.integer  "plan_id",                             :null => false
     t.integer  "branch_id"
-    t.integer  "signup_months",                                                      :null => false
-    t.float    "security_deposit",                                                   :null => false
-    t.float    "registration_fee",                                                   :null => false
-    t.float    "reading_fee",                                                        :null => false
-    t.float    "discount",                                                           :null => false
-    t.float    "advance_amt",                                                        :null => false
-    t.float    "paid_amt",                                                           :null => false
-    t.float    "overdue_amt",                                                        :null => false
-    t.integer  "payment_mode",                                                       :null => false
-    t.string   "payment_ref",                                                        :null => false
+    t.integer  "signup_months",                       :null => false
+    t.float    "security_deposit",                    :null => false
+    t.float    "registration_fee",                    :null => false
+    t.float    "reading_fee",                         :null => false
+    t.float    "discount",                            :null => false
+    t.float    "advance_amt",                         :null => false
+    t.float    "paid_amt",                            :null => false
+    t.float    "overdue_amt",                         :null => false
+    t.integer  "payment_mode",                        :null => false
+    t.string   "payment_ref",                         :null => false
     t.string   "membership_no"
     t.string   "application_no"
     t.string   "employee_no"
-    t.integer  "created_by",                                                         :null => false
-    t.integer  "modified_by",                                                        :null => false
-    t.string   "flag_migrated",                                     :default => "U"
-    t.date     "start_date",                                                         :null => false
-    t.date     "expiry_date",                                                        :null => false
+    t.integer  "created_by",                          :null => false
+    t.integer  "modified_by",                         :null => false
+    t.string   "flag_migrated",      :default => "U"
+    t.date     "start_date",                          :null => false
+    t.date     "expiry_date",                         :null => false
     t.string   "remarks"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.decimal  "coupon_amt"
+    t.float    "coupon_amt"
     t.string   "coupon_no"
     t.integer  "coupon_id"
   end

@@ -1,0 +1,43 @@
+<div class='span-17'>
+	<%= form_for(@consignment) do |f| %>
+	  <% if @consignment.errors.any? %>
+	    <div id="error_explanation">
+	      <h2><%= pluralize(@consignment.errors.count, "error") %> prohibited this consignment from being saved:</h2>
+
+	      <ul>
+	      <% @consignment.errors.full_messages.each do |msg| %>
+	        <li><%= msg %></li>
+	      <% end %>
+	      </ul>
+	    </div>
+	  <% end %>
+ 
+
+		<div class="span-17 heading">
+			Enter Consignment Details
+		</div>
+		<br/>
+		<div class="span-17">
+			<table class='form'>
+				<tr><td><%= f.label :origin %></td><td><%= f.collection_select :origin_id, Branch.all, :id, :name %></td></tr>
+				<tr><td><%= f.label :destination %></td><td><%= f.collection_select :destination_id, Branch.all, :id, :name %></td></tr>
+				<tr><td><%= f.label :consignor %></td><td><%= f.text_field :consignor, :class => 'title', :maxlength => 30 %></td></tr>
+				<tr><td><%= f.label :consignee %></td><td><%= f.text_field :consignee, :class => 'title', :maxlength => 30 %></td></tr>
+			</table>
+		</div>
+		<div class="span-17">
+			<table id='goods_table' class='form'>
+				<tr><th>Book No</th><th></th></tr>
+				<%= f.fields_for :goods do |builder| -%>
+					<%= render 'good_fields', :f => builder %>
+				<% end -%>
+			</table>
+			<%= link_to_function "Add Good", "ConsignmentApp.addGood('#goods_table');" %>
+		</div>
+	  <div class="actions span-17">
+			<br/>
+	    <%= f.submit %>
+	  </div>
+		<br/>
+	<% end %>
+</div>

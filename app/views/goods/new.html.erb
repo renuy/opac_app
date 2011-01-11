@@ -1,0 +1,33 @@
+<div class='span-17'>
+	<%= form_for(@good) do |f| %>
+	  <% if @good.errors.any? %>
+	    <div id="error_explanation">
+	      <h2><%= pluralize(@good.errors.count, "error") %> prohibited this good from being saved:</h2>
+
+	      <ul>
+	      <% @good.errors.full_messages.each do |msg| %>
+	        <li><%= msg %></li>
+	      <% end %>
+	      </ul>
+	    </div>
+	  <% end %>
+
+		<div class="span-17 heading">
+			Enter Good Details
+		</div>
+		<br/>
+		<div class="span-17">
+			<table class='form'>
+				<tr><td><%= f.label :consignment_id %></td><td><%= f.collection_select :consignment_id, Consignment.find(:all, :conditions => [' state = "Open" ']), :id, :waybill_no %></td></tr>
+				<tr><td><%= f.label :book_no %></td><td><%= f.text_field :book_no, :class => 'title',:maxlength => 30 %></td></tr>
+			</table>
+		</div>
+	  <div class="actions span-17">
+	    <%= f.submit %>
+	  </div>
+	<% end %>
+</div>
+<hr/>
+<div class='span-17'>
+	<%= link_to 'Back', goods_path %>
+</div>

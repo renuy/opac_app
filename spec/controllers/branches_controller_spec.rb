@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe CouponsController do
+describe BranchesController do
 
   describe "GET 'show'" do
     it "should be successful" do

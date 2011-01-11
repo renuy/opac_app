@@ -1,0 +1,31 @@
+<h1>Listing goods</h1>
+
+<table>
+  <tr>
+    <th>Consignment</th>
+    <th>No</th>
+    <th>Book No</th>
+    <th>Title Id</th>
+    <th>IBT Id</th>
+    <th>State</th>
+  </tr>
+
+<% @goods.each do |good| %>
+  <tr>
+    <td><%= link_to(good.consignment_id, consignment_path(good.consignment)) %></td>
+    <td><%= good.id %></td>
+    <td><%= good.book_no %></td>
+    <td><%= good.title_id %></td>
+    <td><%= good.ibtr_id %></td>
+		<td><%= good.state %></td>
+
+    <td><%= link_to 'Show', good %></td>
+    <td><%= link_to 'Edit', edit_good_path(good) %></td>
+    <td><%= link_to 'Destroy', good, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Good', new_good_path %>

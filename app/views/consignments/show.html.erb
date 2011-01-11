@@ -1,0 +1,26 @@
+<div class="span-14">
+	<div class="span-8">
+		<h3>Consignment</h3>
+		<b>Waybill No:</b> <%= @consignment.waybill_no %> <br/>
+		<b>Origin:</b> <%= @consignment.origin.name %> <br/>
+		<b>Destination:</b> <%= @consignment.destination.name %> <br/>
+		<b>Consignor:</b> <%= @consignment.consignor %> <br/>
+		<b>Consignee:</b> <%= @consignment.consignee %> <br/>
+		<b>State:</b> <%= @consignment.state %> <br/>
+	</div>
+	<hr/>
+
+	<div class="span-14">
+		<table>
+			<tr><th>Name</th><th>Title</th></tr>
+			<% @consignment.goods.each do |good| =%>
+				<tr><td><%= good.book_no %></td><td><%= good.title_id %></tr>
+			<% end -%>			
+		</table>
+	<div>
+</div>
+<hr/>
+<div class="span-14">
+	<%= link_to 'Show All', consignments_path %>
+	<%= link_to 'Edit', edit_consignment_path(@consignment) %>
+</div>

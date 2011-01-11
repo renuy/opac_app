@@ -206,3 +206,6 @@ input.simple {
 	border: 5px ridge #B51E24;
 	color: #fff;
 }
+
+table.form tbody tr:nth-child(even) td, tbody tr.even td {background:#fff;}
+table.form tbody td {font-size:120%;font-weight:normal;}

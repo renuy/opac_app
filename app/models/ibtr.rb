@@ -31,6 +31,9 @@ class Ibtr < ActiveRecord::Base
     event :fulfill do
       transitions :to => :Fulfilled, :from => :Assigned
     end
+    event :undo_fulfill do
+      transitions :to => :Assigned, :from => :Fulfilled
+    end
     event :dispatch do
       transitions :to => :Dispatched, :from => :Fulfilled
     end

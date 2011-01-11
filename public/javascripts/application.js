@@ -112,3 +112,13 @@ $('#new_signup #signup_coupon_id').live('change', function() {
 		$('#new_signup #signup_coupon_no_div').hide();
 	};
 });
+
+var ConsignmentApp = {};
+ConsignmentApp.addGood = function(goodstable) {
+	alert('not implemented');
+}
+
+ConsignmentApp.removeGood = function(link) {
+	$(link).prev("input[type='hidden']").val(true);
+	$(link).parents("tr").hide();
+};
