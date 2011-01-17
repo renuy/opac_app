@@ -20,6 +20,12 @@ Opac::Application.routes.draw do
   
   match 'statistics/:title_id' => 'statistics#view'
   
+  resources :stock_racks_shelves, :ib_assignments
+  match 'ibt_pick_req' => 'ib_assignments#pick'
+  match 'ibt_unpick_req' => 'ib_assignments#unpick'
+  match 'ibt_change_criteria' => 'ib_assignments#change'
+  match 'ibt_print' => 'ib_assignments#print'
+  match 'ibt_assigned' => 'ib_assignments#change'
 
   
   # The priority is based upon order of creation:
