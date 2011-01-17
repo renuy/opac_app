@@ -1,4 +1,6 @@
 ENV['TZ'] = 'UTC'
+ENV['LD_LIBRARY_PATH'] = '/opt/oracle/instantclient_10_2'
+ENV['TNS_ADMIN'] = '/opt/oracle/network/admin'
 
 ActiveSupport.on_load(:active_record) do
   ActiveRecord::ConnectionAdapters::OracleEnhancedAdapter.class_eval do
