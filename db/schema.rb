@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110111045013) do
+ActiveRecord::Schema.define(:version => 20110117125146) do
 
   create_table "addresses", :force => true do |t|
     t.string   "address",     :limit => 900
@@ -156,6 +156,23 @@ ActiveRecord::Schema.define(:version => 20110111045013) do
     t.integer  "ibtr_id"
     t.integer  "consignment_id"
     t.string   "state"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "ibt_hidden_reqs", :force => true do |t|
+    t.string   "category"
+    t.string   "rack"
+    t.string   "shelf"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "respondent_id"
+    t.integer  "title_id"
+  end
+
+  create_table "ibt_search_criterias", :force => true do |t|
+    t.integer  "respondent_id"
+    t.datetime "time_basis"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

@@ -6,4 +6,10 @@ class IbtrMailer < ActionMailer::Base
     mail(:to => 'akhilesh.kataria@strata.co.in',
          :subject => "This comes from rails")
   end
+  
+  def consignment_pickup_advice(consignment)
+    @consignment = consignment
+	mail(:to => 'renu.yarday@strata.co.in',
+         :subject => "Consignment pickup advice")
+  end
 end

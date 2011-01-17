@@ -209,3 +209,9 @@ input.simple {
 
 table.form tbody tr:nth-child(even) td, tbody tr.even td {background:#fff;}
 table.form tbody td {font-size:120%;font-weight:normal;}
+
+.first-row {
+	padding:5px 0 5px 5px;
+	background: url(../images/library_bg.jpg);
+	font-size:12px;
+}

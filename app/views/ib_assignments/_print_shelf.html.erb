@@ -1,0 +1,9 @@
+	<tr width="100%">
+	<td width="10%" >
+		<%=print_shelf.shelf%>
+	</td>
+	<td width="90%">
+		<%= render :partial => "print_title", :collection => IbAssignment.allTitles(user_session['current_branch'].id, print_shelf.rack, print_shelf.category, print_shelf.shelf ,params[:criteria]) %>
+	</td>
+	 
+	</tr>

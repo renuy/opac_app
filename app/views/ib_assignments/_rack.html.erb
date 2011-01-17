@@ -1,0 +1,5 @@
+<div class="span-14 first-row" style="margin-top:20px; text-align:center;height:auto; color:#ffffff;">
+	
+	<h4> <span style="color:#ffffff"><%=rack.category%> <%=rack.rack%></span> </h4>
+	<%= render :partial => "shelf", :collection => IbAssignment.allShelves(user_session['current_branch'].id, rack.rack, rack.category ,params[:criteria]) %>
+</div>

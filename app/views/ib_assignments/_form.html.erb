@@ -1,0 +1,17 @@
+<%= form_for(@ibt_stock_rack) do |f| %>
+  <% if @ibt_stock_rack.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@ibt_stock_rack.errors.count, "error") %> prohibited this ibt_stock_rack from being saved:</h2>
+
+      <ul>
+      <% @ibt_stock_rack.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

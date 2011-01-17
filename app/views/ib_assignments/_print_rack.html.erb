@@ -1,0 +1,13 @@
+	<table>
+	<tr width="100%">
+	<td width="100%">
+	<h4>Category: <%=print_rack.category%> - Rack:<%=print_rack.rack%></h4>
+	</td>
+	</tr>
+	</table>
+	<table>
+	<tr width="100%">
+	<%= render :partial => "print_shelf", :collection => IbAssignment.allShelves(user_session['current_branch'].id, print_rack.rack, print_rack.category ,params[:criteria]) %>
+	</tr>
+	</table>
+	

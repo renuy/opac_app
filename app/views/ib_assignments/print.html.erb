@@ -1,0 +1,37 @@
+<script type="text/javascript">
+  function setPrinterDiv(id){
+    document.getElementById(id).style.display = 'block';
+    $('#assigned').printElement({
+      overrideElementCSS:['print.css', { href:'print.css', media:'print'}],
+      leaveOpen:true,
+      printMode:'popup'
+    });
+		document.getElementById(id).style.display = 'none';
+  }
+</script>
+
+<p><span style="font-family: geneva, arial, helvetica, sans-serif;font-size: 1.0em;"><u><b><%= "IBT Assigned to branch #{Branch.find(user_session['current_branch'].id).name}" %></b></u></span></p>
+<%= link_to 'back', :back %>
+<%= button_to_function 'Print', "setPrinterDiv('assigned');" %> 
+
+<div id='assigned'>
+<div class="span-14">
+
+	<table width="350px>
+		<tr width="100%">
+			<th width="10%" >
+				Shelf
+			</th>
+			<th width="67%">
+				Title
+			</th>
+			<th width="23%">
+				Count
+			</th>
+		</tr>
+
+		<%= render :partial => "print_rack", :collection => @ibt_stock_racks %>
+	</table>
+	
+</div>
+</div>

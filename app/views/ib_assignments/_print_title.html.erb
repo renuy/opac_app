@@ -1,0 +1,6 @@
+<table width="100%" >
+	<tr width="100%">
+		<td width="75%"><%=Title.find(print_title.title_id).title%>  </td>
+		<td width="25%"><%=Ibtr.find(:all, :conditions=> ['state = ? AND respondent_id = ? AND title_id = ?', "Assigned" , user_session['current_branch'].id, print_title.title_id] ).size %></td>
+	</tr>
+</table>

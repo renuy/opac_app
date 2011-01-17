@@ -1,0 +1,31 @@
+<div class="span-4 colborder">
+	<div class="span-4">
+		<p></p>
+		<% if user_signed_in? -%>
+		<p><%= link_to "Assigned to me", ibt_assigned_path( :branchVal => user_session['current_branch'].id, :criteria =>'all',:show => 'all')  %>	</p>
+		<% end -%>
+	</div>
+	
+</div>
+
+<div class="span-14">
+	<h4><%= "Showing #{Branch.find(user_session['current_branch'].id.to_i).name}'s"%> <b><%=params[:criteria]%> <%= params[:show] unless params[:show] == 'all' %></b> requests</h4>
+	<br/>
+	<div class="right">
+	<%= link_to "Print All", ibt_print_path(:branchVal =>user_session['current_branch'].id,:criteria =>'all',:show =>'all') %> <br/>
+	Show <%= link_to "Recent", ibt_change_criteria_path( :branchVal => user_session['current_branch'].id, :criteria =>params[:criteria], :show =>'recent')  %> / 
+	<%= link_to "All", ibt_change_criteria_path( :branchVal => user_session['current_branch'].id, :criteria =>params[:criteria], :show=>'all')  %> <br/>
+	<%= link_to "Picked", ibt_change_criteria_path( :branchVal => user_session['current_branch'].id, :criteria =>'picked', :show =>params[:show])  %> / 
+	<%= link_to "Not picked", ibt_change_criteria_path( :branchVal => user_session['current_branch'].id, :criteria =>'unpicked', :show =>params[:show])  %> / 
+	<%= link_to "All", ibt_change_criteria_path( :branchVal => user_session['current_branch'].id, :criteria =>'all', :show =>params[:show])  %> <br/>
+	
+	</div>
+	<%= will_paginate(@ibt_stock_racks) %>
+	<hr/>
+	<div class="span-14">
+	<%= render :partial => "rack", :collection => @ibt_stock_racks %>
+	</div>
+	<div class="span-14">
+	<br/>
+	</div>
+</div>
