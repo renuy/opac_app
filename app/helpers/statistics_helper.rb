@@ -9,7 +9,7 @@ module StatisticsHelper
     end
   
     {
-      'label' => ['in circulation', 'in store', 'unavailable'],
+      'label' => ['in circulation', 'in store', 'unavailable', 'assigned'],
       'values' => stockArray
     }
   end
