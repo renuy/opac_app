@@ -122,3 +122,8 @@ ConsignmentApp.removeGood = function(link) {
 	$(link).prev("input[type='hidden']").val(true);
 	$(link).parents("tr").hide();
 };
+
+ConsignmentApp.receiveGood = function(link) {
+	$(link).prev("input[type='hidden']").val('deliver');
+	$(link).parents("tr").hide();
+};

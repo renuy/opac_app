@@ -7,14 +7,29 @@
 		<b>Consignor:</b> <%= @consignment.consignor %> <br/>
 		<b>Consignee:</b> <%= @consignment.consignee %> <br/>
 		<b>State:</b> <%= @consignment.state %> <br/>
+		<b>Total:</b> <%= @consignment.goods_count %> <br/>
 	</div>
 	<hr/>
 
 	<div class="span-14">
 		<table>
-			<tr><th>Name</th><th>Title</th></tr>
+			<tr>
+				<th>Book No</th>				
+				<th>Title</th>
+				<th>Requested By</th>
+				<th>Card</th>
+				<th>Requested Date</th>
+				<th>IBT State</th>
+			</tr>
 			<% @consignment.goods.each do |good| =%>
-				<tr><td><%= good.book_no %></td><td><%= good.title_id %></tr>
+				<tr>
+					<td><%= good.book_no %></td>
+					<td><%= good.title.title %></td>
+					<td><%= good.ibtr.branch.name %></td>
+					<td><%= good.ibtr.card_id %></td>
+					<td><%= good.ibtr.created_at.strftime("%m-%d-%Y") %></td>
+					<td><%= good.ibtr.state %></td>
+				</tr>
 			<% end -%>			
 		</table>
 	<div>

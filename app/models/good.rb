@@ -3,12 +3,12 @@ class Good < ActiveRecord::Base
 
   belongs_to :consignment, :counter_cache => true
   belongs_to :ibtr
-  belongs_to :book
+  belongs_to :book, :class_name => 'Book', :foreign_key => 'book_no'
+  belongs_to :title
   
-  attr_reader :book, :ibtr
   attr_accessible :book_no, :consignment_id
   
-  validates :book_no, :presence => true, :uniqueness => true, :length => { :maximum => 30 }
+  validates :book_no, :presence => true, :uniqueness => {:scope => :consignment_id}, :length => { :maximum => 30 }
   
   validate :is_a_valid_ibtr_and_consignment
 
@@ -32,8 +32,7 @@ class Good < ActiveRecord::Base
 	end
 	
   
-	def is_a_valid_ibtr_and_consignment
-	  consignment = Consignment.find(consignment_id)
+	def is_a_valid_ibtr_and_consignment 
 	  if consignment.state != 'Open'
 	    errors.add(:consignment_id, " cannot accept goods as it is #{consignment.state}")
     end
@@ -49,6 +48,7 @@ class Good < ActiveRecord::Base
   
   private
   def set_good_details
+    self.consignment = Consignment.find(consignment_id) 
     self.book = Book.find_by_book_no(book_no)
     unless book.nil?
       self.ibtr = Ibtr.find_by_title_id_and_respondent_id_and_state(book.title_id, consignment.origin_id, 'Assigned')

@@ -14,7 +14,7 @@ class ConsignmentsController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @consignment }
+      format.xml  # show.xml.erb
     end
   end
 
@@ -30,7 +30,6 @@ class ConsignmentsController < ApplicationController
 
   def edit
     @consignment = Consignment.find(params[:id])
-    3.times { @consignment.goods.build }
   end
 
 

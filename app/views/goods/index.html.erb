@@ -5,8 +5,8 @@
     <th>Consignment</th>
     <th>No</th>
     <th>Book No</th>
-    <th>Title Id</th>
-    <th>IBT Id</th>
+    <th>Title</th>
+    <th>IBT State</th>
     <th>State</th>
   </tr>
 
@@ -15,8 +15,8 @@
     <td><%= link_to(good.consignment_id, consignment_path(good.consignment)) %></td>
     <td><%= good.id %></td>
     <td><%= good.book_no %></td>
-    <td><%= good.title_id %></td>
-    <td><%= good.ibtr_id %></td>
+    <td><%= good.title.title %></td>
+		<td><%= good.ibtr.state %></td>
 		<td><%= good.state %></td>
 
     <td><%= link_to 'Show', good %></td>

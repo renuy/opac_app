@@ -1,0 +1,21 @@
+<consignment>
+	<id><%= @consignment.id %></id>
+	<origin><%= @consignment.origin.name %></origin>
+	<destination><%= @consignment.destination.name %></destination>
+	<waybill_no><%= @consignment.waybill_no %></waybill_no>
+	<goods_count><%= @consignment.goods_count %></goods_count>
+	<goods>
+		<% @consignment.goods.each do |good| -%>
+		<good>
+			<id><%= good.id %></id>
+			<book_no><%= good.book_no %></book_no>
+			<title_id><%= good.title_id %></title_id>
+			<ibtr_id><%= good.ibtr_id %></ibtr_id>
+			<branch_id>requesting branch</branch_id>
+			<member_id>member</member_id>
+			<card_id>card</card_id>
+			<created_at>created_at</created_at>
+		</good>
+		<% end -%>
+	</goods>
+</consignment>
