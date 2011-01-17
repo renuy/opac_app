@@ -14,7 +14,7 @@ class BranchesController < ApplicationController
       @branch = Branch.find_by_card_id(params[:card_id])
       respond_to do |format|
         if @branch.nil?
-          format.html { redirect_to (branches_path, :notice => 'Branch for card Not Found') }
+          format.html { redirect_to branches_path }
           format.xml  { render :xml => @branch }
         else
           format.html { render :show unless @branch.nil? }
