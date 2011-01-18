@@ -10,7 +10,7 @@ class Good < ActiveRecord::Base
   
   validates :book_no, :presence => true, :uniqueness => {:scope => :consignment_id}, :length => { :maximum => 30 }
   
-  validate :is_a_valid_ibtr_and_consignment
+  validate :is_a_valid_consignment
 
 	state_machine do
   	state :Pickedup
@@ -22,8 +22,8 @@ class Good < ActiveRecord::Base
 	end
 	
 	before_validation :set_good_details
-	after_create { |record| record.ibtr.fulfill! }
-	after_destroy { |record| Ibtr.find(record.ibtr_id).undo_fulfill! }
+	#after_create { |record| record.ibtr.fulfill! }
+	#after_destroy { |record| Ibtr.find(record.ibtr_id).undo_fulfill! }
 	
 	def processEvent(event)
 		case 
@@ -32,17 +32,13 @@ class Good < ActiveRecord::Base
 	end
 	
   
-	def is_a_valid_ibtr_and_consignment 
+	def is_a_valid_consignment 
 	  if consignment.state != 'Open'
 	    errors.add(:consignment_id, " cannot accept goods as it is #{consignment.state}")
     end
     
     if book.nil?
       errors.add(:book_no, ' not found in stock')
-    else
-  	  if ibtr.nil?
-  	    errors.add(:book_no, " (title #{book.title_id}) is not assigned to this branch or already fulfilled")
-  	  end
 	  end
   end
   
