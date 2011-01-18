@@ -1,0 +1,33 @@
+<script type="text/javascript">
+  function setPrinterDiv(id){
+    document.getElementById(id).style.display = 'block';
+    $('#ibtr').printElement({
+      overrideElementCSS:['print.css', { href:'print.css', media:'print'}],
+      leaveOpen:true,
+      printMode:'popup'
+    });
+		document.getElementById(id).style.display = 'none';
+  }
+</script>
+
+<p><span style="font-family: geneva, arial, helvetica, sans-serif;font-size: 1.0em;"><u><b>book receipt</b></u></span></p>
+<%= link_to 'back', :back %>
+<%= button_to_function 'Print', "setPrinterDiv('ibtr');" %> 
+<div id='ibtr'>
+  <div class="span-11">
+	<table width="250px>
+		<tr width="100%">
+			<td width="10%" >Book No:	</td>
+			<td width="67%"><%= @ibtr.book_no %></td>
+		</tr>
+		<tr width="100%">
+			<td width="10%" >Member:</td>			
+      <td width="67%"><%= @ibtr.card_id %></td>
+		</tr>
+		<tr width="100%">
+			<td width="10%" >Branch:</td>
+			<td width="67%"><%= @ibtr.branch.name %></td>
+		</tr>
+	</table>
+  </div>
+</div>

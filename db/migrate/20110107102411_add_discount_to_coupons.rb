@@ -1,6 +1,6 @@
 class AddDiscountToCoupons < ActiveRecord::Migration
   def self.up
-    add_column :coupons, :discount, :float
+    add_column :coupons, :discount, :string
   end
 
   def self.down

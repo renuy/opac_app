@@ -1,0 +1,22 @@
+<div class="span-24">
+	<%= form_tag 'fulfill', :class=>'ibtrs', :method => 'fulfill' do -%>
+      <% if @f_errors.any? %>
+	      <h4><%= pluralize(@f_errors.count, "error") %> prohibited this ibtr from being saved:</h4>
+
+	      <ul>
+	      <% @f_errors.each do |msg| %>
+	        <li><%= msg %></li>
+	      <% end %>
+	      </ul>
+	  <% end %>
+
+			<%= field_set_tag 'lookup' do %>
+				<%= label_tag 'Book No:'%>
+				<%= text_field_tag :bookno, params[:bookno] %>
+				<br/>
+				<br/>
+				<%= submit_tag "Submit", :name => nil %>
+			<% end -%>
+	<% end -%>
+</div>
+

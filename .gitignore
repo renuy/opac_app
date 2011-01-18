@@ -10,3 +10,7 @@ doc/app
 *~
 .DS_Store
 solr/data/development/*
+Gemfile
+Gemfile.lock
+config/database.yml
+db/schema.rb

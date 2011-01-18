@@ -1,12 +1,10 @@
 # SQLite version 3.x
 #   gem install sqlite3-ruby (not necessary on OS X Leopard)
 development:
-  adapter: mysql
-  database: opac_dev
-  pool: 3306
-  user : root
-  password : Iflex7585
-  timeout: 5000
+  adapter: oracle_enhanced
+  database: XE
+  username: opac
+  password: opac
   
 
 # Warning: The database defined as "test" will be erased and
@@ -25,7 +23,7 @@ production:
 
 other_oracle:
   adapter: oracle_enhanced
-  database: opac
+  database: xe
   username: opac
   password: opac
   

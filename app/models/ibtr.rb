@@ -8,10 +8,12 @@ class Ibtr < ActiveRecord::Base
   
   belongs_to :branch
   belongs_to :respondent, :class_name => 'Branch', :foreign_key => 'respondent_id'
-
+  #belongs_to :book, :foreign_key => 'book_number'
   attr_reader :event
   cattr_reader :per_page
   @@per_page = 10
+  
+  validate :is_valid_book_no
 
   state_machine do
     state :New # first one is the initial state
@@ -111,4 +113,59 @@ class Ibtr < ActiveRecord::Base
       paginate :page => params[:page], :conditions => ['state in (?)', states], :order => 'created_at, id DESC'
     end
   end  
+  
+  def is_valid_book_no
+    if !book_no.nil? 
+      
+      if !Ibtr.book_not_fulfilled?(book_no)
+        errors.add(book_no, " book already used to fulfill")
+      end
+      book = Book.find_by_book_no(book_no)
+      if book.nil?
+        errors.add(book_no, " invalid book number")
+      end
+      if book.title_id != title_id
+        errors.add(book.title_id ," book title different from ibtr title")
+      end
+    end
+  end
+  
+  def self.find_for_fulfill(book_no)
+    book = Book.find_by_book_no(book_no)
+    ibtrs = Ibtr.find(:all, :conditions => ['state in (?) AND title_id = ?', 'Assigned', book.title_id], :order => 'created_at')
+    if !(ibtrs.nil? or ibtrs.size == 0) 
+      #log error, do we check for new requests??? auto fulfill and not assigned
+      return ibtrs[0]
+    end
+    return nil
+  end
+  
+  def set_fulfill(book_no, branch_id)
+      self.fulfill
+      book = Book.find_by_book_no(book_no)
+      book.branch_id = branch_id #get the city's warehouse branch
+      book.save
+      
+      return update_attributes(:book_no => book_no, 
+                            :state => self.current_state)
+    
+  end
+  
+  def self.book_not_fulfilled?(book_no)
+    ibtrs = Ibtr.find_by_book_no(book_no)
+    if ibtrs.nil?
+      return true
+    else
+      return false
+    end
+  end
+  
+  def self.find_by_book_no(book_no)
+    ibtrs = Ibtr.find(:all, :conditions => ['book_no = ? AND updated_at > ?', book_no, Time.now.utc - 1.day]  )
+    if ibtrs.nil? or ibtrs.size == 0
+      return nil
+    else
+      return ibtrs[0]
+    end
+  end
 end

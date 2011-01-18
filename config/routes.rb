@@ -13,7 +13,9 @@ Opac::Application.routes.draw do
   match '/auth/failure' => 'Ibtrs#index'
 
   match 'ibtrs/search' => 'ibtrs#search'
-  
+  match 'ibtrs/lookup' => 'ibtrs#lookup'
+  match 'ibtrs/fulfill' => 'ibtrs#fulfill'
+
   match 'consignments/:id/transition/:event' => 'consignments#transition'
 
   resources :titles, :authors, :ibtrs, :branches, :stock, :stockitems, :authentications, :signups, :plans, :coupons, :consignments, :goods
