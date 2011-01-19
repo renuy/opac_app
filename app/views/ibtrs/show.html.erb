@@ -26,7 +26,7 @@
 		</tr>
 		<tr width="100%">
 			<td width="10%" >Branch:</td>
-			<td width="67%"><%= @ibtr.branch.name %></td>
+			<td width="67%"><%=  @ibtr.branch.name unless @ibtr.branch_id.nil? %></td>
 		</tr>
 	</table>
   </div>

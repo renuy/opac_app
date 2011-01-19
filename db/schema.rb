@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110117125146) do
+ActiveRecord::Schema.define(:version => 20110118130459) do
 
   create_table "addresses", :force => true do |t|
     t.string   "address",     :limit => 900
@@ -191,6 +191,7 @@ ActiveRecord::Schema.define(:version => 20110117125146) do
     t.string   "respondent_id"
     t.integer  "reason_id"
     t.string   "comments"
+    t.string   "book_no"
   end
 
   # unrecognized index "index_ibtr_versions_on_ibtr_id" with type ActiveRecord::ConnectionAdapters::IndexDefinition
@@ -208,6 +209,7 @@ ActiveRecord::Schema.define(:version => 20110117125146) do
     t.string   "respondent_id"
     t.integer  "reason_id"
     t.string   "comments"
+    t.string   "book_no"
   end
 
   create_table "memberpayments", :force => true do |t|

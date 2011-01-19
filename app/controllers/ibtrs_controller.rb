@@ -29,28 +29,29 @@ class IbtrsController < ApplicationController
   end
 
   def lookup
-    if (params[:f_error].nil?)
-      @f_errors = []
-    end
   end
 
+  # fulfill an ibtr, in case one is already fulfilled, return the details of the ibtr
+  # so that the user can unfulfill it
   def fulfill
-    book_no = params[:bookno]
-    branch_id = params[:branch_id]
-    if branch_id.nil?
-      branch_id = 951
+    book_no = params[:book_no]
+    
+    # check for an existing fulfilled record, if found, then there's nothing else to do
+    @ibtr = Ibtr.find_by_book_no_and_state(book_no, 'Fulfilled')
+    
+    # no record found, so proceed with fulfilling any matching Ibtr
+    if @ibtr.nil?
+      @ibtr = Ibtr.fulfill(book_no)
     end
-    
-    @ibtr = Ibtr.find_for_fulfill(book_no)
-    
+
     respond_to do |format|
-      if !@ibtr.id.nil? and @ibtr.set_fulfill(book_no, branch_id)
-        flash[:notice] = "book fulfilled to #{@ibtr.card_id} of branch #{@ibtr.branch}"
-        format.html { redirect_to(@ibtr, :notice => "book fulfilled to #{@ibtr.card_id} of branch #{@ibtr.branch}") }
-        format.xml  { head :ok }
-      else  
+      if @ibtr
+        flash[:notice] = "book fulfilled to #{@ibtr.card_id} of branch #{@ibtr.branch_id}"
+        format.html { redirect_to @ibtr }
+        format.xml  # fulfill.xml.erb
+      else
         format.html { render :action => "lookup" }
-        format.xml  { render :xml => @ibtr.errors, :status => :unprocessable_entity }
+        format.xml  { render :head => :ok, :status => :not_found }
       end
     end  
   end
