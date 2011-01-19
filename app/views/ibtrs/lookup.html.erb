@@ -1,13 +1,15 @@
 <div class="span-24">
 	<%= form_tag 'fulfill', :class=>'ibtrs', :method => 'fulfill' do -%>
-      <% if @f_errors.any? %>
-	      <h4><%= pluralize(@f_errors.count, "error") %> prohibited this ibtr from being saved:</h4>
+	  <% if @ibtr.errors.any? %>
+	    <div id="error_explanation">
+	      <h2><%= pluralize(@ibtr.errors.count, "error") %> prohibited this book to fulfill:</h2>
 
 	      <ul>
-	      <% @f_errors.each do |msg| %>
+	      <% @ibtr.errors.full_messages.each do |msg| %>
 	        <li><%= msg %></li>
 	      <% end %>
 	      </ul>
+	    </div>
 	  <% end %>
 
 			<%= field_set_tag 'lookup' do %>

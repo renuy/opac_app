@@ -118,14 +118,14 @@ class Ibtr < ActiveRecord::Base
     if !book_no.nil? 
       
       if !Ibtr.book_not_fulfilled?(book_no)
-        errors.add(book_no, " book already used to fulfill")
+        errors.add(book_no.to_s, " book already used to fulfill")
       end
       book = Book.find_by_book_no(book_no)
       if book.nil?
-        errors.add(book_no, " invalid book number")
+        errors.add(book_no.to_s, " invalid book number")
       end
       if book.title_id != title_id
-        errors.add(book.title_id ," book title different from ibtr title")
+        errors.add(book.title_id.to_s ," book title different from ibtr title")
       end
     end
   end
@@ -135,9 +135,17 @@ class Ibtr < ActiveRecord::Base
     ibtrs = Ibtr.find(:all, :conditions => ['state in (?) AND title_id = ?', 'Assigned', book.title_id], :order => 'created_at')
     if !(ibtrs.nil? or ibtrs.size == 0) 
       #log error, do we check for new requests??? auto fulfill and not assigned
-      return ibtrs[0]
+      return  ibtrs[0]
+    else
+      ibtr = Ibtr.new
+      ibtr.set_error(book_no.to_s, "destination for book no #{book_no} not found")
+      return ibtr
     end
-    return nil
+    
+  end
+  
+  def set_error(sym,msg)
+    errors.add(sym.to_s, msg)
   end
   
   def set_fulfill(book_no, branch_id)

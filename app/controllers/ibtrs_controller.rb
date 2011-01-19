@@ -34,7 +34,7 @@ class IbtrsController < ApplicationController
     end
   end
   
-  def fulfill
+  def fulfill_old
     book_no = params[:bookno]
     branch_id = params[:branch_id]
     if branch_id.nil?
@@ -66,6 +66,27 @@ class IbtrsController < ApplicationController
       format.html { render "/ibtrs/lookup" ,  :f_error => 'true' }
       format.xml  { render :xml => @f_error, :status => :unprocessable_entity }
     end
+  end
+
+  def fulfill
+    book_no = params[:bookno]
+    branch_id = params[:branch_id]
+    if branch_id.nil?
+      branch_id = 951
+    end
+    
+    @ibtr = Ibtr.find_for_fulfill(book_no)
+    
+    respond_to do |format|
+      if !@ibtr.id.nil? and @ibtr.set_fulfill(book_no, branch_id)
+        flash[:notice] = "book fulfilled to #{@ibtr.card_id} of branch #{@ibtr.branch}"
+        format.html { redirect_to(@ibtr, :notice => "book fulfilled to #{@ibtr.card_id} of branch #{@ibtr.branch}") }
+        format.xml  { head :ok }
+      else  
+        format.html { render :action => "lookup" }
+        format.xml  { render :xml => @ibtr.errors, :status => :unprocessable_entity }
+      end
+    end  
   end
 
 end
