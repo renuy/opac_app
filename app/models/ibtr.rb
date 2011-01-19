@@ -148,12 +148,8 @@ class Ibtr < ActiveRecord::Base
     errors.add(sym.to_s, msg)
   end
   
-  def set_fulfill(book_no, branch_id)
+  def set_fulfill(book_no)
       self.fulfill
-      book = Book.find_by_book_no(book_no)
-      book.branch_id = branch_id #get the city's warehouse branch
-      book.save
-      
       return update_attributes(:book_no => book_no, 
                             :state => self.current_state)
     

@@ -29,56 +29,15 @@ class IbtrsController < ApplicationController
   end
 
   def lookup
-    if (params[:f_error].nil?)
-      @f_errors = []
-    end
+    
   end
   
-  def fulfill_old
-    book_no = params[:bookno]
-    branch_id = params[:branch_id]
-    if branch_id.nil?
-      branch_id = 951
-    end
-    @f_errors =[]
-    
-    @ibtr = Ibtr.find_for_fulfill(book_no)
-    if !@ibtr.nil?
-      
-        if @ibtr.set_fulfill(book_no, branch_id)
-          respond_to do |format|
-            flash[:notice] = "book fulfilled to #{@ibtr.card_id} of branch #{@ibtr.branch}"
-            format.html { redirect_to(@ibtr, :notice => "book fulfilled to #{@ibtr.card_id} of branch #{@ibtr.branch}") }
-            format.xml  { head :ok }
-          end
-          return
-        else
-            @f_errors << @ibtr.errors
-        end
-      
-    else
-      @f_errors << "Book does not match any IBTR."
-    end  
-    
-    @ibtr = Ibtr.find_by_book_no(book_no)  
-    #render 'lookup'
-    respond_to do |format|
-      format.html { render "/ibtrs/lookup" ,  :f_error => 'true' }
-      format.xml  { render :xml => @f_error, :status => :unprocessable_entity }
-    end
-  end
-
   def fulfill
     book_no = params[:bookno]
-    branch_id = params[:branch_id]
-    if branch_id.nil?
-      branch_id = 951
-    end
-    
     @ibtr = Ibtr.find_for_fulfill(book_no)
     
     respond_to do |format|
-      if !@ibtr.id.nil? and @ibtr.set_fulfill(book_no, branch_id)
+      if !@ibtr.id.nil? and @ibtr.set_fulfill(book_no)
         flash[:notice] = "book fulfilled to #{@ibtr.card_id} of branch #{@ibtr.branch}"
         format.html { redirect_to(@ibtr, :notice => "book fulfilled to #{@ibtr.card_id} of branch #{@ibtr.branch}") }
         format.xml  { head :ok }
