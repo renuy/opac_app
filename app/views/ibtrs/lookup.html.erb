@@ -1,5 +1,6 @@
 <div class="span-24">
 	<%= form_tag 'fulfill', :class=>'ibtrs', :method => 'fulfill' do -%>
+    <% unless @ibtr.nil? %>
 	  <% if @ibtr.errors.any? %>
 	    <div id="error_explanation">
 	      <h2><%= pluralize(@ibtr.errors.count, "error") %> prohibited this book to fulfill:</h2>
@@ -11,6 +12,7 @@
 	      </ul>
 	    </div>
 	  <% end %>
+    <% end %>
 
 			<%= field_set_tag 'lookup' do %>
 				<%= label_tag 'Book No:'%>
