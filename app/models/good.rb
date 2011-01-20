@@ -22,8 +22,8 @@ class Good < ActiveRecord::Base
 	end
 	
 	before_validation :set_good_details
-	#after_create { |record| record.ibtr.fulfill! }
-	#after_destroy { |record| Ibtr.find(record.ibtr_id).undo_fulfill! }
+	after_create { fulfill_ibtr }
+	after_destroy { undo_fulfill_ibtr }
 	
 	def processEvent(event)
 		case 
@@ -47,11 +47,26 @@ class Good < ActiveRecord::Base
     self.consignment = Consignment.find(consignment_id) 
     self.book = Book.find_by_book_no(book_no)
     unless book.nil?
+      self.title_id = book.title_id
       self.ibtr = Ibtr.find_by_title_id_and_respondent_id_and_state(book.title_id, consignment.origin_id, 'Assigned')
       unless ibtr.nil?
-        self.title_id = book.title_id
         self.ibtr_id = ibtr.id
       end
     end
   end
+  
+  def fulfill_ibtr
+    unless ibtr.nil?
+      ibtr.book_no = book_no
+      ibtr.fulfill!
+    end
+  end
+  
+  def undo_fulfill_ibtr
+    unless ibtr_id.nil?
+      ibtr.book_no = nil
+      ibtr.undo_fulfill! 
+    end
+  end
+  
 end
