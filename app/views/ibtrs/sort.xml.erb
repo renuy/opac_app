@@ -1,6 +1,12 @@
 <ibtr>
 	<id><%= @ibtr.id %></id>
+	<created_at><%= @ibtr.created_at.strftime("%d-%b-%Y")  %></created_at>
+	<updated_at><%= @ibtr.updated_at.strftime("%d-%b-%Y") %></updated_at>
 	<card_id><%= @ibtr.card_id %></card_id>
+	<title>
+		<id><%= @ibtr.title_id %></id>
+		<name><%= @ibtr.title.title %></name>
+	</title>
 	<branch>
 		<id><%= @ibtr.branch_id %></id>
 		<name><%= @ibtr.branch.name %></name>
