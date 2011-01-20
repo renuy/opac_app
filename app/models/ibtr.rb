@@ -109,22 +109,5 @@ class Ibtr < ActiveRecord::Base
     else
       paginate :page => params[:page], :conditions => ['state in (?)', states], :order => 'created_at, id DESC'
     end
-  end  
-  
-  
-  # class method to fulfill a matching ibtr record
-  def self.fulfill(book_no)
-    book = Book.find_by_book_no(book_no)
-
-    unless book.nil?
-      ibtr = Ibtr.order("created_at").find_by_title_id_and_state(book.title_id, 'Assigned')
-      
-      unless ibtr.nil?
-        ibtr.book_no = book_no
-        ibtr.fulfill!
-        ibtr
-      end
-    end
-  end
-  
+  end   
 end

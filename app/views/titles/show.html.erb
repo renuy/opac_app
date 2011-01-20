@@ -1,14 +1,40 @@
-<table class="titles" summary="Titles">
-	<%= render @title %>
-</table>
+<div class='span-16 box'>
+	<div class='span-3'>
+		<%= image_tag image_url(@title.id), :size => "100x150", :alt => "#{@title.id} ", :title => "#{@title.id}", :onerror => "this.src='#{default_image_url}';"  %>
+		<div style='text-align:center'><%= link_to 'upload', '#'%></div>
+	</div>
+	<div class='span-12'>
+		<span><%= @title.title %></span>
+		<br/>
+		<span><%= @title.author.name %></span>
+		<br/>
+		<span><%= @title.publisher.name %> (<span><%= @title.yearofpublication %></span>)</span>
+		<br/>
+		<span><%= @title.category.division %> - <%= @title.category.name %></span>
+		<br/>
+		<span>ISBN 13: <%= @title.isbn13 %></span>
+		<br/>
+		<span>ISBN 10: <%= @title.isbn10 %></span>
+		<br/>
+		<span>Price: <%= @title.isbn10 %></span>
+		<br/>
+		<span>Order Info Available?: (mapped or not)</span>
+		<br/>
+		<span>No of Copies: 100 (total), 30 (in circulation), 20 (<%= link_to 'available', '#'%>)</span>
+		<br/>
+		<br/>
+		<span>Last Updated On <%= Time.zone.now.strftime '%d-%b-%y' %>, by <%= link_to 'Nazia', '#' %></span>
+	</div>
+</div>
 
-<%= form_tag title_path, :method => 'get' do -%>
-	<p>
-		<%= submit_tag "Show More Like", :name => nil %>
-		<%= hidden_field_tag "mlt", :true %>
-	</p>
-<% end -%>
+<div class='span-5 box last'>
+	Purchase Order & Circulation Chart
+</div>
 
-<% if @search -%>
-<%= render :partial => 'searchresults' %>
-<% end -%>
+<div class='span-10 box'>
+	Order Information	
+</div>
+
+<div class='span-10 box'>
+	Order Information	
+</div>

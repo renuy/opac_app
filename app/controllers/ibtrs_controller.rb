@@ -31,27 +31,25 @@ class IbtrsController < ApplicationController
   def lookup
   end
 
-  # fulfill an ibtr, in case one is already fulfilled, return the details of the ibtr
-  # so that the user can unfulfill it
-  def fulfill
+  # dispatch an ibtr, in case one is already dispatch, return the details of the ibtr
+  # so that the user can reprint the dispatch slip
+  def sort
     book_no = params[:book_no]
     
-    # check for an existing fulfilled record, if found, then there's nothing else to do
-    @ibtr = Ibtr.find_by_book_no_and_state(book_no, 'Fulfilled')
-    
-    # no record found, so proceed with fulfilling any matching Ibtr
-    if @ibtr.nil?
-      @ibtr = Ibtr.fulfill(book_no)
-    end
+    # check for an existing fulfilled, or dispatched record
+    @ibtr = Ibtr.find_by_book_no_and_state(book_no, [:Dispatched,:Fulfilled])
 
     respond_to do |format|
-      if @ibtr
-        flash[:notice] = "book fulfilled to #{@ibtr.card_id} of branch #{@ibtr.branch_id}"
+      unless @ibtr.nil?
+        if @ibtr.state = :Fulfilled
+          @ibtr.dispatch!
+        end
+        flash[:notice] = "book dispatched to #{@ibtr.card_id} of branch #{@ibtr.branch_id}"
         format.html { redirect_to @ibtr }
-        format.xml  # fulfill.xml.erb
+        format.xml  # dispatch.xml.erb
       else
         format.html { render :action => "lookup" }
-        format.xml  { render :head => :ok, :status => :not_found }
+        format.xml  { render :nothing => true, :status => :not_found }
       end
     end  
   end
