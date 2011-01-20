@@ -9,12 +9,14 @@
 		<good>
 			<id><%= good.id %></id>
 			<book_no><%= good.book_no %></book_no>
-			<title_id><%= good.title_id %></title_id>
-			<ibtr_id><%= good.ibtr_id %></ibtr_id>
-			<branch_id>requesting branch</branch_id>
-			<member_id>member</member_id>
-			<card_id>card</card_id>
-			<created_at>created_at</created_at>
+			<title>
+				<id><%= good.title_id %></id>
+				<name><%= good.title.title unless good.title.nil? %></name>
+			</title>
+			<ibtr>
+				<id><%= good.ibtr_id %></id>
+				<state><%= good.ibtr.state unless good.ibtr.nil? %></state>
+			</ibtr>
 		</good>
 		<% end -%>
 	</goods>
