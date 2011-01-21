@@ -9,6 +9,6 @@
 	</title>
 	<branch>
 		<id><%= @ibtr.branch_id %></id>
-		<name><%= @ibtr.branch.name %></name>
+		<name><%= @ibtr.branch.name unless @ibtr.branch.nil? %></name>
 	</branch>
 </ibtr>
