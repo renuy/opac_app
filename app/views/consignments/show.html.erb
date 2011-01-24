@@ -24,11 +24,15 @@
 			<% @consignment.goods.each do |good| =%>
 				<tr>
 					<td><%= good.book_no %></td>
-					<td><%= good.title.title %></td>
-					<td><%= good.ibtr.branch.name %></td>
-					<td><%= good.ibtr.card_id %></td>
-					<td><%= good.ibtr.created_at.strftime("%m-%d-%Y") %></td>
-					<td><%= good.ibtr.state %></td>
+					<td><%= "#{good.title.title}-#{good.title_id}"   unless good.title.nil? %></td>
+					<% unless good.ibtr.nil? -%>
+						<td><%= good.ibtr.branch.name %></td>
+						<td><%= good.ibtr.card_id %></td>
+						<td><%= good.ibtr.created_at.strftime("%m-%d-%Y") %></td>
+						<td><%= good.ibtr.state %></td>
+					<% else %>
+						<td colspan='4'></td>
+					<% end -%>
 				</tr>
 			<% end -%>			
 		</table>

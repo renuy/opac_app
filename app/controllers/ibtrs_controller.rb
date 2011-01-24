@@ -29,21 +29,27 @@ class IbtrsController < ApplicationController
   end
 
   def lookup
-    
   end
   
-  def fulfill
-    book_no = params[:bookno]
-    @ibtr = Ibtr.find_for_fulfill(book_no)
+  # dispatch an ibtr, in case one is already dispatch, return the details of the ibtr
+  # so that the user can reprint the dispatch slip
+  def sort
+    book_no = params[:book_no]
     
+    # check for an existing fulfilled, or dispatched record
+    @ibtr = Ibtr.find_by_book_no_and_state(book_no, [:Dispatched,:Fulfilled])
+
     respond_to do |format|
-      if !@ibtr.id.nil? and @ibtr.set_fulfill(book_no)
-        flash[:notice] = "book fulfilled to #{@ibtr.card_id} of branch #{@ibtr.branch}"
-        format.html { redirect_to(@ibtr, :notice => "book fulfilled to #{@ibtr.card_id} of branch #{@ibtr.branch}") }
-        format.xml  { head :ok }
-      else  
+      unless @ibtr.nil?
+        if @ibtr.state = :Fulfilled
+          @ibtr.dispatch!
+        end
+        flash[:notice] = "book dispatched to #{@ibtr.card_id} of branch #{@ibtr.branch_id}"
+        format.html { redirect_to @ibtr }
+        format.xml  # dispatch.xml.erb
+      else
         format.html { render :action => "lookup" }
-        format.xml  { render :xml => @ibtr.errors, :status => :unprocessable_entity }
+        format.xml  { render :nothing => true, :status => :not_found }
       end
     end  
   end

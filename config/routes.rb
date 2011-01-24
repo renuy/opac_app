@@ -14,7 +14,7 @@ Opac::Application.routes.draw do
 
   match 'ibtrs/search' => 'ibtrs#search'
   match 'ibtrs/lookup' => 'ibtrs#lookup'
-  match 'ibtrs/fulfill' => 'ibtrs#fulfill'
+  match 'ibtrs/sort' => 'ibtrs#sort', :method => :post
   match 'ibtrs/stats' => 'ibtrs#stats'
 
   match 'consignments/:id/transition/:event' => 'consignments#transition'

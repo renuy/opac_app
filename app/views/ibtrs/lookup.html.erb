@@ -1,5 +1,5 @@
 <div class="span-24">
-	<%= form_tag 'fulfill', :class=>'ibtrs', :method => 'fulfill' do -%>
+	<%= form_tag 'sort', :class=>'ibtrs', :method => 'sort' do -%>
     <% unless @ibtr.nil? %>
 	  <% if @ibtr.errors.any? %>
 	    <div id="error_explanation">
@@ -16,11 +16,10 @@
 
 			<%= field_set_tag 'lookup' do %>
 				<%= label_tag 'Book No:'%>
-				<%= text_field_tag :bookno, params[:bookno] %>
+				<%= text_field_tag :book_no, params[:book_no] %>
 				<br/>
 				<br/>
 				<%= submit_tag "Submit", :name => nil %>
 			<% end -%>
 	<% end -%>
 </div>
-
