@@ -2,6 +2,7 @@
 	<div class="span-4">
 		<p></p>
 		<% if user_signed_in? -%>
+    <p><%= link_to "Home", root_path  %>	</p>
 		<p><%= link_to "Assigned to me", ibt_assigned_path( :branchVal => user_session['current_branch'].id, :criteria =>'all',:show => 'all')  %>	</p>
 		<% end -%>
 	</div>
