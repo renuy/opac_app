@@ -73,8 +73,46 @@ IBTapp.showPanel = function (paneId, panelId) {
 	});
 	$('#flash_'+paneId).html('');
 };
+var IBTStatApp = {};
+IBTStatApp.Charts = {};
+IBTStatApp.ChartData = {};
 
 
+IBTStatApp.showChart = function(panelId){
+  $('#'+panelId).show(600, function() {
+  if (!IBTStatApp.Charts["ibtr"]) {
+    IBTStatApp.Charts["ibtr"] = new $jit.BarChart({
+      injectInto: 'chart_stat',  
+      animate: true,  
+      orientation: 'vertical',  
+      barsOffset: 1,  
+      Margin: {top:5, left: 5, right: 5,bottom:5},
+      labelOffset: 5,
+      type: 'stacked',  
+      showAggregates:true, 
+      showLabels:true, 
+      Label: { type: 'HTML', size: 10, family: 'Arial', color: 'black' }, 
+      Tips: { enable: true,  
+        onShow: function(tip, elem) {  
+          tip.innerHTML = "<span class='tooltip'><b>  " + elem.name + "</b>: " + elem.value + "  </span>";
+        }  
+      }
+    });
+  }
+  
+  IBTStatApp.Charts["ibtr"].loadJSON(IBTStatApp.ChartData["infovis"]);
+	});	
+}
+var IBThist ={}
+IBThist.hide = function (paneId, panelId) {
+		var id = '#' + paneId;
+		$(id).hide(600);
+	
+}
+IBThist.show = function (paneId, panelId) {
+		var id = '#' +  paneId;
+		$(id).show(600);
+}
 IBTapp.initSearchForm = function (option, onload) {
 	if (option == 'respondent_id' || option == 'branch_id') {
 		$('.ibtrSearch #branchVal').show();
@@ -86,6 +124,25 @@ IBTapp.initSearchForm = function (option, onload) {
 };
 
 $('.ibtrSearch #searchBy').live('change', function() { IBTapp.initSearchForm($('.ibtrSearch #searchBy').val(), false); });
+
+IBTStatApp.initStatForm = function (option, onload) {
+	if (option == 'On' || option == 'Range') {
+		$('.ibtrStat #div_start_date').show();
+     
+    if (option == 'Range'){
+      $('.ibtrStat #div_end_date').show();
+		}
+    else
+    {
+      $('.ibtrStat #div_end_date').hide();
+    }
+	} else {
+		$('.ibtrStat #div_start_date').hide();
+		$('.ibtrStat #div_end_date').hide();
+	}
+};
+
+$('.ibtrStat #Created').live('change', function() { IBTStatApp.initStatForm($('.ibtrStat #Created').val(), false); });
 
 $('#authors th a, #authors .pagination a, #authors td a').live('click', function() {
 	$.getScript(this.href);

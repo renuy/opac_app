@@ -57,6 +57,14 @@ input.readonly {
 	border-style:dotted;
 }
 
+.statchart {
+	height:200px;
+	width:900px;
+	border-width:2px;
+	border-color:black;
+	border-style:dotted;
+}
+
 .tooltip {
 	background-color:lightblue;
 	border-width:1px;

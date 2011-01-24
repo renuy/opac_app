@@ -1,0 +1,10 @@
+<div id="chart_stat" class="statchart">
+	<br/>
+</div>
+
+<%= content_for :javascript do -%>
+
+//load JSON data.  
+IBTStatApp.ChartData["<%= "infovis" %>"] = <%= raw IBTRstatChartData(ibtr_stats).to_json %>;
+
+<% end -%>

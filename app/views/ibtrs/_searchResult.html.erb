@@ -1,5 +1,6 @@
 <%= content_tag :div, :class=> "span-24", :id => "div_#{searchResult.id}" do -%>
-	<div class="span-1"><%= searchResult_counter + 1 %></div>
+	<!--div class="span-1"><%= searchResult_counter + 1 %></div -->
+  <div class="span-1"><%= link_to_function searchResult_counter + 1, "IBThist.show('div_det_#{searchResult.id}', 'div_det_#{searchResult.id}')"  %></div>
 	<div class="span-5"><%= searchResult.created_at.strftime('%d-%b-%y') %>
 											(<%= distance_of_time_in_words(searchResult.created_at, Time.zone.now) %> ago)<br/></div>
 	<div class="span-2"><%= searchResult.member_id %><br/></div>
@@ -9,5 +10,21 @@
 	<div class="span-2"><%= searchResult.respondent_id %><br/></div>
 	<div class="span-5"><%= searchResult.updated_at.strftime('%d-%b-%y') %>
 											(<%= distance_of_time_in_words(searchResult.updated_at, Time.zone.now) %> ago)<br/></div>
-	<div class="span-2"><%= link_to(searchResult.versions.count, '#') %><br/></div>
+	<div class="span-2"><%= link_to_function searchResult.versions.count, "IBThist.show('div_hist_#{searchResult.id}')" %><br/></div>
+  <%= render :partial => "history", :locals => { :searchResult => searchResult } %>
+  <div class="span-24" id = "<%= "div_det_#{searchResult.id}" %>" style="display:none;">
+  <div class="span-24">
+  <div class="span-24"><br/></div>
+  <div class="span-4"><br/></div>
+  <div class="span-14" style="border:1px;">
+  <%= render :partial => "ibtr", :locals => {:ibtr => searchResult} %>  
+  </div>
+  </div>
+  <div class="span-22">
+  <div class="right" >
+  <%= link_to_function '<< Hide', "IBThist.hide('div_det_#{searchResult.id}')" %>
+  </div>
+  </div>
+  <hr/>
+  </div>
 <% end -%>

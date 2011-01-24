@@ -13,4 +13,21 @@ module StatisticsHelper
       'values' => stockArray
     }
   end
+  
+  def IBTRstatChartData(ibtr_stats)
+    #params = {:Created => 'All'}
+    #ibtr_stats = Ibtr.get_ibtr_stats(params)
+  
+    statArray = []
+  
+    ibtr_stats.each do |ibtrStat|
+      statArray << Ibtr.to_jit(ibtrStat)
+    end
+  
+    {
+      'label' => ['New', 'Assigned', 'Fulfilled', 'Received'],
+      'values' => statArray
+    }
+  end
+
 end

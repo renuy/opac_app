@@ -9,7 +9,8 @@ class IbtrMailer < ActionMailer::Base
   
   def consignment_pickup_advice(consignment)
     @consignment = consignment
-	mail(:to => 'renu.yarday@strata.co.in',
+	mail(:cc => 'operations@justbooksclc.com',
+         :to => consignment.origin.email,
          :subject => "Consignment pickup advice")
   end
 end
