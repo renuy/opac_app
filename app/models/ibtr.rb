@@ -113,11 +113,11 @@ class Ibtr < ActiveRecord::Base
   
   def self.get_ibtr_stats(params, start_d_s, end_d_s)
     created = params[:Created]
-    start_date = Date.today.beginning_of_day
-    end_date =  Date.today.end_of_day
+    start_date = Time.zone.today.beginning_of_day
+    end_date =  Time.zone.today.end_of_day
     if created == 'Today'
-      start_date = Date.today.beginning_of_day
-      end_date =  Date.today.end_of_day
+      start_date = Time.zone.today.beginning_of_day
+      end_date =  Time.zone.today.end_of_day
     elsif created == 'Range'
       start_date = start_d_s.to_time.beginning_of_day
       end_date =  end_d_s.to_time.beginning_of_day
