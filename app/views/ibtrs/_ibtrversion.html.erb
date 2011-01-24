@@ -1,19 +1,14 @@
-<tr>
-<td><%= ibtrversion.version %></td>
-<td><%= ibtrversion.title_id  %></td>
-<td><%= ibtrversion.state %></td>
-<td>
-<%=
-	case 
-	when ibtrversion.state.eql?('Assigned') then 'to'
-	when ibtrversion.state.eql?('Declined') then 'by'
-	when ibtrversion.state.eql?('Fulfilled') then 'by'
-	when ibtrversion.state.eql?('Dispatched') then 'by'
-	when ibtrversion.state.eql?('Received') then 'by'
-	when ibtrversion.state.eql?('Cancelled')
-	end
-%>
-</td>
-<td><%= ibtrversion.respondent_id unless ibtrversion.state.eql?('Cancelled') %></td>
-<td><%= distance_of_time_in_words(ibtrversion.updated_at, Time.zone.now) %> ago</td>
-</tr>
+
+<%= content_tag :div, :class=> "span-24", :id => "div_hist_#{ibtrversion.ibtr_id}_#{ibtrversion.id}" do -%>
+	<div class="span-1"><%= ibtrversion.version %></div>
+	<div class="span-5"><%= ibtrversion.created_at.strftime('%d-%b-%y') %>
+											(<%= distance_of_time_in_words(ibtrversion.created_at, Time.zone.now) %> ago)<br/></div>
+	<div class="span-2"><%= ibtrversion.member_id %><br/></div>
+	<div class="span-2"><%= ibtrversion.card_id %><br/></div>
+	<div class="span-2"><%= ibtrversion.branch_id %><br/></div>
+	<div class="span-2"><%= ibtrversion.state %><br/></div>
+	<div class="span-2"><%= ibtrversion.respondent_id %><br/></div>
+	<div class="span-5"><%= ibtrversion.updated_at.strftime('%d-%b-%y') %>
+											(<%= distance_of_time_in_words(ibtrversion.updated_at, Time.zone.now) %> ago)<br/></div>
+	
+<% end -%>

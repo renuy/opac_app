@@ -172,4 +172,52 @@ class Ibtr < ActiveRecord::Base
       return ibtrs[0]
     end
   end
+  
+  def self.get_ibtr_stats(params, start_d_s, end_d_s)
+    created = params[:Created]
+    start_date = Date.today.beginning_of_day
+    end_date =  Date.today.end_of_day
+    if created == 'Today'
+      start_date = Date.today.beginning_of_day
+      end_date =  Date.today.end_of_day
+    elsif created == 'Range'
+      start_date = start_d_s.to_time.beginning_of_day
+      end_date =  end_d_s.to_time.beginning_of_day
+    elsif created == 'On'
+      start_date = start_d_s.to_time.beginning_of_day
+      end_date =  start_d_s.to_time.end_of_day
+    end
+    if created == 'All'
+      ibtr_stats = Ibtr.find(:all, :select => " decode(state, 'New', branch_id,'Received',branch_id,respondent_id) as branch_id , "+
+      "sum(decode(state,'New',1,0)) as new_cnt,  "+
+      "sum(decode(state,'Assigned',1,0)) as assigned_cnt,  "+
+      "sum(decode(state,'Fulfilled',1,0)) as fulfilled_cnt,  "+
+      "sum(decode(state,'Received',1,0)) as received_cnt, "+
+      "sum(decode(state,'Declined',1,0)) as declined_cnt, "+
+      "sum(decode(state,'Duplicate',1,0)) as duplicate_cnt, "+
+      "sum(decode(state,'Cancelled',1,0)) as cancelled_cnt " , 
+      :group => "decode(state, 'New', branch_id,'Received',branch_id,respondent_id)",
+      :order => "branch_id")
+    else 
+      ibtr_stats = Ibtr.find(:all, :select => " decode(state, 'New', branch_id,'Received',branch_id,respondent_id) as branch_id , "+
+      "sum(decode(state,'New',1,0)) as new_cnt,  "+
+      "sum(decode(state,'Assigned',1,0)) as assigned_cnt,  "+
+      "sum(decode(state,'Fulfilled',1,0)) as fulfilled_cnt,  "+
+      "sum(decode(state,'Received',1,0)) as received_cnt, "+
+      "sum(decode(state,'Declined',1,0)) as declined_cnt, "+
+      "sum(decode(state,'Duplicate',1,0)) as duplicate_cnt, "+
+      "sum(decode(state,'Cancelled',1,0)) as cancelled_cnt " , 
+      :conditions => ["created_at >= ? and created_at <= ? ", start_date, end_date], 
+      :group => "decode(state, 'New', branch_id,'Received',branch_id,respondent_id)",
+      :order => "branch_id")
+    end
+    
+  end
+  
+  def self.to_jit(ibtrStat)
+    {
+      'label' => ibtrStat.branch_id,
+      'values' => [ibtrStat.new_cnt, ibtrStat.assigned_cnt, ibtrStat.fulfilled_cnt, ibtrStat.received_cnt ]
+    }
+  end
 end

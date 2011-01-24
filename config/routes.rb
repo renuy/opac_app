@@ -7,7 +7,7 @@ Opac::Application.routes.draw do
   match '/auth/:provider/callback' => 'authentications#create'
 
   get "stock/show"
-
+  get "ibtrs/stats"
   devise_for :users, :path => 'accounts', :controllers => {:registrations => 'registrations'}
 
   match '/auth/failure' => 'Ibtrs#index'
@@ -15,6 +15,7 @@ Opac::Application.routes.draw do
   match 'ibtrs/search' => 'ibtrs#search'
   match 'ibtrs/lookup' => 'ibtrs#lookup'
   match 'ibtrs/fulfill' => 'ibtrs#fulfill'
+  match 'ibtrs/stats' => 'ibtrs#stats'
 
   match 'consignments/:id/transition/:event' => 'consignments#transition'
 

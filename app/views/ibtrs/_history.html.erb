@@ -1,0 +1,23 @@
+
+<div class="span-24" id = "<%= "div_hist_#{searchResult.id}" %>" style="display:none">
+  
+  <div class="span-24">
+		
+		<div class="span-2"><h6>History</h6></div>
+	  </div>	
+
+	<%= render :partial => "ibtrversion", :collection => searchResult.versions %>
+  <div class="span-24">
+		
+		<div class="span-2"><br/></h6></div>
+    <div class="span-4"> <br/></div>
+    <div class="span-5"> <br/></div>
+    <div class="span-5"> <br/></div>
+    <div class="span-5"> <br/></div>
+    <div class="span-2" >
+    <%= link_to_function '<< Hide', "IBThist.hide('div_hist_#{searchResult.id}')" %>
+    </div>
+	</div>	
+
+  <hr/>
+</div>
