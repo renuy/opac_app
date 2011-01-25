@@ -5,13 +5,13 @@ $('.toggle_history').live('click', function() {
 	var history_id = this.id.split("_");
 	history_id.shift();
 	history_id = '#' + history_id.join("_");
-	
+
 	$(history_id).toggle();
-	
+
 	var isShown = ($(history_id).css("display") == "none" ? false : true);
 
 	this.innerHTML = (isShown ? "Hide History" : "Show History");
-	
+
 	if ( isShown ) {
 		$(history_id).data('jsp').reinitialise();
 	}
@@ -21,13 +21,13 @@ $('.toggle_stock').live('click', function() {
 	var stock_id = this.id.split("_");
 	stock_id.shift();
 	stock_id = '#' + stock_id.join("_");
-	
+
 	$(stock_id).toggle();
-	
+
 	var isShown = ($(stock_id).css("display") == "none" ? false : true);
 
 	this.innerHTML = (isShown ? "Hide Stock" : "Show Stock");
-	
+
 	if ( isShown ) {
 		$(stock_id).data('jsp').reinitialise();
 	}
@@ -43,7 +43,7 @@ IBTapp.showPanel = function (paneId, panelId) {
 		var id = '#' + value + paneId;
 		$(id).hide();
 	});
-	
+
 	$('#'+panelId).show(600, function() {
 			debugger;
 		if (panelId.indexOf('ass') > 0) {
@@ -67,7 +67,7 @@ IBTapp.showPanel = function (paneId, panelId) {
 				  }
 				});
 			}
-			
+
 			IBTapp.Charts["stock"+paneId].loadJSON(IBTapp.ChartData["infovis"+paneId]);
 		}
 	});
@@ -107,7 +107,7 @@ var IBThist ={}
 IBThist.hide = function (paneId, panelId) {
 		var id = '#' + paneId;
 		$(id).hide(600);
-	
+
 }
 IBThist.show = function (paneId, panelId) {
 		var id = '#' +  paneId;
