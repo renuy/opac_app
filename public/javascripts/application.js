@@ -113,6 +113,13 @@ IBThist.show = function (paneId, panelId) {
 		var id = '#' +  paneId;
 		$(id).show(600);
 }
+IBThist.showhide = function (showId, hideId) {
+
+		var hideid = '#' +  hideId;
+		$(hideid).hide(600);
+    var showid = '#' +  showId;
+		$(showid).show(600);
+}
 IBTapp.initSearchForm = function (option, onload) {
 	if (option == 'respondent_id' || option == 'branch_id') {
 		$('.ibtrSearch #branchVal').show();

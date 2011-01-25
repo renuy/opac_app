@@ -1,25 +1,35 @@
 <div class="span-3" style="height:140; color:#ffffff" >
-	<div class="span-3" style="margin-bottom:30px">
+	<div class="span-3"  style="margin-bottom:30px">
 		<div class="span-2" style="height:85" >
+    <div id="<%="shelf_#{title.rack}_#{title.shelf}_#{title.title_id}"%>">
 			<%= image_tag image_url(title.title_id), :size => "50x80", :alt => "#{title.title_id} ", :title => "#{title.title_id}", :onerror => "this.src='#{default_image_url}';"  %>
+    </div>
+    <div class="small" id="<%="all_#{title.rack}_#{title.shelf}_#{title.title_id}"%>" style="display:none;">
+      <u>All Locations</u><br/>
+      <%= render :partial => "more_shelves", :collection => StockRacksShelf.where(:book_branch_id => user_session['current_branch'].id, :title_id => title.title_id) %>
+      <%= link_to_function '<<Hide', "IBThist.showhide('shelf_#{title.rack}_#{title.shelf}_#{title.title_id}','all_#{title.rack}_#{title.shelf}_#{title.title_id}')" %>
+    </div>
+
 		</div>
 		<div class="right" style="height:27px; width:29px;background-image: url(../images/star.png);">
 			<span class="small" style="height:27px; width:29px; align:bottom" ><%=Ibtr.find(:all, :conditions=> ['state = ? AND respondent_id = ? AND title_id = ?', "Assigned" , user_session['current_branch'].id, title.title_id] ).size %></span>
 		</div>
-		<div class="small">
+		
+    <div class="small">
 		<% if title.picked=='p' %>
 		<p><%= link_to "unpick", ibt_unpick_req_path(:branchVal => user_session['current_branch'].id, :title_id => title.title_id , :criteria => params[:criteria],:show => params[:show]) %>	</p>
 		<%else %>
 		<p><%= link_to "pickup", ibt_pick_req_path(:branchVal => user_session['current_branch'].id, :title_id => title.title_id , :criteria => params[:criteria],:show => params[:show]) %>	</p>
 		<%end%>
 		</div>
-		<div class="span-4" style="display:none">
-			
-			<%= render :partial => "more_shelves", :collection => StockRacksShelf.where(:book_branch_id => user_session['current_branch'].id, :title_id => title.title_id) %>
+		<div class="small">
+			<p>
+      <%= link_to_function 'loc...', "IBThist.showhide('all_#{title.rack}_#{title.shelf}_#{title.title_id}', 'shelf_#{title.rack}_#{title.shelf}_#{title.title_id}')" %>
+      </p>
 		</div>
 	</div>
-	
 	<div class="span-3 small" style="margin-bottom:35px;height:65; text-align:left; overflow:auto;">
 		<a><%=Title.find(title.title_id).title%></a>
 	</div>
+  
 </div>

@@ -1,17 +1,18 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.0.1'
+gem 'rails', '3.0.3'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-gem 'mysql'
+#gem 'mysql'
 gem 'devise'
-gem 'nokogiri'
+#gem 'nokogiri'
 gem 'sunspot_rails', '1.2.rc4'
 gem "will_paginate", "~> 3.0.pre2"
 gem "transitions", :require => ["transitions", "active_record/transitions"]
 gem 'jquery-rails'
+gem 'ruby-oci8'
 gem 'activerecord-oracle_enhanced-adapter'
 gem 'acts_as_versioned'
 gem 'omniauth'
