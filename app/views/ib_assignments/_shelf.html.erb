@@ -4,6 +4,6 @@
 	</div>
 	<div style="margin:0px; color:#ffffff;text-align:center;height:auto;overflow:auto; background-image: url(../images/woodpic.png); background-position:left bottom;background-repeat:repeat-x;">
 		<%= render :partial => "title", :collection => IbAssignment.allTitles(user_session['current_branch'].id, shelf.rack, shelf.category, shelf.shelf ,params[:criteria]) %>
-		
 	</div>
+  
 </div>
