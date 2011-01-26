@@ -72,5 +72,24 @@ class IbtrsController < ApplicationController
     render 'stats'
   end
   
+  def titleupd
+    ibtr = Ibtr.find(params[:ibtr_id])
+    book = Book.find(params[:book_no])
+    good = Good.find(params[:id])
+    
+    
+    #passing ibtr_id from here will as it is be overwritten with whatever goods finds in set_good_details !!! 
+    #hence the following order of updates matter as goods overwrites ibtr_id to null in case it does not find the correct ibtr_id in assigned state.
+    ibtr.fulfill
+    ibtr.update_attributes( :title_id => book.title_id,
+                            :book_no => book.book_no,
+                            :state => ibtr.current_state)
+    good.update_attributes( :ibtr_id => params[:ibtr_id])
+    
+
+    flash[:notice] = "Successfully fullfilled"
+    
+    redirect_to :action=>"booksearch" , :controller => "consignments"
+  end
 
 end

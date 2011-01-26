@@ -59,11 +59,21 @@
       <div class='span-1 menu-button menu-color'>
 				<div class='menu-icon'>
 					<%= link_to :controller => 'ib_assignments', :action => 'index', :branchVal => user_session['current_branch'].id, :criteria =>'all',:show => 'all' do -%>
-					   	<%= image_tag 'IBT_fulfill.png' %>
+					   	<%= image_tag 'IBT_pickup.png' %>
 					<% end -%>
 				</div>
 				<div class='span-1 menu-text'>
-					IBT Fulfill
+					Books for IBT
+				</div>
+			</div>
+      <div class='span-1 menu-button menu-color'>
+				<div class='menu-icon'>
+					<%= link_to :controller => 'ibtrs', :action => 'stats', :Created => 'Today' do -%>
+					   	<%= image_tag 'IBTReport.png' %>
+					<% end -%>
+				</div>
+				<div class='span-1 menu-text'>
+					IBT Reports
 				</div>
 			</div>
 		</div>

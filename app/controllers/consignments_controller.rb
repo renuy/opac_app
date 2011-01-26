@@ -83,4 +83,16 @@ class ConsignmentsController < ApplicationController
       end
     end    
   end
+  
+  def booksearch
+    book_no = params[:book_no]
+    goods = Good.find(:all, :conditions => ['book_no = ? AND ibtr_id IS NULL ',  book_no], :order => 'created_at DESC')
+    unless goods.size == 0 
+      @good = goods[0]
+      @ibtrs= Ibtr.find_all_by_respondent_id_and_state(@good.consignment.origin_id, :Assigned)      
+    else
+      @good = nil
+      @ibtrs = nil
+    end
+  end
 end

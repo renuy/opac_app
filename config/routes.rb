@@ -16,7 +16,8 @@ Opac::Application.routes.draw do
   match 'ibtrs/lookup' => 'ibtrs#lookup'
   match 'ibtrs/sort' => 'ibtrs#sort', :method => :post
   match 'ibtrs/stats' => 'ibtrs#stats'
-
+  match 'ibtrs_update' => 'ibtrs#titleupd', :method => :post
+  match 'consignments/booksearch' => 'consignments#booksearch'
   match 'consignments/:id/transition/:event' => 'consignments#transition'
 
   resources :titles, :authors, :ibtrs, :branches, :stock, :stockitems, :authentications, :signups, :plans, :coupons, :consignments, :goods

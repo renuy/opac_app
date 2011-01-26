@@ -6,7 +6,7 @@ class Good < ActiveRecord::Base
   belongs_to :book, :class_name => 'Book', :foreign_key => 'book_no'
   belongs_to :title
   
-  attr_accessible :book_no, :consignment_id
+  attr_accessible :book_no, :consignment_id, :ibtr_id
   
   validates :book_no, :presence => true, :uniqueness => {:scope => :consignment_id}, :length => { :maximum => 30 }
   
@@ -48,9 +48,11 @@ class Good < ActiveRecord::Base
     self.book = Book.find_by_book_no(book_no)
     unless book.nil?
       self.title_id = book.title_id
-      self.ibtr = Ibtr.find_by_title_id_and_respondent_id_and_state(book.title_id, consignment.origin_id, 'Assigned')
-      unless ibtr.nil?
-        self.ibtr_id = ibtr.id
+      if self.ibtr_id.nil?
+        self.ibtr = Ibtr.find_by_title_id_and_respondent_id_and_state(book.title_id, consignment.origin_id, 'Assigned')
+        unless ibtr.nil?
+          self.ibtr_id = ibtr.id
+        end
       end
     end
   end
