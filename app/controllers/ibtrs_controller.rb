@@ -66,10 +66,16 @@ class IbtrsController < ApplicationController
     if (!end_d_s.nil?)
       end_s = end_d_s["end(3i)"] + '-' + end_d_s["end(2i)"] +'-'+ end_d_s["end(1i)"]
     end
-
     @ibtr_stats = Ibtr.get_ibtr_stats(params, start_s, end_s)
+    @ibtr_version_stats = IbtrVersion.get_ibtr_version_stats(params, start_s, end_s)
+    case 
+      when params[:report].eql?('respondent_view') then 
+        render 'resp_stats'
+      when params[:report].eql?('curr_state') then 
+        render 'stats'
+    end
+
     
-    render 'stats'
   end
   
   def titleupd

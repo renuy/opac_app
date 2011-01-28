@@ -78,18 +78,18 @@ IBTStatApp.Charts = {};
 IBTStatApp.ChartData = {};
 
 
-IBTStatApp.showChart = function(panelId){
+IBTStatApp.showChart = function(panelId, bartype, show_aggregate){
   $('#'+panelId).show(600, function() {
-  if (!IBTStatApp.Charts["ibtr"]) {
-    IBTStatApp.Charts["ibtr"] = new $jit.BarChart({
-      injectInto: 'chart_stat',  
+  if (!IBTStatApp.Charts["ibtr"+panelId]) {
+    IBTStatApp.Charts["ibtr"+panelId] = new $jit.BarChart({
+      injectInto: panelId+'_chart_stat',  
       animate: true,  
       orientation: 'vertical',  
       barsOffset: 1,  
       Margin: {top:5, left: 5, right: 5,bottom:5},
       labelOffset: 5,
-      type: 'stacked',  
-      showAggregates:true, 
+      type: bartype,  
+      showAggregates:show_aggregate, 
       showLabels:true, 
       Label: { type: 'HTML', size: 10, family: 'Arial', color: 'black' }, 
       Tips: { enable: true,  
@@ -100,9 +100,10 @@ IBTStatApp.showChart = function(panelId){
     });
   }
   
-  IBTStatApp.Charts["ibtr"].loadJSON(IBTStatApp.ChartData["infovis"]);
+  IBTStatApp.Charts["ibtr"+panelId].loadJSON(IBTStatApp.ChartData["infovis"+panelId]);
 	});	
 }
+
 var IBThist ={}
 IBThist.hide = function (paneId, panelId) {
 		var id = '#' + paneId;

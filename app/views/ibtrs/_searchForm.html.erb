@@ -1,0 +1,30 @@
+<%= javascript_tag :defer => 'defer' do -%>
+	$(document).ready(function () {
+		IBTStatApp.initStatForm('<%= params[:Created] %>', true);
+	});
+<% end -%>
+
+  <div class="span-14">
+    <%= form_tag ibtrs_stats_path, :class=>'ibtrStat', :method => 'get' do -%>
+        <%= field_set_tag 'Search' do %>
+          <div class="span-14">
+          <%= label_tag 'Show IBTR:'%>
+          <%= select_tag :Created, options_for_select([['All','All'],['Raised today','Today'],['Raised on','On'],['Raised Between','Range']], params[:Created]) %>
+          <%= hidden_field_tag :report , params[:report] %>
+          </div>
+          <div class="span-7" id="div_start_date">
+          <%= label_tag 'Start:'%>
+          <%= date_select 'start', 'start', :order =>[:day, :month, :year] %>
+          </div>
+          <br/>
+          <div class="span-7" id="div_end_date">
+          <%= label_tag  'End  :'  %>
+          <%= date_select :end, 'end', :order =>[:day, :month, :year] %>
+          </div>
+          <br/>
+          <div class="span-14">
+          <%= submit_tag "Submit", :name => nil %>
+          </div>
+        <% end -%>
+    <% end -%>
+  </div>

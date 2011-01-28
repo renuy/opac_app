@@ -1,0 +1,100 @@
+<div class="span-24">
+  <div class="span-24">
+    <%= render :partial => 'report_menu' %>
+    <div class="span-14">
+    <%= render :partial => 'searchForm' %>
+    </div>
+  </div>
+  <div class="span-24">
+    <h3>Responding branches view</h3>
+    <div class="span-11" >
+    <% unless @ibtr_stats.size == 0 %>
+      <div class="span-24">
+        <br/>
+        See ibtr position
+        <%= link_to_function "chart", "IBTStatApp.showChart('chart_1','stacked:gradient', true)" %>  
+        <br/>
+        <br/>
+      </div>
+      <div class="span-12" id = "chart_1" style="display:none">
+        <div class="span-12" id ="ibtr" >
+          <%= render :partial => '/statistics/ibtr_resp_stat', :locals => { :ibtr_stats => @ibtr_stats , :div_id => "chart_1"} %>
+          <br/>
+          <br/>
+        </div>
+      </div>
+
+      <div class="span-12">
+      
+        <h6>Respondent branches current IBT status <%= report_msg(params[:Created], params[:start], params[:end]) %>
+        </h6>
+        <br/>
+      
+        <table width="100%">
+          <thead>
+          <tr class="span-12">
+            <th class="span-2">Respondent branch</th>
+            <th class="span-2">Assigned Req</th>
+            <th class="span-2">Fulfilled Req</th>
+            <th class="span-2">Declined Req</th>
+            <th class="span-2">Cancelled Req</th>
+          </tr>
+          </thead>
+          <%= render :partial => "ibtr_resp_stat", :collection => @ibtr_stats %>
+        
+        </table>
+      
+      </div>
+    <% end %>
+    </div>
+    <div class="span-11" >     
+      <% unless @ibtr_version_stats.size == 0 %>
+      <div class="span-12">
+          <br/>
+          See ibtr position
+          <%= link_to_function "chart", "IBTStatApp.showChart('chart_2','grouped', false)" %>  
+          <br/>
+          <br/>
+      </div>
+      <div class="span-12" id = "chart_2" style="display:none">
+        <div class="span-12" id ="ibtr_version" >
+          <%= render :partial => '/statistics/ibtr_resp_stat', :locals => { :ibtr_stats => @ibtr_version_stats, :div_id => "chart_2" } %>
+          <br/>
+          <br/>
+        </div>
+      </div>
+
+      <div class="span-14">
+        
+        <h6>Respondent branches aggregate IBT status <%= report_msg(params[:Created], params[:start], params[:end]) %>
+        </h6>
+        <br/>
+        
+        <table width="100%">
+          <thead>
+          <tr class="span-12">
+          <th class="span-2">Branch</th>
+          <th class="span-2">Was assigned</th>
+          <th class="span-2">Fulfilled</th>
+          <th class="span-2">Declined</th>
+          <th class="span-2">Cancelled</th>
+          </tr>
+          </thead>
+        <%= render :partial => "ibtr_resp_stat", :collection => @ibtr_version_stats %>
+          
+        </table>
+      
+      </div>
+      <% end %>
+    </div>
+    <% if @ibtr_stats.size == 0 %>
+
+      <div class="span-14">
+        <br/>
+        no data found
+        
+      </div>  
+    <% end %>
+  </div>
+  
+</div>

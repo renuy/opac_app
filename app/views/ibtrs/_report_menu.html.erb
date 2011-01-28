@@ -1,0 +1,10 @@
+  <div class="span-4 colborder">
+    <div class="span-4">
+      <p></p>
+      <% if user_signed_in? -%>
+      <p><%= link_to "Home", root_path  %>	</p>
+      <p><%= link_to "Ibtr Summary" ,ibtrs_stats_path( :Created => 'Today', :report => 'curr_state') %>	</p>
+      <p><%= link_to "Respondent View" ,ibtrs_stats_path( :Created => 'Today', :report => 'respondent_view') %>	</p>
+      <% end -%>
+    </div>
+  </div>
