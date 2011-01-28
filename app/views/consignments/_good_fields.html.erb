@@ -1,5 +1,5 @@
 <tr>
 	<td><%= f.text_field :book_no, :class => 'title',:maxlength => 30 %></td>
-	<td><%= f.hidden_field :state %><%= link_to_function "receive", "ConsignmentApp.receive(this);" %></td>
-	<td><%= f.hidden_field :_destroy %><%= link_to_function "remove", "ConsignmentApp.removeGood(this);" %></td>
+  <td><%= f.hidden_field :state %><%= link_to_function good_text("#{f.object.state}"), "ConsignmentApp.receiveGood(this);" %></td>
+  <td><%= f.hidden_field :_destroy %><%= link_to_function "remove", "ConsignmentApp.removeGood(this);" %></td>
 </tr>

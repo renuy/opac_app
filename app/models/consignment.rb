@@ -55,12 +55,14 @@ class Consignment < ActiveRecord::Base
 	private
 	
 	def set_defaults
-	  self.waybill_no = 'IBT/'+ self.origin.name[0..1]+'/'+ self.destination.name[0..1]+'/'+Time.zone.now.strftime("%Y%m%d%I%M%S%3N")
-	  if origin_address.nil?
-	    self.origin_address = origin.address
-	  end
-	  if destination_address.nil?
-	    self.destination_address = origin.address
+    if self.waybill_no.nil? 
+      self.waybill_no = 'IBT/'+ self.origin.name[0..1]+'/'+ self.destination.name[0..1]+'/'+Time.zone.now.strftime("%Y%m%d%I%M%S%3N")
+    end
+    if origin_address.nil?
+      self.origin_address = origin.address
+    end
+    if destination_address.nil?
+      self.destination_address = origin.address
 	  end
 	end
 end

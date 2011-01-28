@@ -5,16 +5,16 @@ class Good < ActiveRecord::Base
   belongs_to :ibtr
   belongs_to :book, :class_name => 'Book', :foreign_key => 'book_no'
   belongs_to :title
-  
-  attr_accessible :book_no, :consignment_id
+  attr_accessible :book_no, :consignment_id, :state
   
   validates :book_no, :presence => true, :uniqueness => {:scope => :consignment_id}, :length => { :maximum => 30 }
   
+  
   validate :is_a_valid_consignment
-
-	state_machine do
-  	state :Pickedup
-  	state :Delivered
+  
+  state_machine do
+  	
+    state :Delivered
 
 		event :deliver do
 			transitions :to => :Delivered, :from => :Pickedup
@@ -24,10 +24,12 @@ class Good < ActiveRecord::Base
 	before_validation :set_good_details
 	after_create { fulfill_ibtr }
 	after_destroy { undo_fulfill_ibtr }
+  
 	
-	def processEvent(event)
+	def processEvent(action)
 		case 
-			when event.eql?("deliver") then deliver
+			when action.eql?("deliver") then deliver!
+      
 		end
 	end
 	
@@ -44,6 +46,7 @@ class Good < ActiveRecord::Base
   
   private
   def set_good_details
+   
     self.consignment = Consignment.find(consignment_id) 
     self.book = Book.find_by_book_no(book_no)
     unless book.nil?

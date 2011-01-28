@@ -49,7 +49,7 @@ class ConsignmentsController < ApplicationController
 
   def update
     @consignment = Consignment.find(params[:id])
-
+    logger.info "Renu testing contr"
     respond_to do |format|
       if @consignment.update_attributes(params[:consignment])
         format.html { redirect_to(@consignment, :notice => 'Consignment was successfully updated.') }
