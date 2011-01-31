@@ -189,6 +189,17 @@ ConsignmentApp.removeGood = function(link) {
 };
 
 ConsignmentApp.receiveGood = function(link) {
-	$(link).prev("input[type='hidden']").val('deliver');
-	$(link).parents("tr").hide();
+	//$(link).prev("input[type='hidden']").val('deliver');
+	//$(link).hide();
+  curr_txt = $(link).text();
+  if (curr_txt == 'receive') {
+    $(link).prev("input[type='hidden']").val('Delivered');
+    $(link).text('unreceive');
+  }
+  else
+  {
+    $(link).prev("input[type='hidden']").val('Pickedup');
+    $(link).text('receive');
+  }
+  
 };
