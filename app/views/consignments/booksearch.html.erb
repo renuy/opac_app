@@ -13,6 +13,18 @@
         <% end %>
       </section>
     </div>
+    <div class="small">
+    
+    <p><b>Purpose:</b> To manually resolve Books that failed sorting in the warehouse, i.e. a destination slip was not printed for them. <br/>
+    <b>Reason:</b> Mismatch in title id of IBT request and book that has been sent by the fulfilling branch<br/>
+    <b>Usage:</b><br/>
+        1. Enter the Book number (numerics only) printed on the book and click on "Submit"<br/>
+        2. All assigned requests of the fulfilling branch (the branch that sent the book) are displayed<br/>
+        3. Click on the appropriate record's "fulfill" link to change the title id and fulfill the request using this book.<br/>
+        4. If no results are displayed or none of the results match the book's title please contact tech support.<br/>
+        5. If a request is successfully fulfilled then the book needs to be sent to the warehouse for (re)sorting.</p>
+    </div>
+    <h5>Update title and fulfill</h5>
     <div class="span-14">  
       <%= form_tag consignments_booksearch_path, :class=>'bookSearch', :method => 'get' do -%>
         <%= field_set_tag 'Search' do %>
@@ -33,16 +45,20 @@
         <div class="span-14">
           <h6>Book Details</h6>
           <br/>
-          <div class="span 14">
-            <div class="span-3">Book No: <%=@good.book_no%></div>
-            <div class="span-3">Title id :<%=@good.book.title_id%></div>
-            <div class="span-5">Title: <%=@good.book.title.title%></div>
-            <div class="span-3">Belongs to: <%=@good.book.catalogued_branch_id%></div>
-            <div class="span-3">Current location: <%=@good.book.branch_id%></div>
+          <div class="span-14">
+            <div class="span-3"><%= image_tag image_url(@good.book.title_id), :size => "50x80", :alt => "#{@good.book.title.title} ", :title => "#{@good.book.title.title}", :onerror => "this.src='#{default_image_url}';"  %><br/></div>
+            <div class="span-10">
+            <div class="span-4">Book No: <%=@good.book_no%></div>
+            <div class="span-4">Title id :<%=@good.book.title_id%></div>
+            <div class="span-4">Belongs to: <%=@good.book.catalogued_branch_id%></div>
+            <div class="span-4">Current location: <%=@good.book.branch_id%></div>
+            <div class="span-10">Title: <%=@good.book.title.title%></div>
+            
+            </div>
           </div>
           <hr/>
           <br/>
-          <h6>Ibtr assigned to <%=@good.consignment.origin_id%></h6>
+          <h6>IBTR assigned to branch <%=@good.consignment.origin_id%></h6>
           
           <br/>
           <table>
@@ -50,7 +66,8 @@
             <tr>
               <th class="span-2">Requesting Branch<br/></th>
               <th class="span-2">Title Id<br/></th>
-              <th class="span-2">Status<br/></th>
+              <th class="span-2">Book cover<br/></th>
+              <th class="span-2">Card No<br/></th>
               <th class="span-4">Title <br/></th>
               <th class="span-2">Fulfill<br/></th>
             </tr>
