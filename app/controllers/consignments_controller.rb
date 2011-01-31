@@ -49,9 +49,11 @@ class ConsignmentsController < ApplicationController
 
   def update
     @consignment = Consignment.find(params[:id])
-
     respond_to do |format|
       if @consignment.update_attributes(params[:consignment])
+        if Good.where(:consignment_id => @consignment.id , :state => 'Delivered').size > 0
+          @consignment.delivered
+        end 
         format.html { redirect_to(@consignment, :notice => 'Consignment was successfully updated.') }
         format.xml  { head :ok }
       else
