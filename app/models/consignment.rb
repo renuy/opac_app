@@ -4,7 +4,7 @@ class Consignment < ActiveRecord::Base
 	has_many :goods, :dependent => :destroy
 	accepts_nested_attributes_for :goods, :allow_destroy => :true, :reject_if => lambda { |a| a[:book_no].blank? }
 
-  attr_accessible :consignor, :consignee, :origin_id, :destination_id, :goods_attributes, :goods_delivered_count
+  attr_accessible :consignor, :consignee, :origin_id, :destination_id, :goods_attributes
   
   belongs_to :origin, :class_name => 'Branch', :foreign_key => 'origin_id'
   belongs_to :destination, :class_name => 'Branch', :foreign_key => 'destination_id'
@@ -25,12 +25,13 @@ class Consignment < ActiveRecord::Base
 			transitions :to => :Pickedup, :from => :Open, :on_transition => lambda { |consignment| consignment.pickup_date = Time.zone.now }
 		end
 		event :deliver do
-			transitions :to => :Delivered, :from => [:Open, :Pickedup], :on_transition => lambda { |consignment| consignment.delivery_date = Time.zone.now }
+			transitions :to => :Delivered, :from => :Pickedup, :on_transition => lambda { |consignment| consignment.delivery_date = Time.zone.now }
 		end
 		event :cancel do
 			transitions :to => :Cancelled, :from => [:Open, :Pickedup], :on_transition => lambda { |consignment| consignment.pickup_date = nil }
 		end
 	end
+	
 	
 	def origin_destination_not_same
 	  if origin_id == destination_id
@@ -39,7 +40,7 @@ class Consignment < ActiveRecord::Base
 	end
 	
 	before_save :set_defaults
-  
+
 	def processEvent!(event)
 		case 
 			when event.eql?("pickup") then pickup!
@@ -54,14 +55,12 @@ class Consignment < ActiveRecord::Base
 	private
 	
 	def set_defaults
-    if self.waybill_no.nil? 
-      self.waybill_no = 'IBT/'+ self.origin.name[0..1]+'/'+ self.destination.name[0..1]+'/'+Time.zone.now.strftime("%Y%m%d%I%M%S%3N")
-    end
-    if origin_address.nil?
-      self.origin_address = origin.address
-    end
-    if destination_address.nil?
-      self.destination_address = origin.address
+	  self.waybill_no = 'IBT/'+ self.origin.name[0..1]+'/'+ self.destination.name[0..1]+'/'+Time.zone.now.strftime("%Y%m%d%I%M%S%3N")
+	  if origin_address.nil?
+	    self.origin_address = origin.address
 	  end
-  end
+	  if destination_address.nil?
+	    self.destination_address = origin.address
+	  end
+	end
 end
