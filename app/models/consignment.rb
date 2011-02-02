@@ -25,24 +25,12 @@ class Consignment < ActiveRecord::Base
 			transitions :to => :Pickedup, :from => :Open, :on_transition => lambda { |consignment| consignment.pickup_date = Time.zone.now }
 		end
 		event :deliver do
-			transitions :to => :Delivered, :from => [:Open, :Pickedup], :on_transition => lambda { |consignment|
-          consignment.delivery_date = Time.zone.now
-          goods_delivered_count = Good.where(:consignment_id => consignment.id, :state => 'Delivered').size
-      }
+			transitions :to => :Delivered, :from => [:Open, :Pickedup], :on_transition => lambda { |consignment| consignment.delivery_date = Time.zone.now }
 		end
 		event :cancel do
 			transitions :to => :Cancelled, :from => [:Open, :Pickedup], :on_transition => lambda { |consignment| consignment.pickup_date = nil }
 		end
 	end
-	
-  def delivered
-    
-    case
-      when state.eql?("Open") then deliver!
-      when state.eql?("Pickedup") then deliver!
-      when state.eql?("Delivered") then update_attributes(:goods_delivered_count => Good.where(:consignment_id => id, :state => 'Delivered').size)
-    end
-  end
 	
 	def origin_destination_not_same
 	  if origin_id == destination_id
