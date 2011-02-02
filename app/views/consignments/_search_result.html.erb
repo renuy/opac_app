@@ -1,8 +1,9 @@
 <tr class="span-15">
 	<td class="span-2"><%= search_result.branch_id %><br/></td>
-	<td class="span-2"><%= search_result.title_id %><br/></td>
+	<td class="span-2"><%= image_tag image_url(search_result.title_id), :size => "50x80", :alt => "#{search_result.title.title} ", :title => "#{search_result.title.title}", :onerror => "this.src='#{default_image_url}';"  %><br/></td>
+  <td class="span-2"><%= search_result.title_id %><br/></td>
 
-	<td class="span-2"><%= search_result.state %><br/></td>
+	<td class="span-2"><%= search_result.card_id %><br/></td>
 	<td class="span-4"><%= search_result.title.title %><br/></td>
   <td class="span-2"><p><%= link_to "fulfill", ibtrs_update_path(:ibtr_id => search_result.id, :book_no => params[:book_no], :id => @good.id ), :confirm => "Are you sure?" %>	</p><br/></td>
 </tr>

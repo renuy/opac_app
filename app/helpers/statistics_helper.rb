@@ -25,7 +25,7 @@ module StatisticsHelper
     end
   
     {
-      'label' => ['New', 'Assigned', 'Fulfilled', 'Received'],
+      'label' => ['New', 'Assigned', 'Fulfilled', 'Dispatched','Received','Declined'],
       'values' => statArray
     }
   end
@@ -41,7 +41,7 @@ module StatisticsHelper
     end
   
     {
-      'label' => ['Assigned', 'Fulfilled', 'Received','Declined'],
+      'label' => ['Assigned', 'Fulfilled', 'Declined', 'Dispatched'],
       'values' => statArray
     }
   end

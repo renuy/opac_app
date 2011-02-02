@@ -9,7 +9,7 @@ class IbtrVersion < ActiveRecord::Base
       "sum(decode(state,'Fulfilled',1,0)) as fulfilled_cnt,  "+
       "sum(decode(state,'Received',1,0)) as received_cnt, "+
       "sum(decode(state,'Declined',1,0)) as declined_cnt, "+
-      "sum(decode(state,'Duplicate',1,0)) as duplicate_cnt, "+
+      "sum(decode(state,'Dispatched',1,0)) as dispatched_cnt, "+
       "sum(decode(state,'Cancelled',1,0)) as cancelled_cnt " , 
       :group => " branch_id ",
       :order => "branch_id")
@@ -20,7 +20,7 @@ class IbtrVersion < ActiveRecord::Base
       "sum(decode(state,'Fulfilled',1,0)) as fulfilled_cnt,  "+
       "sum(decode(state,'Received',1,0)) as received_cnt, "+
       "sum(decode(state,'Declined',1,0)) as declined_cnt, "+
-      "sum(decode(state,'Duplicate',1,0)) as duplicate_cnt, "+
+      "sum(decode(state,'Dispatched',1,0)) as dispatched_cnt, "+
       "sum(decode(state,'Cancelled',1,0)) as cancelled_cnt " , 
       :conditions => ["created_at >= ? and created_at <= ? ", start_date, end_date], 
       :group => "  branch_id ",
@@ -37,7 +37,7 @@ class IbtrVersion < ActiveRecord::Base
       "sum(decode(state,'Assigned',1,0)) as assigned_cnt,  "+
       "sum(decode(state,'Fulfilled',1,0)) as fulfilled_cnt,  "+
       "sum(decode(state,'Declined',1,0)) as declined_cnt, "+
-      "sum(decode(state,'Cancelled',1,0)) as cancelled_cnt " , 
+      "sum(decode(state,'Dispatched',1,0)) as dispatched_cnt " , 
       :group => " respondent_id ",
       :order => "to_number(respondent_id)")
     else 
@@ -45,7 +45,7 @@ class IbtrVersion < ActiveRecord::Base
       "sum(decode(state,'Assigned',1,0)) as assigned_cnt,  "+
       "sum(decode(state,'Fulfilled',1,0)) as fulfilled_cnt,  "+
       "sum(decode(state,'Declined',1,0)) as declined_cnt, "+
-      "sum(decode(state,'Cancelled',1,0)) as cancelled_cnt " , 
+      "sum(decode(state,'Dispatched',1,0)) as dispatched_cnt " , 
       :conditions => ["created_at >= ? and created_at <= ? ", start_date, end_date], 
       :group => " respondent_id ",
       :order => "to_number(respondent_id)")
