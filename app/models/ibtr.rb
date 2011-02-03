@@ -121,7 +121,9 @@ class Ibtr < ActiveRecord::Base
       "sum(decode(state,'Received',1,0)) as received_cnt, "+
       "sum(decode(state,'Declined',1,0)) as declined_cnt, "+
       "sum(decode(state,'Dispatched',1,0)) as dispatched_cnt, "+
-      "sum(decode(state,'Cancelled',1,0)) as cancelled_cnt " , 
+      "sum(decode(state,'Cancelled',1,0)) as cancelled_cnt, " +
+      "count(state) as total_cnt, " +
+      "sum(decode(state,'Duplicate',1,0)) as duplicate_cnt ",
       :group => " branch_id ",
       :order => "branch_id")
     else 
@@ -132,7 +134,9 @@ class Ibtr < ActiveRecord::Base
       "sum(decode(state,'Received',1,0)) as received_cnt, "+
       "sum(decode(state,'Declined',1,0)) as declined_cnt, "+
       "sum(decode(state,'Dispatched',1,0)) as dispatched_cnt, "+
-      "sum(decode(state,'Cancelled',1,0)) as cancelled_cnt " , 
+      "sum(decode(state,'Cancelled',1,0)) as cancelled_cnt , " +
+      "count(state) as total_cnt, " +
+      "sum(decode(state,'Duplicate',1,0)) as duplicate_cnt ",
       :conditions => ["created_at >= ? and created_at <= ? ", start_date, end_date], 
       :group => "  branch_id ",
       :order => "branch_id")
@@ -145,19 +149,26 @@ class Ibtr < ActiveRecord::Base
     ibtr_stats = nil  
     if created == 'All'
       ibtr_stats = Ibtr.find(:all, :select => "  respondent_id , "+
+      "count(respondent_id) as total_cnt, "+
       "sum(decode(state,'Assigned',1,0)) as assigned_cnt,  "+
       "sum(decode(state,'Fulfilled',1,0)) as fulfilled_cnt,  "+
       "sum(decode(state,'Declined',1,0)) as declined_cnt, "+
-      "sum(decode(state,'Dispatched',1,0)) as dispatched_cnt " , 
+      "sum(decode(state,'Dispatched',1,0)) as dispatched_cnt, " +
+      "sum(decode(state,'Received',1,0)) as received_cnt, "+  
+      "sum(decode(state,'Duplicate',1,0)) as duplicate_cnt ",
+      :conditions => ["respondent_id is not null"],
       :group => " respondent_id ",
       :order => "to_number(respondent_id)")
     else 
       ibtr_stats = Ibtr.find(:all, :select => " respondent_id  , "+
+      "count(respondent_id) as total_cnt, "+
       "sum(decode(state,'Assigned',1,0)) as assigned_cnt,  "+
       "sum(decode(state,'Fulfilled',1,0)) as fulfilled_cnt,  "+
       "sum(decode(state,'Declined',1,0)) as declined_cnt, "+
-      "sum(decode(state,'Dispatched',1,0)) as dispatched_cnt " , 
-      :conditions => ["created_at >= ? and created_at <= ? ", start_date, end_date], 
+      "sum(decode(state,'Dispatched',1,0)) as dispatched_cnt, " +
+      "sum(decode(state,'Received',1,0)) as received_cnt, "+  
+      "sum(decode(state,'Duplicate',1,0)) as duplicate_cnt ",
+      :conditions => ["respondent_id is not null and created_at >= ? and created_at <= ? ", start_date, end_date], 
       :group => " respondent_id ",
       :order => "to_number(respondent_id)")
     end
@@ -193,7 +204,7 @@ class Ibtr < ActiveRecord::Base
   def self.to_jit(ibtrStat)
     {
       'label' => ibtrStat.branch_id,
-      'values' => [ibtrStat.new_cnt, ibtrStat.assigned_cnt, ibtrStat.fulfilled_cnt, ibtrStat.dispatched_cnt, ibtrStat.received_cnt, ibtrStat.declined_cnt ]
+      'values' => [ibtrStat.new_cnt, ibtrStat.assigned_cnt, ibtrStat.fulfilled_cnt, ibtrStat.dispatched_cnt, ibtrStat.received_cnt, ibtrStat.declined_cnt, ibtrStat.cancelled_cnt , ibtrStat.duplicate_cnt ]
     }
   end    
   
