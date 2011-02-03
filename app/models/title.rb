@@ -10,13 +10,25 @@ class Title < ActiveRecord::Base
   searchable do
     text :title, :stored => true, :more_like_this => true
     text :author, :stored => true, :more_like_this => true do
-      author.name
+      unless author.nil? 
+        author.name
+      else
+        ''
+      end
     end
     text :category, :stored => true, :more_like_this => true do
-      category.name
+      unless category.nil? 
+        category.name
+      else
+        ''
+      end
     end
     text :publisher, :stored => true, :more_like_this => true do
-      publisher.name
+      unless publisher.nil? 
+        publisher.name
+      else
+        ''
+      end
     end
     integer :id, :stored => true
     integer :category_id, :references => Category, :stored => true

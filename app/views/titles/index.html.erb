@@ -27,7 +27,7 @@
 					<%= link_to_function(row.instance.name) do |page|
 						page[:facetCategory].value = row.value;
 						page[:searchForm].submit();
-					end -%> 
+					end unless row.instance.nil? -%> 
 					(<%= row.count %>)
 					<%= button_to_function('X') do |page| 
 						page[:facetCategory].value = nil;

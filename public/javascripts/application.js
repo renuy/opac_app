@@ -70,16 +70,30 @@ IBTapp.showPanel = function (paneId, panelId) {
 
 			IBTapp.Charts["stock"+paneId].loadJSON(IBTapp.ChartData["infovis"+paneId]);
 		}
+    
+    
 	});
 	$('#flash_'+paneId).html('');
 };
+
+IBTapp.showAltTitle = function (paneId, panelId, titleId, ibtrId) {
+  IBTapp.showPanel(paneId, panelId);
+  debugger;
+  $.get('/titles/qryAltTitle?' + 'queryTitleId=' + titleId+ '&ibtrId=' + ibtrId,
+  function(data) {
+    $('#'+panelId+' #div_srch').html(data);
+  });
+}
+
 var IBTStatApp = {};
 IBTStatApp.Charts = {};
 IBTStatApp.ChartData = {};
 
-
 IBTStatApp.showChart = function(panelId, bartype, show_aggregate){
+
   $('#'+panelId).show(600, function() {
+			debugger;
+
   if (!IBTStatApp.Charts["ibtr"+panelId]) {
     IBTStatApp.Charts["ibtr"+panelId] = new $jit.BarChart({
       injectInto: panelId+'_chart_stat',  

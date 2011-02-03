@@ -53,6 +53,19 @@ class IbtrsController < ApplicationController
       end
     end  
   end
+
+  def setAltTitle
+    @ibtr = Ibtr.find(params[:id])
+    unless @ibtr.title_id.to_s.eql?(params[:title_id])
+      if @ibtr.update_attributes(:title_id => params[:title_id])
+        flash[:notice] = "Successfully changed titleid to " + params[:title_id] +". Please refresh before assigning."
+      else
+        flash[:error] = "An error occured while trying to update record - "+ @ibtr.errors.full_messages[0]
+      end
+    else
+      flash[:error] = "Same title ids " + params[:title_id]
+    end
+  end  
   
   def stats
     start_d_s = params[:start]

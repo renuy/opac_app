@@ -10,7 +10,7 @@
 		If there are no stocks, then you may decide to either
 		<%= link_to_function "cancel", "IBTapp.showPanel(#{ibtr.id}, 'div_can_#{ibtr.id}')" %> the request, proceed for 
 		<%= link_to_function "procurement.", "IBTapp.showPanel(#{ibtr.id}, 'div_pro_#{ibtr.id}')" %> or
-		choose an <%= link_to_function "alternate title.", "IBTapp.showPanel(#{ibtr.id}, 'div_alt_#{ibtr.id}')" %>
+		choose an <%= link_to_function "alternate title.", "IBTapp.showAltTitle(#{ibtr.id}, 'div_alt_#{ibtr.id}',#{ibtr.title_id},'#{ibtr.id}')" %>
 </div>
 <div class="span-13">
 <%= form_for ibtr, :remote => :true, :html => {:autocomplete => :off}  do |f| -%>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dataConfig>
-	<dataSource type="JdbcDataSource" driver="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost/jblib" user="root" password="Iflex7585"/>
+	<!--dataSource type="JdbcDataSource" driver="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost/jblib" user="root" password="Iflex7585"/-->
+  <dataSource type="JdbcDataSource" driver="oracle.jdbc.driver.OracleDriver" url="jdbc:oracle:thin:@localhost:1521:XE" user="jbprod" password="jbprod"/>
 	<document name="book">
 		<entity name="TITLES" pk="TITLEID" query="select * from TITLES left join AUTHORPROFILE on TITLES.AUTHORID=AUTHORPROFILE.AUTHORID left join CATEGORY on TITLES.CATEGORY=(CAST(CATEGORY.CATEGORYCODE as char)) left join PUBLISHERPROFILE on TITLES.PUBLISHERID=PUBLISHERPROFILE.PUBLISHERCODE WHERE IFNULL(TITLES.TITLETYPE,'B')='B'">
 			<field column="TITLEID" name="TITLEID"/>

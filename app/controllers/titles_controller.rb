@@ -44,6 +44,12 @@ class TitlesController < ApplicationController
   
     @searchResults = newSearch.execute
   end
+  
+  def qryAltTitle
+    @searchResults = index
+    @ibtrId = params[:ibtrId]
+    render 'ibtrs/qryAltTitle' , :layout => 'blank'
+  end
 
 # not using more like this- not sure how this is working as of now
   def show
