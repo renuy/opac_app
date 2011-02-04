@@ -5,13 +5,13 @@ $('.toggle_history').live('click', function() {
 	var history_id = this.id.split("_");
 	history_id.shift();
 	history_id = '#' + history_id.join("_");
-	
+
 	$(history_id).toggle();
-	
+
 	var isShown = ($(history_id).css("display") == "none" ? false : true);
 
 	this.innerHTML = (isShown ? "Hide History" : "Show History");
-	
+
 	if ( isShown ) {
 		$(history_id).data('jsp').reinitialise();
 	}
@@ -21,13 +21,13 @@ $('.toggle_stock').live('click', function() {
 	var stock_id = this.id.split("_");
 	stock_id.shift();
 	stock_id = '#' + stock_id.join("_");
-	
+
 	$(stock_id).toggle();
-	
+
 	var isShown = ($(stock_id).css("display") == "none" ? false : true);
 
 	this.innerHTML = (isShown ? "Hide Stock" : "Show Stock");
-	
+
 	if ( isShown ) {
 		$(stock_id).data('jsp').reinitialise();
 	}
@@ -43,7 +43,7 @@ IBTapp.showPanel = function (paneId, panelId) {
 		var id = '#' + value + paneId;
 		$(id).hide();
 	});
-	
+
 	$('#'+panelId).show(600, function() {
 			debugger;
 		if (panelId.indexOf('ass') > 0) {
@@ -67,29 +67,43 @@ IBTapp.showPanel = function (paneId, panelId) {
 				  }
 				});
 			}
-			
+
 			IBTapp.Charts["stock"+paneId].loadJSON(IBTapp.ChartData["infovis"+paneId]);
 		}
+    
+    
 	});
 	$('#flash_'+paneId).html('');
 };
+
+IBTapp.showAltTitle = function (paneId, panelId, titleId, ibtrId) {
+  IBTapp.showPanel(paneId, panelId);
+  debugger;
+  $.get('/titles/qryAltTitle?' + 'queryTitleId=' + titleId+ '&ibtrId=' + ibtrId,
+  function(data) {
+    $('#'+panelId+' #div_srch').html(data);
+  });
+}
+
 var IBTStatApp = {};
 IBTStatApp.Charts = {};
 IBTStatApp.ChartData = {};
 
+IBTStatApp.showChart = function(panelId, bartype, show_aggregate){
 
-IBTStatApp.showChart = function(panelId){
   $('#'+panelId).show(600, function() {
-  if (!IBTStatApp.Charts["ibtr"]) {
-    IBTStatApp.Charts["ibtr"] = new $jit.BarChart({
-      injectInto: 'chart_stat',  
+			debugger;
+
+  if (!IBTStatApp.Charts["ibtr"+panelId]) {
+    IBTStatApp.Charts["ibtr"+panelId] = new $jit.BarChart({
+      injectInto: panelId+'_chart_stat',  
       animate: true,  
       orientation: 'vertical',  
       barsOffset: 1,  
       Margin: {top:5, left: 5, right: 5,bottom:5},
       labelOffset: 5,
-      type: 'stacked',  
-      showAggregates:true, 
+      type: bartype,  
+      showAggregates:show_aggregate, 
       showLabels:true, 
       Label: { type: 'HTML', size: 10, family: 'Arial', color: 'black' }, 
       Tips: { enable: true,  
@@ -100,14 +114,15 @@ IBTStatApp.showChart = function(panelId){
     });
   }
   
-  IBTStatApp.Charts["ibtr"].loadJSON(IBTStatApp.ChartData["infovis"]);
+  IBTStatApp.Charts["ibtr"+panelId].loadJSON(IBTStatApp.ChartData["infovis"+panelId]);
 	});	
 }
+
 var IBThist ={}
 IBThist.hide = function (paneId, panelId) {
 		var id = '#' + paneId;
 		$(id).hide(600);
-	
+
 }
 IBThist.show = function (paneId, panelId) {
 		var id = '#' +  paneId;
@@ -188,6 +203,17 @@ ConsignmentApp.removeGood = function(link) {
 };
 
 ConsignmentApp.receiveGood = function(link) {
-	$(link).prev("input[type='hidden']").val('deliver');
-	$(link).parents("tr").hide();
+	//$(link).prev("input[type='hidden']").val('deliver');
+	//$(link).hide();
+  curr_txt = $(link).text();
+  if (curr_txt == 'receive') {
+    $(link).prev("input[type='hidden']").val('Delivered');
+    $(link).text('unreceive');
+  }
+  else
+  {
+    $(link).prev("input[type='hidden']").val('Pickedup');
+    $(link).text('receive');
+  }
+  
 };

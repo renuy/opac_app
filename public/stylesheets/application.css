@@ -58,9 +58,9 @@ input.readonly {
 }
 
 .statchart {
-	height:200px;
-	width:900px;
-	border-width:2px;
+	height:250px;
+	width:620px;
+	border-width:1px;
 	border-color:black;
 	border-style:dotted;
 }

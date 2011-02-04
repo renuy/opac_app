@@ -1,10 +1,13 @@
-<tr class="span-15">
-	<td class="span-2"><%= ibtr_stat.branch_id %><br/></td>
-	<td class="span-2"><%= ibtr_stat.new_cnt %><br/></td>
-	<td class="span-2"><%= ibtr_stat.assigned_cnt %><br/></td>
-	<td class="span-2"><%= ibtr_stat.fulfilled_cnt %><br/></td>
-	<td class="span-2"><%= ibtr_stat.declined_cnt %><br/></td>
-	<td class="span-2"><%= ibtr_stat.cancelled_cnt %><br/></td>
-	<td class="span-2"><%= ibtr_stat.duplicate_cnt %><br/></td>
-	
+<tr class="span-24">
+	<td class="span-3"><%= Branch.find(ibtr_stat.branch_id).name unless ibtr_stat.branch_id.nil? %><br/></td>
+	<td class="span-2"><%=  ibtr_stat.new_cnt %><br/></td>
+	<td class="span-2"><%=  ibtr_stat.assigned_cnt %><br/></td>
+	<td class="span-2"><%=  ibtr_stat.fulfilled_cnt%><br/></td>
+	<td class="span-2"><%=  ibtr_stat.dispatched_cnt%><br/></td>
+	<td class="span-2"><%=  ibtr_stat.received_cnt%><br/></td>
+	<td class="span-2"><%=  ibtr_stat.declined_cnt%><br/></td>
+  <td class="span-2"><%=  ibtr_stat.cancelled_cnt%><br/></td>
+  <td class="span-2"><%=  ibtr_stat.duplicate_cnt%><br/></td>
+  <td class="span-2"><%=  ibtr_stat.total_cnt - ibtr_stat.duplicate_cnt - ibtr_stat.cancelled_cnt - ibtr_stat.declined_cnt - ibtr_stat.received_cnt -  ibtr_stat.dispatched_cnt - ibtr_stat.fulfilled_cnt - ibtr_stat.assigned_cnt - ibtr_stat.new_cnt%><br/></td>
+  <td class="span-2"><%=  ibtr_stat.total_cnt%><br/></td>
 </tr>

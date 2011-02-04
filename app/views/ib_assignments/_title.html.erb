@@ -24,7 +24,7 @@
     </div>
     <div class="small" id="<%="all_#{title.rack}_#{title.shelf}_#{title.title_id}"%>" style="display:none;">
       <u>Location - Book no.</u><br/>
-      <%= render :partial => "more_shelves", :collection => Book.where(:branch_id => user_session['current_branch'].id, :title_id => title.title_id) %>
+      <%= render :partial => "more_shelves", :collection => Book.find(:all, :conditions=> ['branch_id = ? AND title_id = ? AND state != ?', user_session['current_branch'].id, title.title_id,'D'] ) %>
       <%= link_to_function '<<Hide', "IBThist.showhide('shelf_#{title.rack}_#{title.shelf}_#{title.title_id}','all_#{title.rack}_#{title.shelf}_#{title.title_id}')" %>
     </div>
 

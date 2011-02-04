@@ -23,9 +23,24 @@ module StatisticsHelper
     ibtr_stats.each do |ibtrStat|
       statArray << Ibtr.to_jit(ibtrStat)
     end
+    {
+      'label' => ['New', 'Assigned', 'Fulfilled', 'Dispatched','Received','Declined','Cancelled','Duplicate'],
+      'values' => statArray
+    }
+  end
+
+  def IBTRrespChartData(ibtr_stats)
+    #params = {:Created => 'All'}
+    #ibtr_stats = Ibtr.get_ibtr_stats(params)
+  
+    statArray = []
+  
+    ibtr_stats.each do |ibtrStat|
+      statArray << Ibtr.resp_to_jit(ibtrStat)
+    end
   
     {
-      'label' => ['New', 'Assigned', 'Fulfilled', 'Received'],
+      'label' => ['Assigned', 'Fulfilled', 'Declined', 'Dispatched'],
       'values' => statArray
     }
   end

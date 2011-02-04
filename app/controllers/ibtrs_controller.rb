@@ -19,6 +19,22 @@ class IbtrsController < ApplicationController
     @ibtrs = Ibtr.complexSearch(params)
   end
 
+  def drillrpt
+  
+    start_d_s = params[:start]
+    end_d_s = params[:end]
+    start_s = ""
+    end_s = ""
+    
+    if (!start_d_s.nil?)
+      start_s = start_d_s["start(3i)"] + '-' + start_d_s["start(2i)"] +'-'+ start_d_s["start(1i)"]
+    end
+    if (!end_d_s.nil?)
+      end_s = end_d_s["end(3i)"] + '-' + end_d_s["end(2i)"] +'-'+ end_d_s["end(1i)"]
+    end
+    @ibtrs = Ibtr.query(params , start_s, end_s)
+    render 'index'
+  end
   def show
     @ibtr = Ibtr.find(params[:id])
 
@@ -53,6 +69,19 @@ class IbtrsController < ApplicationController
       end
     end  
   end
+
+  def setAltTitle
+    @ibtr = Ibtr.find(params[:id])
+    unless @ibtr.title_id.to_s.eql?(params[:title_id])
+      if @ibtr.update_attributes(:title_id => params[:title_id])
+        flash[:notice] = "Successfully changed titleid to " + params[:title_id] +". Please refresh before assigning."
+      else
+        flash[:error] = "An error occured while trying to update record - "+ @ibtr.errors.full_messages[0]
+      end
+    else
+      flash[:error] = "Same title ids " + params[:title_id]
+    end
+  end  
   
   def stats
     start_d_s = params[:start]
@@ -66,11 +95,36 @@ class IbtrsController < ApplicationController
     if (!end_d_s.nil?)
       end_s = end_d_s["end(3i)"] + '-' + end_d_s["end(2i)"] +'-'+ end_d_s["end(1i)"]
     end
-
     @ibtr_stats = Ibtr.get_ibtr_stats(params, start_s, end_s)
+    #@ibtr_version_stats = IbtrVersion.get_ibtr_version_stats(params, start_s, end_s)
+    case 
+      when params[:report].eql?('respondent_view') then 
+        render 'resp_stats'
+      when params[:report].eql?('curr_state') then 
+        render 'stats'
+    end
+
     
-    render 'stats'
   end
   
+  def titleupd
+    ibtr = Ibtr.find(params[:ibtr_id])
+    book = Book.find(params[:book_no])
+    good = Good.find(params[:id])
+    
+    
+    #passing ibtr_id from here will as it is be overwritten with whatever goods finds in set_good_details !!! 
+    #hence the following order of updates matter as goods overwrites ibtr_id to null in case it does not find the correct ibtr_id in assigned state.
+    ibtr.fulfill
+    ibtr.update_attributes( :title_id => book.title_id,
+                            :book_no => book.book_no,
+                            :state => ibtr.current_state)
+    good.update_attributes( :ibtr_id => params[:ibtr_id])
+    
+
+    flash[:notice] = "Successfully fullfilled"
+    
+    redirect_to :action=>"booksearch" , :controller => "consignments"
+  end
 
 end

@@ -5,6 +5,6 @@
 <%= content_for :javascript do -%>
 
 //load JSON data.  
-IBTStatApp.ChartData["<%= "infovis#{div_id}" %>"]  = <%= raw IBTRstatChartData(ibtr_stats).to_json %>;
+IBTStatApp.ChartData["<%= "infovis#{div_id}" %>"] = <%= raw IBTRrespChartData(ibtr_stats).to_json %>;
 
 <% end -%>

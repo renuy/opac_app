@@ -7,7 +7,8 @@ Opac::Application.routes.draw do
   match '/auth/:provider/callback' => 'authentications#create'
 
   get "stock/show"
-
+  get "titles/index"
+  get "ibtrs/drillrpt"
   devise_for :users, :path => 'accounts', :controllers => {:registrations => 'registrations'}
 
   match '/auth/failure' => 'Ibtrs#index'
@@ -16,9 +17,10 @@ Opac::Application.routes.draw do
   match 'ibtrs/lookup' => 'ibtrs#lookup'
   match 'ibtrs/sort' => 'ibtrs#sort', :method => :post
   match 'ibtrs/stats' => 'ibtrs#stats'
-
+  match 'ibtrs_update' => 'ibtrs#titleupd', :method => :post
+  match 'consignments/booksearch' => 'consignments#booksearch'
   match 'consignments/:id/transition/:event' => 'consignments#transition'
-
+  match '/titles/qryAltTitle' => 'titles#qryAltTitle'
   resources :titles, :authors, :ibtrs, :branches, :stock, :stockitems, :authentications, :signups, :plans, :coupons, :consignments, :goods
   
   match 'statistics/:title_id' => 'statistics#view'
@@ -29,8 +31,8 @@ Opac::Application.routes.draw do
   match 'ibt_change_criteria' => 'ib_assignments#change'
   match 'ibt_print' => 'ib_assignments#print'
   match 'ibt_assigned' => 'ib_assignments#change'
-
-  
+  match 'ibtrs_alttitle' => 'ibtrs#setAltTitle'
+  match 'ibtrs_drillrpt' =>   'ibtrs#drillrpt'
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

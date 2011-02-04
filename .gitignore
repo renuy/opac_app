@@ -10,3 +10,4 @@ doc/app
 *~
 .DS_Store
 solr/data/development/*
+app/views/devise/sessions/new.html.erb

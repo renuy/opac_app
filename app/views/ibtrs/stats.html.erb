@@ -1,80 +1,83 @@
-<%= javascript_tag :defer => 'defer' do -%>
-	$(document).ready(function () {
-		IBTStatApp.initStatForm('<%= params[:Created] %>', true);
-	});
-<% end -%>
 <div class="span-24">
-	<%= form_tag ibtrs_stats_path, :class=>'ibtrStat', :method => 'get' do -%>
-			<%= field_set_tag 'Search' do %>
-        <div class="span-24">
-				<%= label_tag 'Show:'%>
-				<%= select_tag :Created, options_for_select([['All','All'],['Today','Today'],['On','On'],['Range','Range']], params[:Created]) %>
-        </div>
-        <div class="span-7" id="div_start_date">
-				<%= label_tag 'Start:'%>
-        <%= date_select 'start', 'start', :order =>[:day, :month, :year] %>
-        </div>
-        <br/>
-        <div class="span-7" id="div_end_date">
-        <%= label_tag  'End  :'  %>
-        <%= date_select :end, 'end', :order =>[:day, :month, :year] %>
-        </div>
-				<br/>
-        <div class="span-24">
-				<%= submit_tag "Submit", :name => nil %>
-        </div>
-			<% end -%>
-	<% end -%>
-</div>
-
-
-<div class="span-24">
-<% unless @ibtr_stats.size == 0 %>
   <div class="span-24">
-      <br/>
-      See ibtr position
-      <%= link_to_function "chart", "IBTStatApp.showChart('div_chart')" %>  
-      <br/>
-      <br/>
-  </div>
-  <div class="span-24" id = "div_chart" style="display:none">
-    <div class="span-24" id ="ibtr" >
-    
-      <%= render :partial => '/statistics/ibtr_stat', :locals => { :ibtr_stats => @ibtr_stats } %>
-      <br/>
-      <br/>
+    <%= render :partial => 'report_menu' %>
+    <div class="span-14">
+      <%= render :partial => 'searchForm' %>
     </div>
   </div>
-
   <div class="span-24">
-    
-    <h6>Current IBTR Position</h6>
-    <br/>
-    
-    <table width="100%">
-      <thead>
-      <tr class="span-15">
-      <th class="span-2">Branch</th>
-      <th class="span-2">New</th>
-      <th class="span-2">Assigned</th>
-      <th class="span-2">Fulfilled</th>
-      <th class="span-2">Declined</th>
-      <th class="span-2">Cancelled</th>
-      <th class="span-2">Duplicate</th>
-      </tr>
-      </thead>
-    <%= render :partial => "ibtr_stat", :collection => @ibtr_stats %>
-      
-    </table>
-    
-  </div>
-  <% end %>
-  <% if @ibtr_stats.size == 0 %>
+    <h3>Requesting branches view</h3>
+    <div class="span-24" >
+    <% unless @ibtr_stats.size == 0 %>
+    <div class="span-24">
+      <div class="span-24 small">
+        <p><b>How to read this report:</b> <br/>
+          This report shows the current status of books requested by a branch (that were raised on the date range selected above).<br/>
+          A total of P requests were raised by the requesting branch, of which:<br/>
+          <ul>
+          <li> X requests are "new", action pending on IBT ops team to assign them.</li>
+          <li> Y requests are "assigned", action pending on the respondent branch to fulfill them.</li>
+          <li> Z requests are "fulfilled", action pending on warehouse team to Dispatch them to requesting branches.</li>
+          <li> M requests are "dispatched", action pending on requesting branches to receive the books.</li>
+          <li> N requests are "received", IBTR is over and the book needs to be issued to the member.</li>
+          <li> O requests are "declined", action pending on IBT ops team to re-assign them.</li>
+          </ul>
+        </p>
+
+      </div>
+      <div class="span-24" >  
+        
+        See ibtr position
+        <%= link_to_function "chart", "IBTStatApp.showChart('chart_1','stacked:gradient', true)" %>  
+        <br/>
+        <br/>
+      </div>
+    </div>
+    <div class="span-24" id = "chart_1" style="display:none">
+      <div class="span-24" id ="ibtr" >
+        <%= render :partial => '/statistics/ibtr_stat', :locals => { :ibtr_stats => @ibtr_stats, :div_id => 'chart_1'} %>
+        <br/>
+        <br/>
+      </div>
+    </div>
 
     <div class="span-24">
-      <br/>
-      no data found
       
-    </div>  
-  <% end %>
+      <h6>Current status of IBTR <%= report_msg(params[:Created], params[:start], params[:end]) %>
+      </h6>
+      <br/>
+      
+      <table width="100%">
+        <thead>
+        <tr class="span-24">
+        <th class="span-3">Requesting branch</th>
+        <th class="span-2">New (X)</th>
+        <th class="span-2">Assigned (Y)</th>
+        <th class="span-2">Fulfilled  (Z)</th>
+        <th class="span-2">Dispatched (M) </th>
+        <th class="span-2">Received  (N)</th>
+        <th class="span-2">Declined  (O)</th>
+        <th class="span-2">Cancelled  </th>
+        <th class="span-2">Duplicate  </th>
+        <th class="span-2">Delivered? </th>
+        <th class="span-2">Total (P) </th>
+        </tr>
+        </thead>
+        <%= render :partial => "ibtr_stat", :collection => @ibtr_stats %>
+        
+      </table>
+      
+    </div>
+    <% end %>
+  </div>
+    <% if @ibtr_stats.size == 0 %>
+
+      <div class="span-11">
+        <br/>
+        no data found
+        
+      </div>  
+    <% end %>
+  </div>
+  </div>
 </div>

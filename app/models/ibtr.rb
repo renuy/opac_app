@@ -111,6 +111,70 @@ class Ibtr < ActiveRecord::Base
     end
   end 
   
+  def self.curr_view_qry( created, start_date, end_date)
+    ibtr_stats = nil
+    if created == 'All'
+      ibtr_stats = Ibtr.find(:all, :select => " branch_id , "+
+      "sum(decode(state,'New',1,0)) as new_cnt,  "+
+      "sum(decode(state,'Assigned',1,0)) as assigned_cnt,  "+
+      "sum(decode(state,'Fulfilled',1,0)) as fulfilled_cnt,  "+
+      "sum(decode(state,'Received',1,0)) as received_cnt, "+
+      "sum(decode(state,'Declined',1,0)) as declined_cnt, "+
+      "sum(decode(state,'Dispatched',1,0)) as dispatched_cnt, "+
+      "sum(decode(state,'Cancelled',1,0)) as cancelled_cnt, " +
+      "count(state) as total_cnt, " +
+      "sum(decode(state,'Duplicate',1,0)) as duplicate_cnt ",
+      :group => " branch_id ",
+      :order => "branch_id")
+    else 
+      ibtr_stats = Ibtr.find(:all, :select => " branch_id , "+
+      "sum(decode(state,'New',1,0)) as new_cnt,  "+
+      "sum(decode(state,'Assigned',1,0)) as assigned_cnt,  "+
+      "sum(decode(state,'Fulfilled',1,0)) as fulfilled_cnt,  "+
+      "sum(decode(state,'Received',1,0)) as received_cnt, "+
+      "sum(decode(state,'Declined',1,0)) as declined_cnt, "+
+      "sum(decode(state,'Dispatched',1,0)) as dispatched_cnt, "+
+      "sum(decode(state,'Cancelled',1,0)) as cancelled_cnt , " +
+      "count(state) as total_cnt, " +
+      "sum(decode(state,'Duplicate',1,0)) as duplicate_cnt ",
+      :conditions => ["created_at >= ? and created_at <= ? ", start_date, end_date], 
+      :group => "  branch_id ",
+      :order => "branch_id")
+    end
+    
+    return ibtr_stats
+  end
+
+  def self.respondent_view_qry( created, start_date, end_date)
+    ibtr_stats = nil  
+    if created == 'All'
+      ibtr_stats = Ibtr.find(:all, :select => "  respondent_id , "+
+      "count(respondent_id) as total_cnt, "+
+      "sum(decode(state,'Assigned',1,0)) as assigned_cnt,  "+
+      "sum(decode(state,'Fulfilled',1,0)) as fulfilled_cnt,  "+
+      "sum(decode(state,'Declined',1,0)) as declined_cnt, "+
+      "sum(decode(state,'Dispatched',1,0)) as dispatched_cnt, " +
+      "sum(decode(state,'Received',1,0)) as received_cnt, "+  
+      "sum(decode(state,'Duplicate',1,0)) as duplicate_cnt ",
+      :conditions => ["respondent_id is not null"],
+      :group => " respondent_id ",
+      :order => "to_number(respondent_id)")
+    else 
+      ibtr_stats = Ibtr.find(:all, :select => " respondent_id  , "+
+      "count(respondent_id) as total_cnt, "+
+      "sum(decode(state,'Assigned',1,0)) as assigned_cnt,  "+
+      "sum(decode(state,'Fulfilled',1,0)) as fulfilled_cnt,  "+
+      "sum(decode(state,'Declined',1,0)) as declined_cnt, "+
+      "sum(decode(state,'Dispatched',1,0)) as dispatched_cnt, " +
+      "sum(decode(state,'Received',1,0)) as received_cnt, "+  
+      "sum(decode(state,'Duplicate',1,0)) as duplicate_cnt ",
+      :conditions => ["respondent_id is not null and created_at >= ? and created_at <= ? ", start_date, end_date], 
+      :group => " respondent_id ",
+      :order => "to_number(respondent_id)")
+    end
+    ibtr_stats
+  end
+  
   def self.get_ibtr_stats(params, start_d_s, end_d_s)
     created = params[:Created]
     start_date = Time.zone.today.beginning_of_day
@@ -125,37 +189,74 @@ class Ibtr < ActiveRecord::Base
       start_date = start_d_s.to_time.beginning_of_day
       end_date =  start_d_s.to_time.end_of_day
     end
-    if created == 'All'
-      ibtr_stats = Ibtr.find(:all, :select => " decode(state, 'New', branch_id,'Received',branch_id,respondent_id) as branch_id , "+
-      "sum(decode(state,'New',1,0)) as new_cnt,  "+
-      "sum(decode(state,'Assigned',1,0)) as assigned_cnt,  "+
-      "sum(decode(state,'Fulfilled',1,0)) as fulfilled_cnt,  "+
-      "sum(decode(state,'Received',1,0)) as received_cnt, "+
-      "sum(decode(state,'Declined',1,0)) as declined_cnt, "+
-      "sum(decode(state,'Duplicate',1,0)) as duplicate_cnt, "+
-      "sum(decode(state,'Cancelled',1,0)) as cancelled_cnt " , 
-      :group => "decode(state, 'New', branch_id,'Received',branch_id,respondent_id)",
-      :order => "branch_id")
-    else 
-      ibtr_stats = Ibtr.find(:all, :select => " decode(state, 'New', branch_id,'Received',branch_id,respondent_id) as branch_id , "+
-      "sum(decode(state,'New',1,0)) as new_cnt,  "+
-      "sum(decode(state,'Assigned',1,0)) as assigned_cnt,  "+
-      "sum(decode(state,'Fulfilled',1,0)) as fulfilled_cnt,  "+
-      "sum(decode(state,'Received',1,0)) as received_cnt, "+
-      "sum(decode(state,'Declined',1,0)) as declined_cnt, "+
-      "sum(decode(state,'Duplicate',1,0)) as duplicate_cnt, "+
-      "sum(decode(state,'Cancelled',1,0)) as cancelled_cnt " , 
-      :conditions => ["created_at >= ? and created_at <= ? ", start_date, end_date], 
-      :group => "decode(state, 'New', branch_id,'Received',branch_id,respondent_id)",
-      :order => "branch_id")
+    ibtr_stats = nil
+    case 
+      when params[:report].eql?('respondent_view') then 
+        ibtr_stats = Ibtr.respondent_view_qry( created, start_date, end_date)
+        
+      when params[:report].eql?('curr_state') then 
+        ibtr_stats = Ibtr.curr_view_qry( created, start_date, end_date)
     end
     
+    return ibtr_stats
   end
+  
+  def self.query(params, start_d_s, end_d_s)
+    created = params[:Created]
+    start_date = Time.zone.today.beginning_of_day
+    end_date =  Time.zone.today.end_of_day
+    clause = ''
+    case 
+      when params[:report].eql?('respondent_view') then 
+        clause << ' respondent_id is not null and respondent_id = ? ' 
+      when params[:report].eql?('curr_state') then 
+        clause << ' branch_id = ? '  
+    end
+     
+    case
+      when created.eql?('Today') then
+        start_date = Time.zone.today.beginning_of_day
+        end_date =  Time.zone.today.end_of_day
+      when created.eql?('Range') then
+        start_date = start_d_s.to_time.beginning_of_day
+        end_date =  end_d_s.to_time.beginning_of_day
+      when created.eql?('On') then
+        start_date = start_d_s.to_time.beginning_of_day
+        end_date =  start_d_s.to_time.end_of_day
+    end
+    
+    
+    unless params[:state].eql?('All') then
+      unless created.eql?('All') then
+        paginate :page => params[:page], :conditions => [clause << ' and state = ? '<< ' and created_at >= ? and created_at <= ? ', 
+        params[:branch_id], params[:state], start_date, end_date], :order => 'created_at, id DESC'
+      else
+        paginate :page => params[:page], :conditions => [clause << ' and state = ? ', 
+        params[:branch_id], params[:state] ], :order => 'created_at, id DESC'
+      end
+    else
+      unless created.eql?('All') then
+        paginate :page => params[:page], :conditions => [clause << ' and created_at >= ? and created_at <= ? ', 
+        params[:branch_id], start_date, end_date], :order => 'created_at, id DESC'
+      else
+        paginate :page => params[:page], :conditions => [clause , 
+        params[:branch_id]], :order => 'created_at, id DESC'
+      end
+    end
+    
+  end  
   
   def self.to_jit(ibtrStat)
     {
       'label' => ibtrStat.branch_id,
-      'values' => [ibtrStat.new_cnt, ibtrStat.assigned_cnt, ibtrStat.fulfilled_cnt, ibtrStat.received_cnt ]
+      'values' => [ibtrStat.new_cnt, ibtrStat.assigned_cnt, ibtrStat.fulfilled_cnt, ibtrStat.dispatched_cnt, ibtrStat.received_cnt, ibtrStat.declined_cnt, ibtrStat.cancelled_cnt , ibtrStat.duplicate_cnt ]
+    }
+  end    
+  
+  def self.resp_to_jit(ibtrStat)
+    {
+      'label' => ibtrStat.respondent_id,
+      'values' => [ibtrStat.assigned_cnt, ibtrStat.fulfilled_cnt, ibtrStat.declined_cnt, ibtrStat.dispatched_cnt ]
     }
   end    
 end
