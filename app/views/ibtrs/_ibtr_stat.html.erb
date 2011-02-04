@@ -8,6 +8,6 @@
 	<td class="span-2"><%= link_to ibtr_stat.declined_cnt, ibtrs_drillrpt_path(:report => params[:report], :branch_id => ibtr_stat.branch_id, :state => 'Declined', :Created=>params[:Created], :start=>params[:start], :end => params[:end] ) %><br/></td>
   <td class="span-2"><%= link_to ibtr_stat.cancelled_cnt, ibtrs_drillrpt_path(:report => params[:report], :branch_id => ibtr_stat.branch_id, :state => 'Cancelled', :Created=>params[:Created], :start=>params[:start], :end => params[:end] ) %><br/></td>
   <td class="span-2"><%= link_to ibtr_stat.duplicate_cnt, ibtrs_drillrpt_path(:report => params[:report], :branch_id => ibtr_stat.branch_id, :state => 'Duplicate', :Created=>params[:Created], :start=>params[:start], :end => params[:end] ) %><br/></td>
-  <td class="span-2"><%= link_to ibtr_stat.total_cnt - ibtr_stat.duplicate_cnt - ibtr_stat.cancelled_cnt - ibtr_stat.declined_cnt - ibtr_stat.received_cnt -  ibtr_stat.dispatched_cnt - ibtr_stat.fulfilled_cnt - ibtr_stat.assigned_cnt - ibtr_stat.new_cnt%><br/></td>
+  <td class="span-2"><%= ibtr_stat.total_cnt - ibtr_stat.duplicate_cnt - ibtr_stat.cancelled_cnt - ibtr_stat.declined_cnt - ibtr_stat.received_cnt -  ibtr_stat.dispatched_cnt - ibtr_stat.fulfilled_cnt - ibtr_stat.assigned_cnt - ibtr_stat.new_cnt%><br/></td>
   <td class="span-2"><%= link_to ibtr_stat.total_cnt , ibtrs_drillrpt_path(:report => params[:report], :branch_id => ibtr_stat.branch_id, :state => 'All', :Created=>params[:Created], :start=>params[:start], :end => params[:end] )%><br/></td>
 </tr>
