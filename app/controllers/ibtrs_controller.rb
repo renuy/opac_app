@@ -19,6 +19,22 @@ class IbtrsController < ApplicationController
     @ibtrs = Ibtr.complexSearch(params)
   end
 
+  def drillrpt
+  
+    start_d_s = params[:start]
+    end_d_s = params[:end]
+    start_s = ""
+    end_s = ""
+    
+    if (!start_d_s.nil?)
+      start_s = start_d_s["start(3i)"] + '-' + start_d_s["start(2i)"] +'-'+ start_d_s["start(1i)"]
+    end
+    if (!end_d_s.nil?)
+      end_s = end_d_s["end(3i)"] + '-' + end_d_s["end(2i)"] +'-'+ end_d_s["end(1i)"]
+    end
+    @ibtrs = Ibtr.query(params , start_s, end_s)
+    render 'index'
+  end
   def show
     @ibtr = Ibtr.find(params[:id])
 

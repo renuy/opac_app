@@ -174,7 +174,7 @@ class Ibtr < ActiveRecord::Base
     end
     ibtr_stats
   end
-
+  
   def self.get_ibtr_stats(params, start_d_s, end_d_s)
     created = params[:Created]
     start_date = Time.zone.today.beginning_of_day
@@ -200,6 +200,51 @@ class Ibtr < ActiveRecord::Base
     
     return ibtr_stats
   end
+  
+  def self.query(params, start_d_s, end_d_s)
+    created = params[:Created]
+    start_date = Time.zone.today.beginning_of_day
+    end_date =  Time.zone.today.end_of_day
+    clause = ''
+    case 
+      when params[:report].eql?('respondent_view') then 
+        clause << ' respondent_id is not null and respondent_id = ? ' 
+      when params[:report].eql?('curr_state') then 
+        clause << ' branch_id = ? '  
+    end
+     
+    case
+      when created.eql?('Today') then
+        start_date = Time.zone.today.beginning_of_day
+        end_date =  Time.zone.today.end_of_day
+      when created.eql?('Range') then
+        start_date = start_d_s.to_time.beginning_of_day
+        end_date =  end_d_s.to_time.beginning_of_day
+      when created.eql?('On') then
+        start_date = start_d_s.to_time.beginning_of_day
+        end_date =  start_d_s.to_time.end_of_day
+    end
+    
+    
+    unless params[:state].eql?('All') then
+      unless created.eql?('All') then
+        paginate :page => params[:page], :conditions => [clause << ' and state = ? '<< ' and created_at >= ? and created_at <= ? ', 
+        params[:branch_id], params[:state], start_date, end_date], :order => 'created_at, id DESC'
+      else
+        paginate :page => params[:page], :conditions => [clause << ' and state = ? ', 
+        params[:branch_id], params[:state] ], :order => 'created_at, id DESC'
+      end
+    else
+      unless created.eql?('All') then
+        paginate :page => params[:page], :conditions => [clause << ' and created_at >= ? and created_at <= ? ', 
+        params[:branch_id], start_date, end_date], :order => 'created_at, id DESC'
+      else
+        paginate :page => params[:page], :conditions => [clause , 
+        params[:branch_id]], :order => 'created_at, id DESC'
+      end
+    end
+    
+  end  
   
   def self.to_jit(ibtrStat)
     {

@@ -8,7 +8,7 @@ Opac::Application.routes.draw do
 
   get "stock/show"
   get "titles/index"
-
+  get "ibtrs/drillrpt"
   devise_for :users, :path => 'accounts', :controllers => {:registrations => 'registrations'}
 
   match '/auth/failure' => 'Ibtrs#index'
@@ -32,7 +32,7 @@ Opac::Application.routes.draw do
   match 'ibt_print' => 'ib_assignments#print'
   match 'ibt_assigned' => 'ib_assignments#change'
   match 'ibtrs_alttitle' => 'ibtrs#setAltTitle'
-  
+  match 'ibtrs_drillrpt' =>   'ibtrs#drillrpt'
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
