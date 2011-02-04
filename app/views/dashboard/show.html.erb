@@ -8,7 +8,7 @@
 	<br/>
 	You are currently logged into <%= user_session['current_branch'].name %>. 
 		
-	<% if  @associate_branches.length > 1 -%>
+	<% if !current_user.strata_employee? && @associate_branches.length > 1 -%>
 		<hr/>
 		Click on any of the following branches to change your current branch.
 		<br/>
