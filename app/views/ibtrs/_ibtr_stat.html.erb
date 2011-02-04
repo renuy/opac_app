@@ -8,6 +8,7 @@
 	<td class="span-2"><%= ibtr_stat.declined_cnt %><br/></td>
   <td class="span-2"><%= ibtr_stat.cancelled_cnt %><br/></td>
   <td class="span-2"><%= ibtr_stat.duplicate_cnt %><br/></td>
+  <td class="span-2"><%= ibtr_stat.total_cnt - ibtr_stat.duplicate_cnt - ibtr_stat.cancelled_cnt - ibtr_stat.declined_cnt - ibtr_stat.received_cnt -  ibtr_stat.dispatched_cnt - ibtr_stat.fulfilled_cnt - ibtr_stat.assigned_cnt - ibtr_stat.new_cnt%><br/></td>
   <td class="span-2"><%= ibtr_stat.total_cnt %><br/></td>
 	
 </tr>
