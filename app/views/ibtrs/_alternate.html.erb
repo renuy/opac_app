@@ -1,4 +1,9 @@
-<h4>Coming Soon...</h4>
+<div id="div_srch">
+<h4>Loading...</h4>
 
+<%= link_to "search", :controller=>'titles', :action => 'index'  , :queryTitleId => ibtr.title_id %>
 
+</div>
+<div class="span-11">
 <%= link_to_function "Go Back...", "IBTapp.showPanel(#{ibtr.id}, 'div_req_#{ibtr.id}')" %>
+</div>

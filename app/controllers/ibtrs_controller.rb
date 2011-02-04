@@ -53,6 +53,19 @@ class IbtrsController < ApplicationController
       end
     end  
   end
+
+  def setAltTitle
+    @ibtr = Ibtr.find(params[:id])
+    unless @ibtr.title_id.to_s.eql?(params[:title_id])
+      if @ibtr.update_attributes(:title_id => params[:title_id])
+        flash[:notice] = "Successfully changed titleid to " + params[:title_id] +". Please refresh before assigning."
+      else
+        flash[:error] = "An error occured while trying to update record - "+ @ibtr.errors.full_messages[0]
+      end
+    else
+      flash[:error] = "Same title ids " + params[:title_id]
+    end
+  end  
   
   def stats
     start_d_s = params[:start]
@@ -67,7 +80,7 @@ class IbtrsController < ApplicationController
       end_s = end_d_s["end(3i)"] + '-' + end_d_s["end(2i)"] +'-'+ end_d_s["end(1i)"]
     end
     @ibtr_stats = Ibtr.get_ibtr_stats(params, start_s, end_s)
-    @ibtr_version_stats = IbtrVersion.get_ibtr_version_stats(params, start_s, end_s)
+    #@ibtr_version_stats = IbtrVersion.get_ibtr_version_stats(params, start_s, end_s)
     case 
       when params[:report].eql?('respondent_view') then 
         render 'resp_stats'

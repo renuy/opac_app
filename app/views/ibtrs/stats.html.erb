@@ -7,20 +7,26 @@
   </div>
   <div class="span-24">
     <h3>Requesting branches view</h3>
-    <div class="span-11" >
+    <div class="span-24" >
     <% unless @ibtr_stats.size == 0 %>
     <div class="span-24">
-      <div class="span-11 small">
+      <div class="span-24 small">
         <p><b>How to read this report:</b> <br/>
-        1. Currently X number of books requested by the branch in the date range selected above are still in "New Request" state. IBT Ops team needs to assign these requests (action pending on IBT Ops team).<br/>
-        2. Currently Y number of books requested by the branch in the date range selected above are Assigned to another branch (action pending on the assigned branch).<br/>
-        3. Currently Z number of books are in fulfilled state. (action pending on Warehouse team).<br/>
-        4. Currently M number of books are in Dispatched state (requesting branch needs to recieve these books).<br/>
-        5. Currently N number of books are in Received state(IBTR over. branch needs to issue the book to the requesitng member).</p>
-        6. Currently P number of books are in Declined state(action pending on IBT Ops team to re-assign).</p>
+          This report shows the current status of books requested by a branch (that were raised on the date range selected above).<br/>
+          A total of P requests were raised by the requesting branch, of which:<br/>
+          <ul>
+          <li> X requests are "new", action pending on IBT ops team to assign them.</li>
+          <li> Y requests are "assigned", action pending on the respondent branch to fulfill them.</li>
+          <li> Z requests are "fulfilled", action pending on warehouse team to Dispatch them to requesting branches.</li>
+          <li> M requests are "dispatched", action pending on requesting branches to receive the books.</li>
+          <li> N requests are "received", IBTR is over and the book needs to be issued to the member.</li>
+          <li> O requests are "declined", action pending on IBT ops team to re-assign them.</li>
+          </ul>
+        </p>
+
       </div>
       <div class="span-24" >  
-        <br/>
+        
         See ibtr position
         <%= link_to_function "chart", "IBTStatApp.showChart('chart_1','stacked:gradient', true)" %>  
         <br/>
@@ -28,14 +34,14 @@
       </div>
     </div>
     <div class="span-24" id = "chart_1" style="display:none">
-      <div class="span-11" id ="ibtr" >
+      <div class="span-24" id ="ibtr" >
         <%= render :partial => '/statistics/ibtr_stat', :locals => { :ibtr_stats => @ibtr_stats, :div_id => 'chart_1'} %>
         <br/>
         <br/>
       </div>
     </div>
 
-    <div class="span-12">
+    <div class="span-24">
       
       <h6>Current status of IBTR <%= report_msg(params[:Created], params[:start], params[:end]) %>
       </h6>
@@ -43,79 +49,20 @@
       
       <table width="100%">
         <thead>
-        <tr class="span-11">
-        <th class="span-2">Requesting branch</th>
-        <th class="span-1">New (X)</th>
+        <tr class="span-24">
+        <th class="span-3">Requesting branch</th>
+        <th class="span-2">New (X)</th>
         <th class="span-2">Assigned (Y)</th>
-        <th class="span-2">Fulfilled (Z)</th>
-        <th class="span-1">Dsptched (M)</th>
-        <th class="span-1">Recvd (N)</th>
-        <th class="span-1">Decln (P)</th>
+        <th class="span-2">Fulfilled  (Z)</th>
+        <th class="span-2">Dispatched (M) </th>
+        <th class="span-2">Received  (N)</th>
+        <th class="span-2">Declined  (O)</th>
+        <th class="span-2">Cancelled  </th>
+        <th class="span-2">Duplicate  </th>
+        <th class="span-2">Total (P) </th>
         </tr>
         </thead>
-      <%= render :partial => "ibtr_stat", :collection => @ibtr_stats %>
-        
-      </table>
-      
-    </div>
-    <% end %>
-  </div>
-  <div class="span-11" >
-    <% unless @ibtr_version_stats.size == 0 %>
-    <div class="span-24">
-      <div class="span-11 small">
-        <p><b>How to read this report:</b> <br/>
-        1. In all X books were requested by the branch in the date range selected above.<br/>
-        2. Out of the X books, a total of Y requests have been assigned to different branches for fulfillment.<br/>
-        3. Of these X requests, a total of Z requests have been "Fulfilled" by the assigned branch.<br/>
-        4. In all N books have been Received by the branch (IBTR closed).<br/>
-        5. In all P number of your requests have been Declined by other branches.
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        </p>
-      </div>
-      
-      <div class="span-24">
-        <br/>
-        See ibtr position
-        <%= link_to_function "chart", "IBTStatApp.showChart('chart_2','grouped', false)" %>  
-        <br/>
-        <br/>
-      </div>
-    </div>
-    <div class="span-11" id = "chart_2" style="display:none">
-      <div class="span-11" id ="ibtr" >
-      
-        <%= render :partial => '/statistics/ibtr_stat', :locals => { :ibtr_stats => @ibtr_version_stats, :div_id => 'chart_2'} %>
-        <br/>
-        <br/>
-      </div>
-    </div>
-
-    <div class="span-11">
-      
-      <h6>IBTR aggregate status <%= report_msg(params[:Created], params[:start], params[:end]) %>
-      </h6>
-      <br/>
-      
-      <table width="100%">
-        <thead>
-        <tr class="span-11">
-        <th class="span-2">Requesting branch</th>
-        <th class="span-1">New (X)</th>
-        <th class="span-2">Assigned (Y) </th>
-        <th class="span-2">Fulfilled (Z)</th>
-        <th class="span-1">Dispatched (M) </th>
-        <th class="span-1">Recieved (N)</th>
-        <th class="span-1">Declined (P)</th>
-        </tr>
-        </thead>
-      <%= render :partial => "ibtr_stat", :collection => @ibtr_version_stats %>
+        <%= render :partial => "ibtr_stat", :collection => @ibtr_stats %>
         
       </table>
       

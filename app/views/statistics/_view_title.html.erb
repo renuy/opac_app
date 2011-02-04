@@ -1,0 +1,10 @@
+<div id = "<%="#{div_id}_chart_stat"%>" class="stockchart">
+	<br/>
+</div>
+
+<%= content_for :javascript do -%>
+
+//load JSON data.  
+IBTStatApp.ChartData["<%= "infovis#{div_id}" %>"]  = <%= raw jitBarChart(title_id).to_json %>;
+
+<% end -%>
