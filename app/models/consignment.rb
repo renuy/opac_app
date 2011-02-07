@@ -62,7 +62,45 @@ class Consignment < ActiveRecord::Base
 	rescue Transitions::InvalidTransition
 	  false
 	end
-		
+	
+  def self.get_stats(params, start_d_s, end_d_s)
+    created = params[:Created]
+    branch_id = params[:branch_id]
+    start_date = Time.zone.today.beginning_of_day
+    end_date =  Time.zone.today.end_of_day
+    case 
+      when created.eql?('Today')
+        start_date = Time.zone.today.beginning_of_day
+        end_date =  Time.zone.today.end_of_day
+      when created.eql?('Range')
+        start_date = start_d_s.to_time.beginning_of_day
+        end_date =  end_d_s.to_time.beginning_of_day
+      when created.eql?('On')
+        start_date = start_d_s.to_time.beginning_of_day
+        end_date =  start_d_s.to_time.end_of_day
+    end
+    cons = nil
+    
+    if (branch_id.eql?('0') ) then
+      if created.eql?('All') then 
+        cons = Consignment.find(:all, :order => 'created_at, id DESC')
+      else
+        cons =  Consignment.find(:all, :conditions => [' created_at >= ? and created_at <= ? ', 
+        start_date, end_date], :order => 'created_at, id DESC')
+      end
+    elsif
+      if created.eql?('All') then 
+        cons = Consignment.find(:all, :conditions => ['origin_id = ? ', branch_id],:order => 'created_at, id DESC')
+        
+      else
+        cons = Consignment.find(:all, :conditions => [' origin_id = ? and created_at >= ? and created_at <= ? ', 
+        branch_id, start_date, end_date], :order => 'created_at, id DESC')
+        
+      end
+    end
+    return cons
+  end
+
 	private
 	
 	def set_defaults

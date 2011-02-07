@@ -97,4 +97,20 @@ class ConsignmentsController < ApplicationController
       @ibtrs = nil
     end
   end
+  
+  def stats
+    start_d_s = params[:start]
+    end_d_s = params[:end]
+    start_s = ""
+    end_s = ""
+    
+    if (!start_d_s.nil?)
+      start_s = start_d_s["start(3i)"] + '-' + start_d_s["start(2i)"] +'-'+ start_d_s["start(1i)"]
+    end
+    if (!end_d_s.nil?)
+      end_s = end_d_s["end(3i)"] + '-' + end_d_s["end(2i)"] +'-'+ end_d_s["end(1i)"]
+    end
+    @consignments = Consignment.get_stats(params, start_s, end_s)
+    render 'stats'
+  end
 end
