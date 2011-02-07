@@ -9,7 +9,7 @@ class Stock < ActiveRecord::Base
 	assigned_cnt = (ibt_stock_positions.nil? or (ibt_stock_positions.size == 0))  ? 0 : ibt_stock_positions[0].assigned_cnt
 	fulfilled_cnt = (ibt_stock_positions.nil? or (ibt_stock_positions.size == 0))  ? 0 : ibt_stock_positions[0].fulfilled_cnt
   instore_cnt = in_store_cnt - ( other_branch_in_store_cnt == 0 ? assigned_cnt : 0 )
-  other_branch_cnt = other_branch_in_store_cnt - assigned_cnt 
+  other_branch_cnt = other_branch_in_store_cnt - ( (instore_cnt==in_store_cnt) ? assigned_cnt : 0 ) 
 	if assigned_cnt > 0 
   end
     {
