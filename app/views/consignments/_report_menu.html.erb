@@ -3,7 +3,7 @@
       <p></p>
       <% if user_signed_in? -%>
       <p><%= link_to "Home", root_path  %>	</p>
-      <p><%= link_to "Consignment Report" ,consignments_stats_path( :Created => 'Today', :branch_id => '0') %>	</p>
+      <p><%= link_to "Consignment Report" ,consignments_stats_path( :Created => 'Today', :branch_id => user_session['current_branch'].id) %>	</p>
       <% end -%>
     </div>
   </div>

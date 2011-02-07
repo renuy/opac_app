@@ -23,7 +23,11 @@
           </div>
           <div class="span-14" id="div_from_branch">
           <%= label_tag  'Originating From  :'  %>
-          <%= select_tag :branch_id, options_for_select({ "All branches" => "0" })+ options_from_collection_for_select(Branch.all, :id, :name, params[:branch_id] ) %>
+          <% if current_user.strata_employee? %>
+            <%= select_tag :branch_id, options_for_select({ "All branches" => "0" })+ options_from_collection_for_select(Branch.all, :id, :name, params[:branch_id] )%>
+          <% else %>
+            <%= select_tag :branch_id, options_for_select({ "All branches" => "0" })+ options_from_collection_for_select(Branch.all, :id, :name, params[:branch_id] ), :disabled => true %>
+          <%end%>
           </div>
           <br/>
           <div class="span-14">

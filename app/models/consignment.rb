@@ -14,7 +14,7 @@ class Consignment < ActiveRecord::Base
   validates :origin_id, :presence => true
   validates :destination_id, :presence => true
   validate :origin_destination_not_same
-
+  
 	state_machine do
   	state :Open # first one is the initial state
   	state :Pickedup
@@ -83,18 +83,18 @@ class Consignment < ActiveRecord::Base
     
     if (branch_id.eql?('0') ) then
       if created.eql?('All') then 
-        cons = Consignment.find(:all, :order => 'created_at, id DESC')
+        cons = Consignment.find(:all, :order => ' id DESC').paginate(:page => params[:page], :per_page => 10)
       else
         cons =  Consignment.find(:all, :conditions => [' created_at >= ? and created_at <= ? ', 
-        start_date, end_date], :order => 'created_at, id DESC')
+        start_date, end_date], :order => ' id DESC').paginate(:page => params[:page], :per_page => 10)
       end
     elsif
       if created.eql?('All') then 
-        cons = Consignment.find(:all, :conditions => ['origin_id = ? ', branch_id],:order => 'created_at, id DESC')
+        cons = Consignment.find(:all, :conditions => ['origin_id = ? ', branch_id],:order => ' id DESC').paginate(:page => params[:page], :per_page => 10)
         
       else
         cons = Consignment.find(:all, :conditions => [' origin_id = ? and created_at >= ? and created_at <= ? ', 
-        branch_id, start_date, end_date], :order => 'created_at, id DESC')
+        branch_id, start_date, end_date], :order => ' id DESC').paginate(:page => params[:page], :per_page => 10)
         
       end
     end
