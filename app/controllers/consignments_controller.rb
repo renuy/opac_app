@@ -59,7 +59,7 @@ class ConsignmentsController < ApplicationController
       end
     end
   end
-
+  
   def destroy
     @consignment = Consignment.find(params[:id])
     @consignment.destroy
