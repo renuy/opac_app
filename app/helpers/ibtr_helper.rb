@@ -34,4 +34,13 @@ module IbtrHelper
     when create.eql?("Range") then mesg = "raised between "+ start_s+" and "+end_s
     end
   end
+  
+  def sum_attr(attr_name, ibtr_stats)
+      attr_sum = 0
+      ibtr_stats.each { |stat|
+        attr_sum += stat[attr_name]   
+      }
+      
+      return attr_sum
+  end
 end

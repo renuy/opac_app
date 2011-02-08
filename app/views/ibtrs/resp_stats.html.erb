@@ -58,7 +58,17 @@
           </tr>
           </thead>
           <%= render :partial => "ibtr_resp_stat", :collection => @ibtr_stats %>
-        
+          <tfoot>
+          <tr class="span-24">
+            <td class="span-3">Total</td>
+            <td class="span-2"><%= sum_attr("assigned_cnt",@ibtr_stats) %></td>
+            <td class="span-2"><%= sum_attr("fulfilled_cnt",@ibtr_stats) %></td>
+            <td class="span-2"><%= sum_attr("dispatched_cnt",@ibtr_stats) %></td>
+            <td class="span-2"><%= sum_attr("received_cnt",@ibtr_stats) %></td>
+            <td class="span-2"><%= sum_attr("declined_cnt",@ibtr_stats) %></td>
+            <td class="span-2"><%= sum_attr("total_cnt",@ibtr_stats) %></td>
+          </tr>
+          </tfoot>
         </table>
       
       </div>
