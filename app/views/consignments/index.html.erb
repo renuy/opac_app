@@ -10,7 +10,7 @@
     <th>Consignee</th>
     <th>State</th>
     <th>No of Goods</th>
-		<th>Missing Goods</th>
+		<th>Delivered Goods</th>
   </tr>
 
 <% @consignments.each do |consignment| %>
@@ -26,12 +26,12 @@
     <td><%= consignment.goods_delivered_count %></td>
 
     <td><%= link_to 'Show', consignment %></td>
-    <td><%= link_to 'Edit', edit_consignment_path(consignment) %></td>
-    <td><%= link_to 'Destroy', consignment, :confirm => 'Are you sure?', :method => :delete %></td>
+    <!--td><%= link_to 'Edit', edit_consignment_path(consignment) %></td>
+    <td><%= link_to 'Destroy', consignment, :confirm => 'Are you sure?', :method => :delete %></td-->
   </tr>
 <% end %>
 </table>
 
 <br />
 
-<%= link_to 'New Consignment', new_consignment_path %>
+<!--%= link_to 'New Consignment', new_consignment_path %-->

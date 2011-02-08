@@ -1,0 +1,60 @@
+<div class="span-24">
+  <div class="span-24">
+    <%= render :partial => 'report_menu' %>
+    <div class="span-14">
+      <%= render :partial => 'searchForm' %>
+    </div>
+  </div>
+  <div class="span-24">
+    <div class="span-24" >
+    <% unless @consignments.size == 0 %>
+    
+    <div class="span-24">
+      
+      <h6>Cosignments <%= report_msg(params[:Created], params[:start], params[:end]) %>
+      </h6>
+      <br/>
+      <%= will_paginate(@consignments) %>
+
+      <table>
+        <tr>
+          <th>No</th>
+          <th>WayBill No</th>
+          <th>Origin</th>
+          <th>Destination</th>
+          <th>Pickup Time</th>
+          <th>No of Goods</th>
+          <th>Delivered Goods</th>
+        </tr>
+
+        <% @consignments.each do |consignment| %>
+        <tr>
+          <td><%= consignment.id %></td>
+          <td><%= consignment.waybill_no %></td>
+          <td><%= consignment.origin.name %></td>
+          <td><%= consignment.destination.name %></td>
+          <td><%= consignment.created_at.strftime('%a, %d %B, %Y at %I:%M%p') %></td>
+          <td><%= consignment.goods_count %></td>
+          <td><%= consignment.goods_delivered_count %></td>
+
+          <td><%= link_to 'Show', consignment %></td>
+          <!--td><%= link_to 'Edit', edit_consignment_path(consignment) %></td>
+          <td><%= link_to 'Destroy', consignment, :confirm => 'Are you sure?', :method => :delete %></td-->
+        </tr>
+        <% end %>
+      </table>
+      
+    </div>
+    <% end %>
+  </div>
+    <% if @consignments.size == 0 %>
+
+      <div class="span-11">
+        <br/>
+        no data found
+        
+      </div>  
+    <% end %>
+  </div>
+  </div>
+</div>

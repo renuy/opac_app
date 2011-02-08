@@ -18,6 +18,7 @@ Opac::Application.routes.draw do
   match 'ibtrs/sort' => 'ibtrs#sort', :method => :post
   match 'ibtrs/stats' => 'ibtrs#stats'
   match 'ibtrs_update' => 'ibtrs#titleupd', :method => :post
+  match 'consignments/stats' => 'consignments#stats'
   match 'consignments/booksearch' => 'consignments#booksearch'
   match 'consignments/:id/transition/:event' => 'consignments#transition'
   match '/titles/qryAltTitle' => 'titles#qryAltTitle'

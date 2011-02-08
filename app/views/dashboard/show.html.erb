@@ -40,7 +40,8 @@
 						IBT
 					</div>
 				</div>
-			</div>
+      </div>
+      
 		<% end -%>
 		<div class='span-24' style='height:10px'>
 		</div>
@@ -77,4 +78,27 @@
 				</div>
 			</div>
 		</div>
+		<div class='span-24' style='height:10px'>
+		</div>
+    <div class='span-24'>
+      <div class='span-1 menu-button menu-color'>
+        <div class='menu-icon'>
+          <% if current_user.strata_employee? %>
+            <%= link_to :controller => 'consignments', :action => 'stats', :Created => 'Today',  :branch_id => '0'  do -%>
+              <%= image_tag 'consignment.png' %>
+            <% end -%>
+          <% else %>
+            <%= link_to :controller => 'consignments', :action => 'stats', :Created => 'Today',  :branch_id => user_session['current_branch'].id do -%>
+              <%= image_tag 'consignment.png' %>
+            <% end -%>
+          <% end %>
+            
+        </div>
+        <div class='span-1 menu-text'>
+          Consignments
+        </div>
+      </div>
+    </div>
+      
+    
 	</div>
