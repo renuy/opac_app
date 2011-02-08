@@ -20,6 +20,7 @@ class Branch < ActiveRecord::Base
           when 'mlm'  then 25
           when 'vij'  then 26
           when 'vjn'  then 31
+          when 'rrn'  then 33
           else 801
           end
     id
