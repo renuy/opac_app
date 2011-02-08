@@ -26,8 +26,10 @@
           <% if current_user.strata_employee? %>
             <%= select_tag :branch_id, options_for_select({ "All branches" => "0" })+ options_from_collection_for_select(Branch.all, :id, :name, params[:branch_id] )%>
           <% else %>
-            <%= select_tag :branch_id, options_for_select({ "All branches" => "0" })+ options_from_collection_for_select(Branch.all, :id, :name, params[:branch_id] ), :disabled => true %>
-          <%end%>
+            <%= select_tag :branch_id1, options_for_select({ "All branches" => "0" })+ options_from_collection_for_select(Branch.all, :id, :name, params[:branch_id] ), :disabled => true %>
+            <%= hidden_field_tag :branch_id , params[:branch_id] %>
+
+            <%end%>
           </div>
           <br/>
           <div class="span-14">
