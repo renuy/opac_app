@@ -41,4 +41,9 @@ class Branch < ActiveRecord::Base
       find(:all, :conditions => ['parent_id = ?', branch_id])
     end
   end
+  
+  def self.strata_branches 
+    find(:all, :conditions => ['is_a IN(? , ?, ?)', 'H','W','T']))
+  end
+
 end
