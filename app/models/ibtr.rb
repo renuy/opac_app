@@ -21,6 +21,7 @@ class Ibtr < ActiveRecord::Base
     state :Received
     state :Cancelled
     state :Delivered
+    state :Timedout
     
     event :assign do
       transitions :to => :Assigned, :from => [:New, :Declined, :Cancelled]
@@ -46,6 +47,9 @@ class Ibtr < ActiveRecord::Base
     event :deliver do
       transitions :to => :Delivered, :from => :Received
     end
+    event :timeout do
+      transitions :to => :Timedout, :from => :Received
+    end
 
   end
   
@@ -58,6 +62,7 @@ class Ibtr < ActiveRecord::Base
     when event.eql?('receive') then receive
     when event.eql?('cancel') then cancel
     when envent.eql?('deliver') then deliver
+    when envent.eql?('timeout') then timeout
     end
   end
 
@@ -130,6 +135,7 @@ class Ibtr < ActiveRecord::Base
       "sum(decode(state,'Cancelled',1,0)) as cancelled_cnt, " +
       "count(state) as total_cnt, " +
       "sum(decode(state,'Delivered',1,0)) as delivered_cnt, " +
+      "sum(decode(state,'Timedout',1,0)) as timedout_cnt, " +
       "sum(decode(state,'Duplicate',1,0)) as duplicate_cnt ",
       :group => " branch_id ",
       :order => "branch_id")
@@ -144,6 +150,7 @@ class Ibtr < ActiveRecord::Base
       "sum(decode(state,'Cancelled',1,0)) as cancelled_cnt , " +
       "count(state) as total_cnt, " +
       "sum(decode(state,'Delivered',1,0)) as delivered_cnt, " +
+      "sum(decode(state,'Timedout',1,0)) as timedout_cnt, " +
       "sum(decode(state,'Duplicate',1,0)) as duplicate_cnt ",
       :conditions => ["created_at >= ? and created_at <= ? ", start_date, end_date], 
       :group => "  branch_id ",
@@ -257,7 +264,7 @@ class Ibtr < ActiveRecord::Base
   def self.to_jit(ibtrStat)
     {
       'label' => ibtrStat.branch_id,
-      'values' => [ibtrStat.new_cnt, ibtrStat.assigned_cnt, ibtrStat.fulfilled_cnt, ibtrStat.dispatched_cnt, ibtrStat.received_cnt, ibtrStat.delivered_cnt, ibtrStat.declined_cnt, ibtrStat.cancelled_cnt , ibtrStat.duplicate_cnt ]
+      'values' => [ibtrStat.new_cnt, ibtrStat.assigned_cnt, ibtrStat.fulfilled_cnt, ibtrStat.dispatched_cnt, ibtrStat.received_cnt, ibtrStat.delivered_cnt, ibtrStat.timedout_cnt, ibtrStat.declined_cnt, ibtrStat.cancelled_cnt , ibtrStat.duplicate_cnt ]
     }
   end    
   
