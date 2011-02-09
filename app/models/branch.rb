@@ -36,14 +36,14 @@ class Branch < ActiveRecord::Base
   def self.associate_branches(subdomain)
     branch_id = branch_id_from_subdomain(subdomain)
     if branch_id == 801
-      find(:all)
+      find(:all, :conditions => ['is_a IN(? , ?, ?)', 'H','W','T'])
     else
       find(:all, :conditions => ['parent_id = ?', branch_id])
     end
   end
   
   def self.strata_branches 
-    find(:all, :conditions => ['is_a IN(? , ?, ?)', 'H','W','T']))
+    find(:all, :conditions => ['is_a IN(? , ?, ?)', 'H','W','T'])
   end
 
 end
