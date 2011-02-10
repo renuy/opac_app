@@ -49,7 +49,7 @@ class Good < ActiveRecord::Base
     unless book.nil?
       self.title_id = book.title_id
       if self.ibtr_id.nil?
-        self.ibtr = Ibtr.find_by_title_id_and_respondent_id_and_state(book.title_id, consignment.origin_id, 'Assigned')
+        self.ibtr = Ibtr.find_by_title_id_and_respondent_id_and_state(book.title_id, consignment.origin_id, ['Assigned','POPlaced'])
         unless ibtr.nil?
           self.ibtr_id = ibtr.id
         end

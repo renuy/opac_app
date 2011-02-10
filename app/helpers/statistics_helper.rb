@@ -24,7 +24,7 @@ module StatisticsHelper
       statArray << Ibtr.to_jit(ibtrStat)
     end
     {
-      'label' => ['New', 'Assigned', 'Fulfilled', 'Dispatched','Received','Delivered','Declined','Cancelled','Duplicate'],
+      'label' => ['New', 'Assigned', 'POPlaced', 'Fulfilled', 'Dispatched','Received','Delivered','Timedout','Declined','Cancelled','Duplicate'],
       'values' => statArray
     }
   end
@@ -40,7 +40,7 @@ module StatisticsHelper
     end
   
     {
-      'label' => ['Assigned', 'Fulfilled', 'Declined', 'Dispatched'],
+      'label' => ['Assigned','POPlaced', 'Fulfilled', 'Declined', 'Dispatched'],
       'values' => statArray
     }
   end

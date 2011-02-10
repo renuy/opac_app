@@ -17,10 +17,12 @@ class Ibtr < ActiveRecord::Base
     state :Assigned
     state :Declined
     state :Fulfilled
+    state :POPlaced
     state :Dispatched
     state :Received
     state :Cancelled
     state :Delivered
+    state :Timedout
     
     event :assign do
       transitions :to => :Assigned, :from => [:New, :Declined, :Cancelled]
@@ -28,8 +30,11 @@ class Ibtr < ActiveRecord::Base
     event :decline do
       transitions :to => :Declined, :from => :Assigned
     end
+    event :poplace do
+      transitions :to => :POPlaced, :from => :Assigned
+    end
     event :fulfill do
-      transitions :to => :Fulfilled, :from => :Assigned
+      transitions :to => :Fulfilled, :from => [:Assigned, :POPlaced]
     end
     event :undo_fulfill do
       transitions :to => :Assigned, :from => :Fulfilled
@@ -46,6 +51,9 @@ class Ibtr < ActiveRecord::Base
     event :deliver do
       transitions :to => :Delivered, :from => :Received
     end
+    event :timeout do
+      transitions :to => :Timedout, :from => :Received
+    end
 
   end
   
@@ -53,11 +61,13 @@ class Ibtr < ActiveRecord::Base
     case 
     when event.eql?('assign') then assign
     when event.eql?('decline') then decline
+    when event.eql?('poplace') then poplace
     when event.eql?('fulfill') then fulfill
     when event.eql?('dispatch') then dispatch
     when event.eql?('receive') then receive
     when event.eql?('cancel') then cancel
     when envent.eql?('deliver') then deliver
+    when envent.eql?('timeout') then timeout
     end
   end
 
@@ -123,6 +133,7 @@ class Ibtr < ActiveRecord::Base
       ibtr_stats = Ibtr.find(:all, :select => " branch_id , "+
       "sum(decode(state,'New',1,0)) as new_cnt,  "+
       "sum(decode(state,'Assigned',1,0)) as assigned_cnt,  "+
+      "sum(decode(state,'POPlaced',1,0)) as poplaced_cnt,  "+
       "sum(decode(state,'Fulfilled',1,0)) as fulfilled_cnt,  "+
       "sum(decode(state,'Received',1,0)) as received_cnt, "+
       "sum(decode(state,'Declined',1,0)) as declined_cnt, "+
@@ -130,6 +141,7 @@ class Ibtr < ActiveRecord::Base
       "sum(decode(state,'Cancelled',1,0)) as cancelled_cnt, " +
       "count(state) as total_cnt, " +
       "sum(decode(state,'Delivered',1,0)) as delivered_cnt, " +
+      "sum(decode(state,'Timedout',1,0)) as timedout_cnt, " +
       "sum(decode(state,'Duplicate',1,0)) as duplicate_cnt ",
       :group => " branch_id ",
       :order => "branch_id")
@@ -137,6 +149,7 @@ class Ibtr < ActiveRecord::Base
       ibtr_stats = Ibtr.find(:all, :select => " branch_id , "+
       "sum(decode(state,'New',1,0)) as new_cnt,  "+
       "sum(decode(state,'Assigned',1,0)) as assigned_cnt,  "+
+      "sum(decode(state,'POPlaced',1,0)) as poplaced_cnt,  "+
       "sum(decode(state,'Fulfilled',1,0)) as fulfilled_cnt,  "+
       "sum(decode(state,'Received',1,0)) as received_cnt, "+
       "sum(decode(state,'Declined',1,0)) as declined_cnt, "+
@@ -144,6 +157,7 @@ class Ibtr < ActiveRecord::Base
       "sum(decode(state,'Cancelled',1,0)) as cancelled_cnt , " +
       "count(state) as total_cnt, " +
       "sum(decode(state,'Delivered',1,0)) as delivered_cnt, " +
+      "sum(decode(state,'Timedout',1,0)) as timedout_cnt, " +
       "sum(decode(state,'Duplicate',1,0)) as duplicate_cnt ",
       :conditions => ["created_at >= ? and created_at <= ? ", start_date, end_date], 
       :group => "  branch_id ",
@@ -159,6 +173,7 @@ class Ibtr < ActiveRecord::Base
       ibtr_stats = Ibtr.find(:all, :select => "  respondent_id , "+
       "count(respondent_id) as total_cnt, "+
       "sum(decode(state,'Assigned',1,0)) as assigned_cnt,  "+
+      "sum(decode(state,'POPlaced',1,0)) as poplaced_cnt,  "+
       "sum(decode(state,'Fulfilled',1,0)) as fulfilled_cnt,  "+
       "sum(decode(state,'Declined',1,0)) as declined_cnt, "+
       "sum(decode(state,'Dispatched',1,0)) as dispatched_cnt, " +
@@ -171,6 +186,7 @@ class Ibtr < ActiveRecord::Base
       ibtr_stats = Ibtr.find(:all, :select => " respondent_id  , "+
       "count(respondent_id) as total_cnt, "+
       "sum(decode(state,'Assigned',1,0)) as assigned_cnt,  "+
+      "sum(decode(state,'POPlaced',1,0)) as poplaced_cnt,  "+
       "sum(decode(state,'Fulfilled',1,0)) as fulfilled_cnt,  "+
       "sum(decode(state,'Declined',1,0)) as declined_cnt, "+
       "sum(decode(state,'Dispatched',1,0)) as dispatched_cnt, " +
@@ -257,14 +273,14 @@ class Ibtr < ActiveRecord::Base
   def self.to_jit(ibtrStat)
     {
       'label' => ibtrStat.branch_id,
-      'values' => [ibtrStat.new_cnt, ibtrStat.assigned_cnt, ibtrStat.fulfilled_cnt, ibtrStat.dispatched_cnt, ibtrStat.received_cnt, ibtrStat.delivered_cnt, ibtrStat.declined_cnt, ibtrStat.cancelled_cnt , ibtrStat.duplicate_cnt ]
+      'values' => [ibtrStat.new_cnt, ibtrStat.assigned_cnt, ibtrStat.poplaced_cnt, ibtrStat.fulfilled_cnt, ibtrStat.dispatched_cnt, ibtrStat.received_cnt, ibtrStat.delivered_cnt, ibtrStat.timedout_cnt, ibtrStat.declined_cnt, ibtrStat.cancelled_cnt , ibtrStat.duplicate_cnt ]
     }
   end    
   
   def self.resp_to_jit(ibtrStat)
     {
       'label' => ibtrStat.respondent_id,
-      'values' => [ibtrStat.assigned_cnt, ibtrStat.fulfilled_cnt, ibtrStat.declined_cnt, ibtrStat.dispatched_cnt ]
+      'values' => [ibtrStat.assigned_cnt, ibtrStat.poplaced_cnt, ibtrStat.fulfilled_cnt, ibtrStat.declined_cnt, ibtrStat.dispatched_cnt ]
     }
   end    
 end
