@@ -54,12 +54,13 @@
         <th class="span-2">Total (P) </th>
         <th class="span-1">New (X)</th>
         <th class="span-2">Assigned (Y)</th>
+        <th class="span-1">PO Placed </th>
         <th class="span-2">Fulfilled  (Z)</th>
         <th class="span-2">Dispatched (M) </th>
         <th class="span-2">Received  (N)</th>
         <th class="span-2">Declined  (O)</th>
-        <th class="span-2">Cancelled  </th>
-        <th class="span-2">Duplicate  </th>
+        <th class="span-1">Cancelled </th>
+        <th class="span-1">Duplicate </th>
         <th class="span-2">Delivered </th>
         <th class="span-2">Timedout </th>
         </tr>
@@ -72,12 +73,13 @@
           <td class="span-2"><%= sum_attr("total_cnt",@ibtr_stats) %></td>
           <td class="span-1"><%= sum_attr("new_cnt",@ibtr_stats) %></td>
           <td class="span-2"><%= sum_attr("assigned_cnt",@ibtr_stats) %></td>
+          <td class="span-1"><%= sum_attr("poplaced_cnt",@ibtr_stats) %></td>
           <td class="span-2"><%= sum_attr("fulfilled_cnt",@ibtr_stats) %></td>
           <td class="span-2"><%= sum_attr("dispatched_cnt",@ibtr_stats) %></td>
           <td class="span-2"><%= sum_attr("received_cnt",@ibtr_stats) %></td>
           <td class="span-2"><%= sum_attr("declined_cnt",@ibtr_stats) %></td>
-          <td class="span-2"><%= sum_attr("cancelled_cnt",@ibtr_stats) %></td>
-          <td class="span-2"><%= sum_attr("duplicate_cnt",@ibtr_stats) %></td>
+          <td class="span-1"><%= sum_attr("cancelled_cnt",@ibtr_stats) %></td>
+          <td class="span-1"><%= sum_attr("duplicate_cnt",@ibtr_stats) %></td>
           <td class="span-2"><%= sum_attr("delivered_cnt",@ibtr_stats) %></td>
           <td class="span-2"><%= sum_attr("timedout_cnt",@ibtr_stats) %></td>
         </tr>
