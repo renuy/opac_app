@@ -34,6 +34,11 @@ Opac::Application.routes.draw do
   match 'ibt_assigned' => 'ib_assignments#change'
   match 'ibtrs_alttitle' => 'ibtrs#setAltTitle'
   match 'ibtrs_drillrpt' =>   'ibtrs#drillrpt'
+
+  get "signups_report/signups_report"
+  match 'report' => 'signups_report#signups_report'
+  match 'report_details' => 'signups_report#report_details'
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

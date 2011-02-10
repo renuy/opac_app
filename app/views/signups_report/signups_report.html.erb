@@ -1,0 +1,31 @@
+<head>
+  <link type="text/css" href="stylesheets/base.css" rel="stylesheet" />
+<link type="text/css" href="stylesheets/BarChart.css" rel="stylesheet" />
+
+<%= javascript_tag :defer => 'defer' do -%>
+	$('#current_branch').html('<%= user_session['current_branch'].name %>');
+
+        $(document).ready(function () {
+          $('#signups_report').submit();
+        });
+<% end -%>
+</head>
+
+<p style="font-size: 18px; font-family: Arial">Signups Report</p>
+
+<%= form_tag('', :id => 'signups_report') do %>
+  <%= select("report", "branch_id", Branch.all.collect {|b| [ b.name, b.id ] }, {:include_blank => 'None'}) %>
+  <%= submit_tag 'Refresh', :id => 'refresh_signups_report' %>
+<% end -%>
+
+<div id="container">
+  <div id="left-container">
+     <ul id="id-list" style="display: none"></ul>          
+  </div>
+
+  <div id="center-container">
+      <div id="infovis"></div>
+  </div>
+
+  <div id="signups_report_details" style="width: 350px; height: 200px; float: right; overflow: auto"></div>
+</div>

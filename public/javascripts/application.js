@@ -59,8 +59,8 @@ IBTapp.showPanel = function (paneId, panelId) {
 				  type: 'stacked',  
 				  showAggregates:true, 
 				  showLabels:true, 
-				  Label: { type: 'HTML', size: 10, family: 'Arial', color: 'black' }, 
-				  Tips: { enable: true,  
+				  Label: {type: 'HTML', size: 10, family: 'Arial', color: 'black'}, 
+				  Tips: {enable: true,  
 				    onShow: function(tip, elem) {  
 				      tip.innerHTML = "<span class='tooltip'><b>  " + elem.name + "</b>: " + elem.value + "  </span>";
 				    }  
@@ -105,8 +105,8 @@ IBTStatApp.showChart = function(panelId, bartype, show_aggregate){
       type: bartype,  
       showAggregates:show_aggregate, 
       showLabels:true, 
-      Label: { type: 'HTML', size: 10, family: 'Arial', color: 'black' }, 
-      Tips: { enable: true,  
+      Label: {type: 'HTML', size: 10, family: 'Arial', color: 'black'}, 
+      Tips: {enable: true,  
         onShow: function(tip, elem) {  
           tip.innerHTML = "<span class='tooltip'><b>  " + elem.name + "</b>: " + elem.value + "  </span>";
         }  
@@ -145,7 +145,7 @@ IBTapp.initSearchForm = function (option, onload) {
 	}
 };
 
-$('.ibtrSearch #searchBy').live('change', function() { IBTapp.initSearchForm($('.ibtrSearch #searchBy').val(), false); });
+$('.ibtrSearch #searchBy').live('change', function() {IBTapp.initSearchForm($('.ibtrSearch #searchBy').val(), false);});
 
 IBTStatApp.initStatForm = function (option, onload) {
 	if (option == 'On' || option == 'Range') {
@@ -164,7 +164,7 @@ IBTStatApp.initStatForm = function (option, onload) {
 	}
 };
 
-$('.ibtrStat #Created').live('change', function() { IBTStatApp.initStatForm($('.ibtrStat #Created').val(), false); });
+$('.ibtrStat #Created').live('change', function() {IBTStatApp.initStatForm($('.ibtrStat #Created').val(), false);});
 
 $('#authors th a, #authors .pagination a, #authors td a').live('click', function() {
 	$.getScript(this.href);
@@ -206,3 +206,133 @@ ConsignmentApp.receiveGood = function(link) {
 	$(link).prev("input[type='hidden']").val('deliver');
 	$(link).parents("tr").hide();
 };
+
+var barChart, tempBarId, signups_report_branch;
+
+function modifyMode(mode){
+    var pageSection = "<table>";
+    $.get('/report_details?' + 'branch_id=' + signups_report_branch +
+        '&modifyMode=' + mode,
+        function(data) {
+            pageSection += "<thead>" +
+                        "<th>" + "Card No" + "</th><th>" + "Plan Id" + "</th><th>"
+                        + "Created At" + "</th><th>" + "Status" + "</th>" + "</thead>";
+            $.each(data, function() {
+                $.each(this, function(k, v) {
+                    pageSection += "<tr>" +
+                        "<td>" + v.membership_no +"</td>" +
+                        "<td>" + v.plan_id +"</td>" +
+                        "<td>" + v.created_at +"</td>" +
+                        "<td>" + v.flag_migrated +"</td>" +
+                        "</tr>";
+                });
+            });
+
+            pageSection += "</table>"
+            $('#signups_report_details').html(pageSection);
+        }, "json");
+}
+
+function modifyTotal(){
+    modifyMode('T');
+}
+
+function modifyProc(){
+    modifyMode('P');
+}
+
+function modifyUProc(){
+    modifyMode('U');
+}
+
+function modifyError(){
+    modifyMode('E');
+}
+
+function generate_signups_report(branch_id, refresh_mode){
+    var jsonObj = null;        
+    signups_report_branch = branch_id;
+    
+    //flush report_details
+    $('#signups_report_details').html("");
+
+    //get data
+    $.get('/report?' + 'branch_id=' + branch_id,
+        function(data) {
+        jsonObj = data;
+
+        $('#id-list').show();
+
+        if(!refresh_mode){
+            //init BarChart
+            barChart = new $jit.BarChart({
+              injectInto: 'infovis',
+              animate: true,
+              orientation: 'vertical',
+              barsOffset: 20,
+              Margin: {top:5, left: 5, right: 5, bottom:5},
+              labelOffset: 5,
+              type: 'stacked',
+              showAggregates:true,
+              showLabels:true,
+              Label: {type: 'HTML', size: 10, family: 'Arial', color: 'black'},
+              Tips: {
+                enable: true,
+                onShow: function(tip, elem) {
+                  tip.innerHTML = "<b> " + elem.name + "</b>: " + elem.value;
+                }
+              }
+            });
+        }        
+        
+        //load JSON data.
+        if(refresh_mode){
+            barChart.updateJSON(jsonObj);
+        }else{
+            barChart.loadJSON(jsonObj);
+        }
+        //end
+
+        var list = $jit.id('id-list');
+
+        //dynamically add legend to list
+        var legend = barChart.getLegend(),
+            listItems = [];
+        for(var name in legend) {
+          listItems.push('<div class=\'query-color\' style=\'background-color:'
+              + legend[name] +'\'>&nbsp;</div>' + name);
+        }
+        list.innerHTML = '<li>' + listItems.join('</li><li>') + '</li>';
+
+        //event listener ids        
+        $('#infovis-label').children().each(function(){
+            var infoid = $(this);
+            if(infoid.attr('id').indexOf("Total") != -1){                
+                tempBarId = document.getElementById(infoid.attr('id'));
+                tempBarId.addEventListener('click', modifyTotal, false);
+            }else if(infoid.attr('id').indexOf("Un-Processed") != -1){
+                tempBarId = document.getElementById(infoid.attr('id'));
+                tempBarId.addEventListener('click', modifyUProc, false);
+            }else if(infoid.attr('id').indexOf("Processed") != -1){
+                tempBarId = document.getElementById(infoid.attr('id'));
+                tempBarId.addEventListener('click', modifyProc, false);
+            }else if(infoid.attr('id').indexOf("Error") != -1){
+                tempBarId = document.getElementById(infoid.attr('id'));
+                tempBarId.addEventListener('click', modifyError, false);
+            }
+        });
+    }, "json");   
+    
+}
+
+$('#signups_report').live('submit', function(){       
+    generate_signups_report($('#report_branch_id').val(), false);
+
+    return false;  
+});
+
+$('#refresh_signups_report').live('click', function(){
+    generate_signups_report($('#report_branch_id').val(), true);
+
+    return false;
+});
