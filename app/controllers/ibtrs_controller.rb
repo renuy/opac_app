@@ -64,8 +64,14 @@ class IbtrsController < ApplicationController
         format.html { redirect_to @ibtr }
         format.xml  # dispatch.xml.erb
       else
+        good = Good.find_by_book_no(book_no) #to do: to add date restriction
+        if good.nil? 
+          status = :precondition_failed
+        else
+          status = :not_found
+        end
         format.html { render :action => "lookup" }
-        format.xml  { render :nothing => true, :status => :not_found }
+        format.xml  { render :nothing => true, :status => status }
       end
     end  
   end
