@@ -207,29 +207,43 @@ ConsignmentApp.receiveGood = function(link) {
 	$(link).parents("tr").hide();
 };
 
+
+//sjb
 var barChart, tempBarId, signups_report_branch;
 
 function modifyMode(mode){
-    var pageSection = "<table>";
+    var pageSection = "<br/><p style='font-size:16px; font-weight: bolder;'>Member Details</p>";
     $.get('/report_details?' + 'branch_id=' + signups_report_branch +
         '&modifyMode=' + mode,
         function(data) {
-            pageSection += "<thead>" +
-                        "<th>" + "Card No" + "</th><th>" + "Plan Id" + "</th><th>"
-                        + "Created At" + "</th><th>" + "Status" + "</th>" + "</thead>";
+            var isHeader = true;
             $.each(data, function() {
                 $.each(this, function(k, v) {
-                    pageSection += "<tr>" +
-                        "<td>" + v.membership_no +"</td>" +
-                        "<td>" + v.plan_id +"</td>" +
-                        "<td>" + v.created_at +"</td>" +
-                        "<td>" + v.flag_migrated +"</td>" +
-                        "</tr>";
+                    pageSection += "<div class='span-40'>";
+                    if(isHeader){
+                            pageSection += "<div class='span-8'>";
+                            $.each(v, function(key, value){
+                                if(key.toString() == "membership_no")
+                                    pageSection += "<p style='font-size:14px; font-weight: bolder; color:green;'>" +
+                                    value + "</p>";
+                            });
+                            pageSection += "</div>";
+                            isHeader = false;
+                    }
+                    var keyCount = 0;
+                    $.each(v, function(key, value){
+                        pageSection += "<div class='span-4'><b>" + key.toString().toUpperCase() +"</b></div>" +
+                            "<div class='span-4'>" + value +"</div>";
+                        keyCount += 1;
+                    });
+
+                    pageSection += "</div><hr/>"
+                    isHeader = true;
                 });
             });
-
-            pageSection += "</table>"
+            
             $('#signups_report_details').html(pageSection);
+            
         }, "json");
 }
 
@@ -336,3 +350,4 @@ $('#refresh_signups_report').live('click', function(){
 
     return false;
 });
+//sjb
