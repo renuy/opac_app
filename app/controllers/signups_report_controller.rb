@@ -30,18 +30,26 @@ class SignupsReportController < ApplicationController
   def report_details
     branch_id = params[:branch_id].to_i
     modifyMode = params[:modifyMode]
+
+    # whitelist : data selected for display
+    selectedCol = ["payment_ref", "payment_mode", "security_deposit", "registration_fee",
+              "reading_fee", "discount", "paid_amt", "coupon_amt", "coupon_no", "coupon_id",
+              "plan_id", "application_no", "membership_no", "employee_no",
+              "referrer_member_id", "email", "lphone", "mphone", "address", "name"]
+
     unless branch_id.nil?
       if branch_id <= 0
         if modifyMode == 'T'
-          @detailObj = Signup.find(:all)
+          @detailObj = Signup.find(:all, :select => selectedCol)
         else
-          @detailObj = Signup.find_all_by_flag_migrated(modifyMode)
+          @detailObj = Signup.find_all_by_flag_migrated(modifyMode, :select => selectedCol)
         end
       else
         if modifyMode == 'T'
-          @detailObj = Signup.find_all_by_branch_id(branch_id)
+          @detailObj = Signup.find_all_by_branch_id(branch_id, :select => selectedCol)
         else
-          @detailObj = Signup.find_all_by_branch_id_and_flag_migrated(branch_id, modifyMode)
+          @detailObj = Signup.find_all_by_branch_id_and_flag_migrated(branch_id, 
+            modifyMode, :select => selectedCol)
         end
       end
 
