@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  </head>
+  <body>
+
+    <table width="550px;">
+      <tr width="100%" >
+      <td width="50%"><b>Waybill No:</b> <%=@consignment.waybill_no%></td>
+      <td width=50%><b>Pickup Date:</b><%=@consignment.updated_at.strftime '%d-%b-%Y'%></td>
+      </tr>
+      
+      <tr width="100%" >
+      <td width="50%">&nbsp;</td>
+      <td width=50%><b>Origin:</b> <%=@consignment.origin.name%></td>
+      </tr>
+      <tr width="100%" >
+      <td width="50%"><b>Signed for by:</b> <%=@consignment.consignor%></td>
+      <td width=50%><b>Destination:</b> <%=@consignment.destination.name%></td>
+      </tr>
+      <tr width="100%" >
+      <td width="50%"><b>Carrier:</b> <%=@consignment.consignee%></td>
+      <td width=50%><b>Books</b> Pickedup: <%=@consignment.goods_count.to_i%> </td>
+      </tr>
+      </table>	
+      
+      <hr/>
+      <table width="550px;">
+      
+      <tr width="100%" >
+      <td width="5%">&nbsp;</td>
+      <td width="20%"><b>Book No.</b></td>
+      <td width="63%"><b>Title</b></td>
+      </tr>
+      </table>
+
+      <table width="550px" >
+    
+      <%= render :partial => "goods/mail",  :collection => @consignment.goods, :as =>:good %>
+      
+      </table>
+  </body>
+</html>
