@@ -5,7 +5,7 @@ class Ibtr < ActiveRecord::Base
   
   belongs_to :title
   belongs_to :membership
-  
+  belongs_to :book,  :foreign_key => 'book_no'
   belongs_to :branch
   belongs_to :respondent, :class_name => 'Branch', :foreign_key => 'respondent_id'
   attr_reader :event

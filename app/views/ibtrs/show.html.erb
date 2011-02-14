@@ -28,6 +28,15 @@
 			<td width="10%" >Branch:</td>
 			<td width="67%"><%=  @ibtr.branch.name unless @ibtr.branch_id.nil? %></td>
 		</tr>
-	</table>
+    <tr width="100%">
+			<td width="10%" >Book Belongs to:</td>
+			<td width="67%"><%=  @ibtr.book.catalogued_branch.name unless @ibtr.book.nil? %></td>
+		</tr>
+    <tr width="100%">
+			<td width="10%" >Dispatched On:</td>
+			<td width="67%"><%=  @ibtr.updated_at.strftime("%d-%b-%Y") %></td>
+		</tr>
+
+    </table>
   </div>
 </div>

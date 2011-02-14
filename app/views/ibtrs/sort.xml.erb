@@ -11,4 +11,8 @@
 		<id><%= @ibtr.branch_id %></id>
 		<name><%= @ibtr.branch.name unless @ibtr.branch.nil? %></name>
 	</branch>
+  <book>
+    <no> <%=@ibtr.book_no %></no>
+    <orig_branch> <%= @ibtr.book.catalogued_branch.name unless @ibtr.book_no.nil? %></orig_branch>
+  </book>
 </ibtr>
