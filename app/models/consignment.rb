@@ -4,7 +4,8 @@ class Consignment < ActiveRecord::Base
 	has_many :goods, :dependent => :destroy
 	accepts_nested_attributes_for :goods, :allow_destroy => :true, :reject_if => lambda { |a| a[:book_no].blank? }
 
-  attr_accessible :consignor, :consignee, :origin_id, :destination_id, :goods_attributes
+	attr_accessible :consignor, :consignee, :origin_id, :destination_id, :goods_attributes, :goods_delivered_count, :pickup_date, :delivery_date
+
   
   belongs_to :origin, :class_name => 'Branch', :foreign_key => 'origin_id'
   belongs_to :destination, :class_name => 'Branch', :foreign_key => 'destination_id'
@@ -22,7 +23,7 @@ class Consignment < ActiveRecord::Base
   	state :Cancelled
 
 		event :pickup do
-			transitions :to => :Pickedup, :from => :Open, :on_transition => lambda { |consignment| consignment.pickup_date = Time.zone.now }
+			transitions :to => :Pickedup, :from => :Open, :on_transition => lambda {|consignment| consignment.dopickup }
 		end
 		event :deliver do
 			transitions :to => :Delivered, :from => :Pickedup, :on_transition => lambda { |consignment| consignment.delivery_date = Time.zone.now }
@@ -32,6 +33,20 @@ class Consignment < ActiveRecord::Base
 		end
 	end
 	
+  def dopickup
+    pickup_date = Time.zone.now
+    IbtrMailer.consignment_pickup_advice(id).deliver
+    save
+  end
+  
+  def delivered
+    
+    case
+      when state.eql?("Open") then deliver!
+      when state.eql?("Pickedup") then deliver!
+      when state.eql?("Delivered") then update_attributes(:goods_delivered_count => Good.where(:consignment_id => id, :state => 'Delivered').size)
+    end
+  end
 	
 	def origin_destination_not_same
 	  if origin_id == destination_id
