@@ -13,6 +13,6 @@
 	</branch>
   <book>
     <no> <%=@ibtr.book_no %></no>
-    <orig_branch> <%= @ibtr.book.catalogued_branch.name unless @ibtr.book.nil? %></orig_branch>
+    <orig_branch> <%= @ibtr.book.catalogued_branch.name unless @ibtr.book_no.nil? %></orig_branch>
   </book>
 </ibtr>
