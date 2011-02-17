@@ -64,9 +64,11 @@ class Signup < ActiveRecord::Base
   end
 
   def paid_amt_greater_than_bill_amt
-    plan = Plan.find(plan_id)
-    bill_amt = plan.total_due_for_term(signup_months, coupon_id)
-    errors.add(:paid_amt, "is more than Bill Amount") if paid_amt.to_d > bill_amt.to_d
+	unless paid_amt.blank?
+		plan = Plan.find(plan_id)
+		bill_amt = plan.total_due_for_term(signup_months, coupon_id)
+		errors.add(:paid_amt, "is more than Bill Amount") if paid_amt.to_d > bill_amt.to_d
+	end
   end
    
   private 
