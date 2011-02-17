@@ -87,7 +87,7 @@
 			<div class='span-20'>
 					<div class='span-2'>Paid By</div>
 					<div class='span-4' style='text-align:left;display:none' id='signup_coupon_no_div'><%= 'Coupon:' %><%= f.text_field :coupon_no, :class => 'text simple', :style => 'width:80px;font-size:85%', :maxlength => 10 %></div>
-					<div class='span-12'>
+					<div class='span-10'>
 						Cash <%= f.radio_button :payment_mode, Signup::PAYMENT_MODES[:cash], {:checked => true} %>
 						<span>
 							Check <%= f.radio_button :payment_mode, Signup::PAYMENT_MODES[:check] %>
@@ -98,6 +98,7 @@
 							<span id='signup_card_div' style='display:none'>Card No: <%= f.text_field :card_no, :class => 'text simple', :style => 'width:50px;font-size:85%', :maxlength => 4 %></span>
 						</span>
 					</div>
+				<div class='span-4'>Paid Amount: <%= f.text_field :paid_amt, :class => 'text simple', :style => 'width:50px;font-size:85%', :maxlength => 8 %></div>
 			</div>
 			<hr/>
 			<div class='span-17'><%= f.submit %></div>

@@ -91,7 +91,11 @@ This is the Registration confirmation email sent to your email id : <b><%= @sign
 			</tr>
 			<tr>
 				<td ><u>Balance to be paid:</u></td>
-				<td bgcolor = "pink" >0 Rs.</td>
+				<td bgcolor = "pink" ><%= @signup.overdue_amt %> Rs.</td>
+      			</tr>
+			<tr>
+				<td ><u>Advance Amt with us:</u></td>
+				<td bgcolor = "pink" ><%= @signup.advance_amt %> Rs.</td>
 			</tr>
 			<tr>
 				<td ><u>Txn Date:</u></td>
