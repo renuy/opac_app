@@ -132,7 +132,7 @@ class Ibtr < ActiveRecord::Base
     if created == 'All'
       ibtr_stats = Ibtr.find(:all, :select => " branch_id , "+
       "sum(decode(state,'New',1,0)) as new_cnt,  "+
-      "sum(decode(state,'Assigned',1,0)) as assigned_cnt,  "+
+      "sum(case when nvl(respondent_id,-1) != 951 and state in ('Assigned') then 1 else 0 end) as assigned_cnt," +
       "sum(decode(state,'POPlaced',1,0)) as poplaced_cnt,  "+
       "sum(decode(state,'Fulfilled',1,0)) as fulfilled_cnt,  "+
       "sum(decode(state,'Received',1,0)) as received_cnt, "+
@@ -150,6 +150,7 @@ class Ibtr < ActiveRecord::Base
       ibtr_stats = Ibtr.find(:all, :select => " branch_id , "+
       "sum(decode(state,'New',1,0)) as new_cnt,  "+
       "sum(decode(state,'Assigned',1,0)) as assigned_cnt,  "+
+	  "sum(case when nvl(respondent_id,-1) != 951 and state in ('Assigned') then 1 else 0 end) as assigned_cnt," +
       "sum(decode(state,'POPlaced',1,0)) as poplaced_cnt,  "+
       "sum(decode(state,'Fulfilled',1,0)) as fulfilled_cnt,  "+
       "sum(decode(state,'Received',1,0)) as received_cnt, "+
@@ -238,6 +239,8 @@ class Ibtr < ActiveRecord::Base
       when params[:report].eql?('curr_state') then 
         if params[:po].eql?('951') then
 			clause << ' branch_id = ? and respondent_id = 951'  
+		elsif params[:state].eql?('Assigned')
+			clause << ' branch_id = ? and respondent_id != 951'  
 		else
 			clause << ' branch_id = ? '  
 		end
