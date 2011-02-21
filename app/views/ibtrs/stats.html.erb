@@ -13,14 +13,16 @@
       <div class="span-24 small">
         <p><b>How to read this report:</b> <br/>
           This report shows the current status of books requested by a branch (that were raised on the date range selected above).<br/>
-          A total of P requests were raised by the requesting branch, of which:<br/>
+          A total of 'A' requests were raised by the requesting branch, of which:<br/>
           <ul>
-          <li> X requests are "new", action pending on IBT ops team to assign them.</li>
-          <li> Y requests are "assigned", action pending on the respondent branch to fulfill them.</li>
-          <li> Z requests are "fulfilled", action pending on warehouse team to Dispatch them to requesting branches.</li>
-          <li> M requests are "dispatched", action pending on requesting branches to receive the books.</li>
-          <li> N requests are "received", IBTR is over and the book needs to be issued to the member.</li>
-          <li> O requests are "declined", action pending on IBT ops team to re-assign them.</li>
+          <li> B requests are "new", action pending on IBT ops team to assign them.</li>
+          <li> C requests are "assigned", action pending on the respondent branch to fulfill them.</li>
+		  <li> D requests are out of stock, hence would be sent for procurement, action pending on the procurment team to approve.</li>
+		  <li> E requests have been sent for porcurement, when books arrive and cataloging happens these would be fulfilled.</li>
+          <li> F requests are "fulfilled", action pending on warehouse team to Dispatch them to requesting branches.</li>
+          <li> G requests are "Sorted" and would be dispatched shortly, action pending on requesting branches to receive the books.</li>
+          <li> H requests are "received", IBTR is over and the book needs to be issued to the member.</li>
+          <li> I requests are "declined", action pending on IBT ops team to re-assign them.</li>
           </ul>
         </p>
 
@@ -50,19 +52,20 @@
       <table width="100%">
         <thead>
         <tr class="span-24">
-        <th class="span-3">Requesting branch</th>
-        <th class="span-2">Total (P) </th>
-        <th class="span-1">New(X)</th>
-        <th class="span-2">Assigned (Y)</th>
-        <th class="span-1">PO Placed </th>
-        <th class="span-2">Fulfilled  (Z)</th>
-        <th class="span-2">Dispatched (M) </th>
-        <th class="span-2">Received  (N)</th>
-        <th class="span-2">Declined  (O)</th>
+        <th class="span-4">Requesting branch</th>
+        <th class="span-1">Total (A) </th>
+        <th class="span-1">New (B)</th>
+        <th class="span-2">Assigned (C)</th>
+		<th class="span-2">Out of Stock (D)</th>
+        <th class="span-1">PO Placed (E)</th>
+        <th class="span-2">Fulfilled (F)</th>
+        <th class="span-2">Sorted (G) </th>
+        <th class="span-2">Received  (H)</th>
+        <th class="span-1">Declined  (I)</th>
         <th class="span-1">Cancld </th>
         <th class="span-1">Dup. </th>
-        <th class="span-2">Delivered </th>
-        <th class="span-2">Timedout </th>
+        <th class="span-2">Issued </th>
+        <th class="span-1">Timedout </th>
         </tr>
         </thead>
         <%= render :partial => "ibtr_stat", :collection => @ibtr_stats %>
@@ -70,18 +73,19 @@
         <tfoot>
         <tr class="span-24">
           <td class="span-3">Total</td>
-          <td class="span-2"><%= sum_attr("total_cnt",@ibtr_stats) %></td>
+          <td class="span-1"><%= sum_attr("total_cnt",@ibtr_stats) %></td>
           <td class="span-1"><%= sum_attr("new_cnt",@ibtr_stats) %></td>
           <td class="span-2"><%= sum_attr("assigned_cnt",@ibtr_stats) %></td>
+		  <td class="span-2"><%= sum_attr("poassigned_cnt",@ibtr_stats) %></td>
           <td class="span-1"><%= sum_attr("poplaced_cnt",@ibtr_stats) %></td>
           <td class="span-2"><%= sum_attr("fulfilled_cnt",@ibtr_stats) %></td>
-          <td class="span-2"><%= sum_attr("dispatched_cnt",@ibtr_stats) %></td>
+          <td class="span-1"><%= sum_attr("dispatched_cnt",@ibtr_stats) %></td>
           <td class="span-2"><%= sum_attr("received_cnt",@ibtr_stats) %></td>
           <td class="span-2"><%= sum_attr("declined_cnt",@ibtr_stats) %></td>
           <td class="span-1"><%= sum_attr("cancelled_cnt",@ibtr_stats) %></td>
           <td class="span-1"><%= sum_attr("duplicate_cnt",@ibtr_stats) %></td>
           <td class="span-2"><%= sum_attr("delivered_cnt",@ibtr_stats) %></td>
-          <td class="span-2"><%= sum_attr("timedout_cnt",@ibtr_stats) %></td>
+          <td class="span-1"><%= sum_attr("timedout_cnt",@ibtr_stats) %></td>
         </tr>
         </tfoot>
       </table>

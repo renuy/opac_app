@@ -1,35 +1,37 @@
 <% if current_user.strata_employee? %>
 <tr class="span-24">
 	<td class="span-3"><%= Branch.find(ibtr_stat.branch_id).name unless ibtr_stat.branch_id.nil? %><br/></td>
-  <td class="span-2"><%= link_to ibtr_stat.total_cnt , ibtrs_drillrpt_path(:report => params[:report], :branch_id => ibtr_stat.branch_id, :state => 'All', :Created=>params[:Created], :start=>params[:start], :end => params[:end] )%><br/></td>
+  <td class="span-1"><%= link_to ibtr_stat.total_cnt , ibtrs_drillrpt_path(:report => params[:report], :branch_id => ibtr_stat.branch_id, :state => 'All', :Created=>params[:Created], :start=>params[:start], :end => params[:end] )%><br/></td>
 	<td class="span-1"><%= link_to ibtr_stat.new_cnt , ibtrs_drillrpt_path(:report => params[:report], :branch_id => ibtr_stat.branch_id, :state => 'New', :Created=>params[:Created], :start=>params[:start], :end => params[:end] ) %><br/></td>
 	<td class="span-2"><%= link_to ibtr_stat.assigned_cnt, ibtrs_drillrpt_path(:report => params[:report], :branch_id => ibtr_stat.branch_id, :state => 'Assigned', :Created=>params[:Created], :start=>params[:start], :end => params[:end] ) %><br/></td>
+	<td class="span-2"><%= link_to ibtr_stat.poassigned_cnt, ibtrs_drillrpt_path(:report => params[:report], :branch_id => ibtr_stat.branch_id, :state => 'Assigned',:po => '951', :Created=>params[:Created], :start=>params[:start], :end => params[:end] ) %><br/></td>
 	<td class="span-1"><%= link_to ibtr_stat.poplaced_cnt, ibtrs_drillrpt_path(:report => params[:report], :branch_id => ibtr_stat.branch_id, :state => 'POPlaced', :Created=>params[:Created], :start=>params[:start], :end => params[:end] ) %><br/></td>
 	<td class="span-2"><%= link_to ibtr_stat.fulfilled_cnt, ibtrs_drillrpt_path(:report => params[:report], :branch_id => ibtr_stat.branch_id, :state => 'Fulfilled', :Created=>params[:Created], :start=>params[:start], :end => params[:end] ) %><br/></td>
-	<td class="span-2"><%= link_to ibtr_stat.dispatched_cnt, ibtrs_drillrpt_path(:report => params[:report], :branch_id => ibtr_stat.branch_id, :state => 'Dispatched', :Created=>params[:Created], :start=>params[:start], :end => params[:end] ) %><br/></td>
+	<td class="span-1"><%= link_to ibtr_stat.dispatched_cnt, ibtrs_drillrpt_path(:report => params[:report], :branch_id => ibtr_stat.branch_id, :state => 'Dispatched', :Created=>params[:Created], :start=>params[:start], :end => params[:end] ) %><br/></td>
 	<td class="span-2"><%= link_to ibtr_stat.received_cnt, ibtrs_drillrpt_path(:report => params[:report], :branch_id => ibtr_stat.branch_id, :state => 'Received', :Created=>params[:Created], :start=>params[:start], :end => params[:end] ) %><br/></td>
 	<td class="span-2"><%= link_to ibtr_stat.declined_cnt, ibtrs_drillrpt_path(:report => params[:report], :branch_id => ibtr_stat.branch_id, :state => 'Declined', :Created=>params[:Created], :start=>params[:start], :end => params[:end] ) %><br/></td>
   <td class="span-1"><%= link_to ibtr_stat.cancelled_cnt, ibtrs_drillrpt_path(:report => params[:report], :branch_id => ibtr_stat.branch_id, :state => 'Cancelled', :Created=>params[:Created], :start=>params[:start], :end => params[:end] ) %><br/></td>
   <td class="span-1"><%= link_to ibtr_stat.duplicate_cnt, ibtrs_drillrpt_path(:report => params[:report], :branch_id => ibtr_stat.branch_id, :state => 'Duplicate', :Created=>params[:Created], :start=>params[:start], :end => params[:end] ) %><br/></td>
   <td class="span-2"><%= link_to ibtr_stat.delivered_cnt, ibtrs_drillrpt_path(:report => params[:report], :branch_id => ibtr_stat.branch_id, :state => 'Delivered', :Created=>params[:Created], :start=>params[:start], :end => params[:end] ) %><br/></td>
-  <td class="span-2"><%= link_to ibtr_stat.timedout_cnt, ibtrs_drillrpt_path(:report => params[:report], :branch_id => ibtr_stat.branch_id, :state => 'Timedout', :Created=>params[:Created], :start=>params[:start], :end => params[:end] ) %><br/></td>
+  <td class="span-1"><%= link_to ibtr_stat.timedout_cnt, ibtrs_drillrpt_path(:report => params[:report], :branch_id => ibtr_stat.branch_id, :state => 'Timedout', :Created=>params[:Created], :start=>params[:start], :end => params[:end] ) %><br/></td>
 
 </tr>
 <%else%>
 <tr class="span-24">
 	<td class="span-3"><%= Branch.find(ibtr_stat.branch_id).name unless ibtr_stat.branch_id.nil? %><br/></td>
-  <td class="span-2"><%=  ibtr_stat.total_cnt%><br/></td>
+  <td class="span-1"><%=  ibtr_stat.total_cnt%><br/></td>
 	<td class="span-1"><%=  ibtr_stat.new_cnt %><br/></td>
 	<td class="span-2"><%=  ibtr_stat.assigned_cnt %><br/></td>
+	<td class="span-2"><%=  ibtr_stat.poassigned_cnt %><br/></td>
 	<td class="span-1"><%=  ibtr_stat.poplaced_cnt %><br/></td>
 	<td class="span-2"><%=  ibtr_stat.fulfilled_cnt%><br/></td>
-	<td class="span-2"><%=  ibtr_stat.dispatched_cnt%><br/></td>
+	<td class="span-1"><%=  ibtr_stat.dispatched_cnt%><br/></td>
 	<td class="span-2"><%=  ibtr_stat.received_cnt%><br/></td>
 	<td class="span-2"><%=  ibtr_stat.declined_cnt%><br/></td>
   <td class="span-1"><%=  ibtr_stat.cancelled_cnt%><br/></td>
   <td class="span-1"><%=  ibtr_stat.duplicate_cnt%><br/></td>
   <td class="span-2"><%=  ibtr_stat.delivered_cnt%><br/></td>
-  <td class="span-2"><%=  ibtr_stat.timedout_cnt%><br/></td>
+  <td class="span-1"><%=  ibtr_stat.timedout_cnt%><br/></td>
 </tr>
 
 <%end%>

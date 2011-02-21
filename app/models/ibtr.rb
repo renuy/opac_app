@@ -142,7 +142,8 @@ class Ibtr < ActiveRecord::Base
       "count(state) as total_cnt, " +
       "sum(decode(state,'Delivered',1,0)) as delivered_cnt, " +
       "sum(decode(state,'Timedout',1,0)) as timedout_cnt, " +
-      "sum(decode(state,'Duplicate',1,0)) as duplicate_cnt ",
+      "sum(decode(state,'Duplicate',1,0)) as duplicate_cnt, " + 
+	  "sum(case when respondent_id = 951 and state in ('Assigned') then 1 else 0 end) as poassigned_cnt" ,
       :group => " branch_id ",
       :order => "branch_id")
     else 
@@ -158,7 +159,8 @@ class Ibtr < ActiveRecord::Base
       "count(state) as total_cnt, " +
       "sum(decode(state,'Delivered',1,0)) as delivered_cnt, " +
       "sum(decode(state,'Timedout',1,0)) as timedout_cnt, " +
-      "sum(decode(state,'Duplicate',1,0)) as duplicate_cnt ",
+      "sum(decode(state,'Duplicate',1,0)) as duplicate_cnt, " +
+	  "sum(case when respondent_id = 951 and state in ('Assigned') then 1 else 0 end) as poassigned_cnt" ,
       :conditions => ["created_at >= ? and created_at <= ? ", start_date, end_date], 
       :group => "  branch_id ",
       :order => "branch_id")
@@ -234,7 +236,11 @@ class Ibtr < ActiveRecord::Base
       when params[:report].eql?('respondent_view') then 
         clause << ' respondent_id is not null and respondent_id = ? ' 
       when params[:report].eql?('curr_state') then 
-        clause << ' branch_id = ? '  
+        if params[:po].eql?('951') then
+			clause << ' branch_id = ? and respondent_id = 951'  
+		else
+			clause << ' branch_id = ? '  
+		end
     end
      
     case
@@ -273,7 +279,7 @@ class Ibtr < ActiveRecord::Base
   def self.to_jit(ibtrStat)
     {
       'label' => ibtrStat.branch_id,
-      'values' => [ibtrStat.new_cnt, ibtrStat.assigned_cnt, ibtrStat.poplaced_cnt, ibtrStat.fulfilled_cnt, ibtrStat.dispatched_cnt, ibtrStat.received_cnt, ibtrStat.delivered_cnt, ibtrStat.timedout_cnt, ibtrStat.declined_cnt, ibtrStat.cancelled_cnt , ibtrStat.duplicate_cnt ]
+      'values' => [ibtrStat.new_cnt, ibtrStat.assigned_cnt, ibtrStat.poassigned_cnt, ibtrStat.poplaced_cnt, ibtrStat.fulfilled_cnt, ibtrStat.dispatched_cnt, ibtrStat.received_cnt, ibtrStat.delivered_cnt, ibtrStat.timedout_cnt, ibtrStat.declined_cnt, ibtrStat.cancelled_cnt , ibtrStat.duplicate_cnt ]
     }
   end    
   
