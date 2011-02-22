@@ -51,15 +51,23 @@ class IbtrsController < ApplicationController
   # so that the user can reprint the dispatch slip
   def sort
     book_no = params[:book_no]
-    
+    isbn = params[:isbn]
     # check for an existing fulfilled, or dispatched record
     @ibtr = Ibtr.find_by_book_no_and_state(book_no, [:Dispatched,:Fulfilled])
-
+    ib = nil
     respond_to do |format|
       unless @ibtr.nil?
         if @ibtr.state = :Fulfilled
           @ibtr.dispatch!
         end
+        
+        ib = IbtSort.find_by_ibtr_id(@ibtr.id)
+        ib = IbtSort.new if  ib.nil?
+        ib.ibtr_id = @ibtr.id
+        ib.book_no = book_no
+        ib.isbn = isbn
+        ib.save
+        
         flash[:notice] = "book dispatched to #{@ibtr.card_id} of branch #{@ibtr.branch_id}"
         format.html { redirect_to @ibtr }
         format.xml  # dispatch.xml.erb
@@ -67,9 +75,16 @@ class IbtrsController < ApplicationController
         good = Good.find_by_book_no(book_no) #to do: to add date restriction
         if good.nil? 
           status = :precondition_failed
+          ib = IbtSort.new
         else
           status = :not_found
+          ib = IbtSort.find_by_book_no_and_consignment_id(book_no, good.consignment_id)
+          ib = IbtSort.new if ib.nil?
+          ib.consignment_id = good.consignment_id
         end
+        ib.book_no = book_no
+        ib.isbn = isbn
+        ib.save
         format.html { render :action => "lookup" }
         format.xml  { render :nothing => true, :status => status }
       end
