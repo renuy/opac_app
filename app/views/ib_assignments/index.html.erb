@@ -13,7 +13,7 @@
 	<h4><%= "Showing #{Branch.find(user_session['current_branch'].id.to_i).name}'s"%> <b><%=params[:criteria]%> <%= params[:show] unless params[:show] == 'all' %></b> requests</h4>
 	<br/>
 	<div class="right">
-	<%= link_to "Print All", ibt_print_path(:branchVal =>user_session['current_branch'].id,:criteria =>'all',:show =>'all') %> <br/>
+	<%= link_to "Print All", ibt_print_path(:branchVal =>user_session['current_branch'].id,:criteria =>'all',:show =>'all', :prn => 'prn') %> <br/>
 	Show <%= link_to "Recent", ibt_change_criteria_path( :branchVal => user_session['current_branch'].id, :criteria =>params[:criteria], :show =>'recent')  %> / 
 	<%= link_to "All", ibt_change_criteria_path( :branchVal => user_session['current_branch'].id, :criteria =>params[:criteria], :show=>'all')  %> <br/>
 	<%= link_to "Picked", ibt_change_criteria_path( :branchVal => user_session['current_branch'].id, :criteria =>'picked', :show =>params[:show])  %> / 
