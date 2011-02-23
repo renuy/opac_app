@@ -50,9 +50,9 @@ class IbtrsController < ApplicationController
   # dispatch an ibtr, in case one is already dispatch, return the details of the ibtr
   # so that the user can reprint the dispatch slip
   def sort
-    book_no = params[:book_no]
-    isbn = params[:isbn]
-    flg_no_isbn = params[:flg_no_isbn]
+    book_no = params[:sort][:book_no]
+    isbn = params[:sort][:isbn]
+    flg_no_isbn = params[:sort][:flg_no_isbn]
     # check for an existing fulfilled, or dispatched record
     @ibtr = Ibtr.find_by_book_no_and_state(book_no, [:Dispatched,:Fulfilled])
     ib = IbtSort.new
