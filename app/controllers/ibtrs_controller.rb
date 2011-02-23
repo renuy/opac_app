@@ -66,6 +66,7 @@ class IbtrsController < ApplicationController
         ib.ibtr_id = @ibtr.id
         ib.book_no = book_no
         ib.isbn = isbn
+        ib.flg_no_isbn = params[:flg_no_isbn]
         ib.save
         
         flash[:notice] = "book dispatched to #{@ibtr.card_id} of branch #{@ibtr.branch_id}"
@@ -84,6 +85,7 @@ class IbtrsController < ApplicationController
         end
         ib.book_no = book_no
         ib.isbn = isbn
+        ib.flg_no_isbn = params[:flg_no_isbn]
         ib.save
         format.html { render :action => "lookup" }
         format.xml  { render :nothing => true, :status => status }
