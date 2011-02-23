@@ -2,11 +2,11 @@
   function setPrinterDiv(id){
     document.getElementById(id).style.display = 'block';
     $('#assigned').printElement({
-      overrideElementCSS:['print.css', { href:'print.css', media:'print'}],
+      overrideElementCSS:['stylesheets/print.css', { href:'stylesheets/print.css', media:'print'}],
       leaveOpen:true,
       printMode:'popup'
     });
-		document.getElementById(id).style.display = 'none';
+	//document.getElementById(id).style.display = 'none';
   }
 </script>
 

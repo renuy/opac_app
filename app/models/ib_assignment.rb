@@ -10,11 +10,11 @@ def self.allRacks(params)
 	end
 	
 	if params[:criteria] == 'unpicked'
-		IbAssignment.find(:all, :select => 'distinct category, rack ', :conditions => ['book_branch_id = ? AND title_id NOT IN ( ? )', params[:branchVal], picked_title_ids],:order => 'category, substr(rack,1)').paginate(:page => params[:page],:per_page => 5)
+		ib_assignemnts = IbAssignment.find(:all, :select => 'distinct category, rack ', :conditions => ['book_branch_id = ? AND title_id NOT IN ( ? )', params[:branchVal], picked_title_ids],:order => 'category, substr(rack,1)').paginate(:page => params[:page],:per_page => 5)
 	elsif params[:criteria] == 'picked'
 		IbAssignment.find(:all, :select => 'distinct category, rack ', :conditions => ['book_branch_id = ? AND title_id IN (? ) ', params[:branchVal], picked_title_ids],:order => 'category, substr(rack,1)').paginate(:page => params[:page],:per_page => 5)
 	else
-		IbAssignment.find(:all, :select => 'distinct category, rack ', :conditions => ['book_branch_id = ? ', params[:branchVal]],:order => 'category, substr(rack,1)').paginate(:page => params[:page],:per_page => 5)
+		IbAssignment.find(:all, :select => 'distinct category, rack ', :conditions => ['book_branch_id = ? ', params[:branchVal]],:order => 'category, substr(rack,1)').paginate(:page => params[:page],:per_page => (params[:prn].eql?('prn') ? 5000 : 5) )
 	end
 	
 end

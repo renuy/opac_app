@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110209100309) do
+ActiveRecord::Schema.define(:version => 20110222095539) do
 
   create_table "authentications", :force => true do |t|
     t.integer  "user_id",    :precision => 38, :scale => 0
@@ -43,6 +43,7 @@ ActiveRecord::Schema.define(:version => 20110209100309) do
     t.datetime "delivery_date"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "kind"
   end
 
   create_table "coupons", :force => true do |t|
@@ -93,6 +94,18 @@ ActiveRecord::Schema.define(:version => 20110209100309) do
     t.timestamp "updated_at",    :limit => 6
   end
 
+  create_table "ibt_sorts", :force => true do |t|
+    t.integer  "book_no",         :precision => 38, :scale => 0
+    t.integer  "ibtr_id",         :precision => 38, :scale => 0
+    t.integer  "consignment_id",  :precision => 38, :scale => 0
+    t.string   "isbn"
+    t.string   "flg_no_isbn"
+    t.string   "flg_repeat_sort"
+    t.string   "flg_success"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "ibtr_versions", :force => true do |t|
     t.integer   "ibtr_id",                    :precision => 38, :scale => 0
     t.integer   "version",                    :precision => 38, :scale => 0
@@ -109,6 +122,7 @@ ActiveRecord::Schema.define(:version => 20110209100309) do
     t.string    "comments"
     t.integer   "book_no",                    :precision => 38, :scale => 0
     t.string    "po_no"
+    t.string    "kind"
   end
 
   create_table "ibtr_versions_dt", :id => false, :force => true do |t|
@@ -143,6 +157,7 @@ ActiveRecord::Schema.define(:version => 20110209100309) do
     t.string    "comments"
     t.integer   "book_no",                    :precision => 38, :scale => 0
     t.string    "po_no"
+    t.string    "kind"
   end
 
   add_index "ibtrs", ["card_id"], :name => "in_ibtrs_3"
@@ -290,6 +305,17 @@ ActiveRecord::Schema.define(:version => 20110209100309) do
     t.string   "coupon_no",          :limit => 20
     t.integer  "coupon_id",                        :precision => 38, :scale => 0
   end
+
+  create_table "stock_racks_shelves", :id => false, :force => true do |t|
+    t.integer "title_id",        :limit => 10,  :precision => 10, :scale => 0, :null => false
+    t.integer "book_branch_id",  :limit => nil,                                :null => false
+    t.string  "category",        :limit => 400
+    t.string  "rack",            :limit => 400
+    t.string  "shelf",           :limit => 100
+    t.decimal "count_per_shelf"
+  end
+
+  add_index "stock_racks_shelves", ["title_id", "book_branch_id"], :name => "idx_stock_racks_shelves_1"
 
   create_table "test", :id => false, :force => true do |t|
     t.timestamp "a", :limit => 6
