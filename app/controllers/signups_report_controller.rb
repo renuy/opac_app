@@ -1,35 +1,15 @@
 class SignupsReportController < ApplicationController
-  respond_to :html, :js, :json, :xml
   def signups_report
-    branch_id = params[:branch_id].to_i
-    unless branch_id.nil?
-      if branch_id <= 0
-        @signups = Signup.find(:all)
-        @processed = Signup.find_all_by_flag_migrated('P')
-        @unprocessed = Signup.find_all_by_flag_migrated('U')
-        @errorflag = Signup.find_all_by_flag_migrated('E')
-      else
-        @signups = Signup.find_all_by_branch_id(branch_id)
-        @processed = Signup.find_all_by_branch_id_and_flag_migrated(branch_id, 'P')
-        @unprocessed = Signup.find_all_by_branch_id_and_flag_migrated(branch_id, 'U')
-        @errorflag = Signup.find_all_by_branch_id_and_flag_migrated(branch_id, 'E')
-      end    
-
-    report_obj = Hash.new
-    report_obj = {'label' => ['Total Signups', 'Processed', 'Un-Processed', 'Error state'],
-      'values' => [{'label' => 'Total Signups', 'values' => [@signups.count]},
-        {'label' => 'Processed', 'values' => [0,@processed.count,0,0]},
-        {'label' => 'Un-Processed', 'values' => [0,0,@unprocessed.count,0]},
-        {'label' => 'Error state', 'values' => [0,0,0,@errorflag.count]}
-      ]}
-
-    respond_with(report_obj.to_json())
+    respond_to do |format|
+      format.html
     end
   end
 
   def report_details
     branch_id = params[:branch_id].to_i
     modifyMode = params[:modifyMode]
+    start_date = params[:start_date]
+    end_date = params[:end_date]
 
     # whitelist : data selected for display
     selectedCol = ["payment_ref", "payment_mode", "security_deposit", "registration_fee",
@@ -37,23 +17,30 @@ class SignupsReportController < ApplicationController
               "plan_id", "application_no", "membership_no", "employee_no",
               "referrer_member_id", "email", "lphone", "mphone", "address", "name"]
 
-    unless branch_id.nil?
-      if branch_id <= 0
-        if modifyMode == 'T'
-          @detailObj = Signup.find(:all, :select => selectedCol)
-        else
-          @detailObj = Signup.find_all_by_flag_migrated(modifyMode, :select => selectedCol)
-        end
-      else
-        if modifyMode == 'T'
-          @detailObj = Signup.find_all_by_branch_id(branch_id, :select => selectedCol)
-        else
-          @detailObj = Signup.find_all_by_branch_id_and_flag_migrated(branch_id, 
-            modifyMode, :select => selectedCol)
-        end
+    unless branch_id.nil?      
+      if modifyMode == 'T'
+        @detailObj = Signup.find(:all, :conditions =>
+            ["branch_id = ? AND created_at >= to_date(?, 'DD-MM-YY') AND
+             created_at <= (to_date(?, 'DD-MM-YY') + 1) AND membership_no != '-'",
+          branch_id, start_date, end_date], :select => selectedCol)
       end
+    end
 
-    respond_with(@detailObj.to_json())
+    render :partial => 'reportDetails'
+  end
+
+  def newMemberReversal
+    card_number = params[:card_number]
+    @signup = Signup.find_by_membership_no(card_number)
+
+    # subscribe new member reversal event, then update the signup card number to '-'
+    eObj = @signup.generateNMReversalEvent(current_user.id.to_s, user_session['current_branch'].id.to_s)
+    if eObj.save
+      @signup.update_attribute("membership_no", "-")
+    end
+
+    respond_to do |format|
+      format.html
     end
   end
 

@@ -1,0 +1,221 @@
+<div style="width: 100%;">  
+  <% @detailObj.each do |reportDet| %>
+    <div style="height: 50px;">
+      <div class='span-8' style='width: 26%; float: left;
+           font-size:12px; font-weight: bolder; color:green;'>
+        <div class="span-6">
+          <%= reportDet.membership_no %> [<%= Plan.find(reportDet.plan_id).name %>]
+        </div>
+
+        <div class="span-4" id="nm_reversal">
+          <%  if MemberReversal.find_by_membership_no_and_nm_reversal(reportDet.membership_no, 'Y') %>
+            <%= link_to "New Member Reversal?", '', :id => 'nm_reversal_' + reportDet.membership_no,
+              :card_number => reportDet.membership_no %>
+          <% end -%>
+        </div>
+
+        <div class="span-3" id="nm_reversal_confirm">
+            <%= link_to "Confirm Reversal", '', :id => 'nm_reversal_confirm_' + reportDet.membership_no,
+            :card_number => reportDet.membership_no, :style => 'display: none' %>
+        </div>
+        <div class="span-2" id="nm_reversal_cancel">
+            <%= link_to "Cancel", '', :id => 'nm_reversal_cancel_' + reportDet.membership_no,
+            :card_number => reportDet.membership_no, :style => 'display: none' %>
+        </div>
+      </div>
+
+      <div class='span-8' style='width: 35%; float: left; font-size:11px;'>
+        <div class='span-4' style='font-weight: bolder;'>
+          Name
+        </div>
+        <div class='span-4'>
+          <%= unless reportDet.name.nil?
+                reportDet.name
+              else
+                '-'
+              end %>
+        </div>
+
+        <div class='span-4' style='font-weight: bolder;'>
+          Address
+        </div>
+        <div class='span-4'>
+          <%= unless reportDet.address.nil?
+                reportDet.address
+              else
+                '-'
+              end %>
+        </div>
+
+        <div class='span-4' style='font-weight: bolder;'>
+          Mobile
+        </div>
+        <div class='span-4'>
+          <%= unless reportDet.mphone.nil?
+                reportDet.mphone
+              else
+                '-'
+              end %>
+        </div>
+
+        <div class='span-4' style='font-weight: bolder;'>
+          Land-line
+        </div>
+        <div class='span-4'>
+          <%= unless  reportDet.lphone.nil?
+                reportDet.lphone
+              else
+                '-'
+              end %>
+        </div>
+
+        <div class='span-4' style='font-weight: bolder;'>
+          E-mail
+        </div>
+        <div class='span-4'>
+          <%= unless reportDet.email.nil?
+                reportDet.email
+              else
+                '-'
+              end %>
+        </div>
+
+        <div class='span-4' style='font-weight: bolder;'>
+          Referred By
+        </div>
+        <div class='span-4'>
+          <%= unless reportDet.referrer_member_id.nil?
+                reportDet.referrer_member_id
+              else
+                '-'
+              end %>
+        </div>
+
+        <div class='span-4' style='font-weight: bolder;'>
+          Employee No
+        </div>
+        <div class='span-4'>
+          <%= unless reportDet.employee_no.nil?
+                reportDet.employee_no
+              else
+                '-'
+              end %>
+        </div>
+
+        <div class='span-4' style='font-weight: bolder;'>
+          Application No
+        </div>
+        <div class='span-4'>
+          <%= unless reportDet.application_no.nil?
+                reportDet.application_no
+              else
+                '-'
+              end %>
+        </div>
+        
+      </div>
+
+      <div class='span-8' style='width: 35%; float: left; font-size:11px;'>
+
+        <div class='span-4' style='font-weight: bolder;'>
+          Security Deposit
+        </div>
+        <div class='span-4'>
+          <%= unless reportDet.security_deposit.nil?
+                reportDet.security_deposit
+              else
+                '-'
+              end %>
+        </div>
+
+        <div class='span-4' style='font-weight: bolder;'>
+          Registration Fee
+        </div>
+        <div class='span-4'>
+          <%= unless reportDet.registration_fee.nil?
+                reportDet.registration_fee
+              else
+                '-'
+              end %>
+        </div>
+
+        <div class='span-4' style='font-weight: bolder;'>
+          Reading Fee
+        </div>
+        <div class='span-4'>
+          <%= unless reportDet.reading_fee.nil?
+                reportDet.reading_fee
+              else
+                '-'
+              end %>
+        </div>
+
+        <div class='span-4' style='font-weight: bolder;'>
+          Discount
+        </div>
+        <div class='span-4'>
+          <%= unless reportDet.discount.nil?
+                reportDet.discount
+              else
+                '-'
+              end %>
+        </div>
+
+        <div class='span-4' style='font-weight: bolder;'>
+          Coupon
+        </div>
+        <div class='span-4'>
+          <%= unless reportDet.coupon_id.nil?
+                Coupon.find(reportDet.coupon_id).name
+              else
+                '-'
+              end %>
+        </div>
+
+        <div class='span-4' style='font-weight: bolder;'>
+          Coupon No/ Amount
+        </div>
+        <div class='span-4'>
+          <%= unless reportDet.coupon_no.nil?
+                reportDet.coupon_no
+              else
+                '-'
+              end %>
+          <%= unless reportDet.coupon_amt.nil?
+                '/ ' + reportDet.coupon_amt.to_s
+              else
+                '-'
+              end %>
+        </div>
+
+        <div class='span-4' style='font-weight: bolder;'>
+          Paid By
+        </div>
+        <div class='span-4'>
+          <%= unless reportDet.payment_mode.nil?
+                Signup::PAYMENT_MODES.key(reportDet.payment_mode).upcase
+              else
+                '-'
+              end %>
+          <%= unless reportDet.payment_ref.nil?
+                ' - ' + reportDet.payment_ref.to_s
+              else
+                '-'
+              end %>
+        </div>
+
+        <div class='span-4' style='font-weight: bolder;'>
+          Paid Amount
+        </div>
+        <div class='span-4'>
+          <%= unless reportDet.paid_amt.nil?
+                reportDet.paid_amt
+              else
+                '-'
+              end %>
+        </div>
+      </div>
+
+    </div><hr/>
+  <% end -%>
+</div>

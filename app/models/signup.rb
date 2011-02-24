@@ -64,13 +64,55 @@ class Signup < ActiveRecord::Base
   end
 
   def paid_amt_greater_than_bill_amt
-	unless paid_amt.blank?
-		plan = Plan.find(plan_id)
-		bill_amt = plan.total_due_for_term(signup_months, coupon_id)
-		errors.add(:paid_amt, "is more than Bill Amount") if paid_amt.to_d > bill_amt.to_d
-	end
+    unless paid_amt.blank?
+      plan = Plan.find(plan_id)
+      bill_amt = plan.total_due_for_term(signup_months, coupon_id)
+      errors.add(:paid_amt, "is more than Bill Amount") if paid_amt.to_d > bill_amt.to_d
+    end
   end
-   
+
+
+  def generateNMReversalEvent(created_by, branch_id)
+    eventObj = Event.new
+
+    eventObj.event_type = "NEW_MEMBER_REVERSAL"
+    eventObj.version = "1"
+    eventObj.status = "P"
+    eventObj.val1 = self.membership_no
+    eventObj.val2 = created_by
+    eventObj.val3 = branch_id
+    eventObj.val4 = self.address
+    eventObj.val5 = self.advance_amt
+    eventObj.val6 = self.application_no
+    eventObj.val7 = self.branch_id
+    eventObj.val8 = self.coupon_amt
+    eventObj.val9 = self.coupon_id
+    eventObj.val10 = self.coupon_no
+    eventObj.val11 = self.discount
+    eventObj.val12 = self.email
+    eventObj.val13 = self.employee_no
+    eventObj.val14 = self.expiry_date
+    eventObj.val15 = self.lphone
+    eventObj.val16 = self.mphone
+    eventObj.val17 = self.name
+    eventObj.val18 = self.overdue_amt
+    eventObj.val19 = self.paid_amt
+    eventObj.val20 = self.payment_mode
+    eventObj.val21 = self.payment_ref
+    eventObj.val22 = self.plan_id
+    eventObj.val23 = self.reading_fee
+    eventObj.val24 = self.referrer_member_id
+    eventObj.val25 = self.registration_fee
+    eventObj.val26 = self.remarks
+    eventObj.val27 = self.security_deposit
+    eventObj.val28 = self.signup_months
+    eventObj.val29 = self.start_date
+    eventObj.val30 = self.flag_migrated
+
+    return eventObj
+  end
+  
+
   private 
   
   def set_defaults
@@ -113,5 +155,6 @@ class Signup < ActiveRecord::Base
       self.expiry_date = self.start_date.months_since(100)
     end
   end
+
   
 end

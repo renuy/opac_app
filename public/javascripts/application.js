@@ -208,146 +208,93 @@ ConsignmentApp.receiveGood = function(link) {
 };
 
 
-//sjb
-var barChart, tempBarId, signups_report_branch;
-
-function modifyMode(mode){
-    var pageSection = "<br/><p style='font-size:16px; font-weight: bolder;'>Member Details</p>";
-    $.get('/report_details?' + 'branch_id=' + signups_report_branch +
-        '&modifyMode=' + mode,
-        function(data) {
-            var isHeader = true;
-            $.each(data, function() {
-                $.each(this, function(k, v) {
-                    pageSection += "<div class='span-40'>";
-                    if(isHeader){
-                            pageSection += "<div class='span-8'>";
-                            $.each(v, function(key, value){
-                                if(key.toString() == "membership_no")
-                                    pageSection += "<p style='font-size:14px; font-weight: bolder; color:green;'>" +
-                                    value + "</p>";
-                            });
-                            pageSection += "</div>";
-                            isHeader = false;
-                    }
-                    var keyCount = 0;
-                    $.each(v, function(key, value){
-                        pageSection += "<div class='span-4'><b>" + key.toString().toUpperCase() +"</b></div>" +
-                            "<div class='span-4'>" + value +"</div>";
-                        keyCount += 1;
-                    });
-
-                    pageSection += "</div><hr/>"
-                    isHeader = true;
-                });
-            });
-            
-            $('#signups_report_details').html(pageSection);
-            
-        }, "json");
-}
-
-function modifyTotal(){
-    modifyMode('T');
-}
-
-function modifyProc(){
-    modifyMode('P');
-}
-
-function modifyUProc(){
-    modifyMode('U');
-}
-
-function modifyError(){
-    modifyMode('E');
-}
-
-function generate_signups_report(branch_id, refresh_mode){
-    var jsonObj = null;        
-    signups_report_branch = branch_id;
+function modifyMode(modeId, branch_id, start_date, end_date){
+    var mode = 'T';
+    if(modeId.indexOf("Un-Processed") != -1){
+        mode = 'U'
+    }else if(modeId.indexOf("Processed") != -1){
+        mode = 'P'
+    }else if(modeId.indexOf("Error") != -1){
+        mode = 'E'
+    }
     
-    //flush report_details
-    $('#signups_report_details').html("");
-
-    //get data
-    $.get('/report?' + 'branch_id=' + branch_id,
-        function(data) {
-        jsonObj = data;
-
-        $('#id-list').show();
-
-        if(!refresh_mode){
-            //init BarChart
-            barChart = new $jit.BarChart({
-              injectInto: 'infovis',
-              animate: true,
-              orientation: 'vertical',
-              barsOffset: 20,
-              Margin: {top:5, left: 5, right: 5, bottom:5},
-              labelOffset: 5,
-              type: 'stacked',
-              showAggregates:true,
-              showLabels:true,
-              Label: {type: 'HTML', size: 10, family: 'Arial', color: 'black'},
-              Tips: {
-                enable: true,
-                onShow: function(tip, elem) {
-                  tip.innerHTML = "<b> " + elem.name + "</b>: " + elem.value;
-                }
-              }
+    $.get('/report_details?' + 'branch_id=' + branch_id + '&modifyMode=' + mode +
+        '&start_date=' + start_date + '&end_date=' + end_date,
+            function(data){
+               $('#signups_report_details').html(data);
             });
-        }        
-        
-        //load JSON data.
-        if(refresh_mode){
-            barChart.updateJSON(jsonObj);
-        }else{
-            barChart.loadJSON(jsonObj);
-        }
-        //end
-
-        var list = $jit.id('id-list');
-
-        //dynamically add legend to list
-        var legend = barChart.getLegend(),
-            listItems = [];
-        for(var name in legend) {
-          listItems.push('<div class=\'query-color\' style=\'background-color:'
-              + legend[name] +'\'>&nbsp;</div>' + name);
-        }
-        list.innerHTML = '<li>' + listItems.join('</li><li>') + '</li>';
-
-        //event listener ids        
-        $('#infovis-label').children().each(function(){
-            var infoid = $(this);
-            if(infoid.attr('id').indexOf("Total") != -1){                
-                tempBarId = document.getElementById(infoid.attr('id'));
-                tempBarId.addEventListener('click', modifyTotal, false);
-            }else if(infoid.attr('id').indexOf("Un-Processed") != -1){
-                tempBarId = document.getElementById(infoid.attr('id'));
-                tempBarId.addEventListener('click', modifyUProc, false);
-            }else if(infoid.attr('id').indexOf("Processed") != -1){
-                tempBarId = document.getElementById(infoid.attr('id'));
-                tempBarId.addEventListener('click', modifyProc, false);
-            }else if(infoid.attr('id').indexOf("Error") != -1){
-                tempBarId = document.getElementById(infoid.attr('id'));
-                tempBarId.addEventListener('click', modifyError, false);
-            }
-        });
-    }, "json");   
-    
 }
-
-$('#signups_report').live('submit', function(){       
-    generate_signups_report($('#report_branch_id').val(), false);
-
-    return false;  
-});
 
 $('#refresh_signups_report').live('click', function(){
-    generate_signups_report($('#report_branch_id').val(), true);
+    $('#signups_report').submit();
 
     return false;
 });
-//sjb
+
+$('#signups_report').live('submit', function(){
+    // flush msg box
+    $('#signups_report_msg').html("");
+
+    var start_date_month = $('#start_date_2i').val();
+    if(start_date_month < 10){
+        start_date_month = '0' + start_date_month.toString();
+    }
+
+    var start_date_yr = $('#start_date_1i').val().substr(2, 4);
+    var end_date_yr = $('#end_date_1i').val().substr(2, 4);
+        
+    var start_date = $('#start_date_3i').val() + '-' +
+        start_date_month + '-' + start_date_yr;
+
+    var end_date_month = $('#end_date_2i').val();
+    if(end_date_month < 10){
+        end_date_month = '0' + end_date_month.toString();
+    }
+    var end_date = $('#end_date_3i').val() + '-' +
+        end_date_month + '-' + end_date_yr;
+
+    // make the report_details js call
+    var branch_id = $('#branch_id').val();
+    modifyMode('T', branch_id, start_date, end_date);
+
+    return false;
+});
+
+$('#nm_reversal a').live('click', function(){
+    var card_number = $(this).attr('card_number');
+    var nm_reversal = '#nm_reversal_' + card_number;
+    var nm_reversal_confirm = '#nm_reversal_confirm_' + card_number;
+    var nm_reversal_cancel = '#nm_reversal_cancel_' + card_number;
+    $(nm_reversal).hide(400);
+    $(nm_reversal_confirm).show(1000);
+    $(nm_reversal_cancel).show(1000);
+
+    return false;
+});
+
+$('#nm_reversal_confirm a').live('click', function(){
+    var card_number = $(this).attr('card_number');
+    $.get('/newMemberReversal?' + 'card_number=' + card_number,
+        function(){
+            $('#signups_report').submit();
+
+            var report_msg = '<font color="green"><b>' +
+                "New Member Reversal done for : " +
+                card_number + '</b></font>'
+            $('#signups_report_msg').html(report_msg);
+        });       
+
+    return false;
+});
+
+$('#nm_reversal_cancel a').live('click', function(){
+    var card_number = $(this).attr('card_number');
+    var nm_reversal = '#nm_reversal_' + card_number;
+    var nm_reversal_confirm = '#nm_reversal_confirm_' + card_number;
+    var nm_reversal_cancel = '#nm_reversal_cancel_' + card_number;
+    $(nm_reversal_confirm).hide(400);
+    $(nm_reversal_cancel).hide(400);
+    $(nm_reversal).show(1000);
+
+    return false;
+});
