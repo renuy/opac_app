@@ -2,7 +2,11 @@ class Ibtr < ActiveRecord::Base
   include ActiveRecord::Transitions
   
   acts_as_versioned
-  
+  scope :sort_1_mar, lambda {
+      {
+        :conditions => ['updated_at >= ?',"01-03-2011".to_time.beginning_of_day]
+      }
+    }
   belongs_to :title
   belongs_to :membership
   belongs_to :book,  :foreign_key => 'book_no'
