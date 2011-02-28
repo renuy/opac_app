@@ -11,7 +11,8 @@ class Ibtr < ActiveRecord::Base
   attr_reader :event
   cattr_reader :per_page
   @@per_page = 10
-
+  has_one :ibt_reassign, :include =>:batch,    :conditions => "BATCHES.state = 'Open' AND expires_on >= systimestamp"
+  after_save :upd_assign_task
   state_machine do
     state :New # first one is the initial state
     state :Assigned
@@ -56,6 +57,7 @@ class Ibtr < ActiveRecord::Base
     end
 
   end
+  
   
   def processEvent(event)
     case 
@@ -292,4 +294,13 @@ class Ibtr < ActiveRecord::Base
       'values' => [ibtrStat.assigned_cnt, ibtrStat.poplaced_cnt, ibtrStat.fulfilled_cnt, ibtrStat.declined_cnt, ibtrStat.dispatched_cnt ]
     }
   end    
+  def upd_assign_task
+    #if title changes, respondent or branch changed update the task as done
+    unless self.ibt_reassign.nil?
+      task = self.ibt_reassign
+      if (self.title_id != task.title_id or self.respondent_id.to_i != task.respondent_id or self.state != 'Assigned') and task.not_done?
+        task.done!
+      end
+    end
+  end
 end

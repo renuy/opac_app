@@ -5,7 +5,12 @@ Opac::Application.routes.draw do
   match '/dashboard' => 'dashboard#show'
 
   match '/auth/:provider/callback' => 'authentications#create'
-
+  match 'batches' => 'batches#index'
+  match 'reassign' => 'reassign#index'
+  match 'reassign_ibt_search' => 'reassign#ibt_search'
+  match 'reassign_search' => 'ibtrs#reassign_search'
+  match 'reassign_edit' => 'reassign#edit'
+  match 'upd_reassign' =>'batches#refresh_reassign_task', :method => :post
   get "stock/show"
   get "titles/index"
   get "ibtrs/drillrpt"
@@ -22,7 +27,7 @@ Opac::Application.routes.draw do
   match 'consignments/booksearch' => 'consignments#booksearch'
   match 'consignments/:id/transition/:event' => 'consignments#transition'
   match '/titles/qryAltTitle' => 'titles#qryAltTitle'
-  resources :titles, :authors, :ibtrs, :branches, :stock, :stockitems, :authentications, :signups, :plans, :coupons, :consignments, :goods
+  resources :titles, :authors, :ibtrs, :branches, :stock, :stockitems, :authentications, :signups, :plans, :coupons, :consignments, :goods, :ibt_reassigns, :batches
   
   match 'statistics/:title_id' => 'statistics#view'
   

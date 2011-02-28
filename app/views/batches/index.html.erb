@@ -1,0 +1,45 @@
+<div class="span-4 colborder">
+	<div class="span-4">
+		<p></p>
+		<% if user_signed_in? -%>
+    <p><%= link_to "Home", root_path  %>	</p>
+    <p><%= link_to "Reassign IBT Batch", batches_path(:type => 'Reassign')  %>	</p>
+		<% end -%>
+	</div>
+	
+</div>
+
+<div class="span-14">
+	<h4><%= "Showing #{Branch.find(user_session['current_branch'].id.to_i).name}'s"%> <b><%=params[:criteria]%> <%= params[:show] unless params[:show] == 'all' %></b> requests</h4>
+	<br/>
+	<%= will_paginate(@batches) %>
+	<hr/>
+	<div class="span-20">
+  <div class="span-20">
+    <b>
+    <div class="span-1">Id</div>
+    <div class="span-2">Batch for</div>
+    <div class="span-2">Status </div>
+    <div class="span-2">Total count</div>
+    <div class="span-2">Closed count</div>
+    <div class="span-2">User</div>
+    <div class="span-3">Created On</div>
+    <div class="span-3">Expiry date</div>
+    </b>
+  </div>
+  <% @batches.each do |batch| %>
+  <div class="span-20">
+    <div class="span-1"><%= link_to  batch.id , upd_reassign_path( :id => batch.id) %></div>
+    <div class="span-2"><%=batch.batch_type %></div>
+    <div class="span-2"><%=batch.state%></div>
+    <div class="span-2"><%=batch.item_count %></div>
+    <div class="span-2"><%=batch.closed_count %></div>
+    <div class="span-2"><%=batch.assigned_to %></div>
+    <div class="span-3"><%=batch.created_at.strftime('%d-%m-%Y %I:%M %P') %></div>
+    <div class="span-3"><%=batch.expires_on.strftime('%d-%m-%Y %I:%M %P') %></div>
+  </div>
+  <% end %>
+	</div>
+	<br/>
+	</div>
+</div>

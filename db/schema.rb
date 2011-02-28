@@ -10,12 +10,23 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110222095539) do
+ActiveRecord::Schema.define(:version => 20110223100734) do
 
   create_table "authentications", :force => true do |t|
     t.integer  "user_id",    :precision => 38, :scale => 0
     t.string   "provider"
     t.string   "uid"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "batches", :force => true do |t|
+    t.string   "batch_type"
+    t.string   "assigned_to"
+    t.string   "state"
+    t.integer  "item_count",   :precision => 38, :scale => 0
+    t.integer  "closed_count", :precision => 38, :scale => 0
+    t.datetime "expires_on"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -87,6 +98,16 @@ ActiveRecord::Schema.define(:version => 20110222095539) do
     t.integer   "title_id",                   :precision => 38, :scale => 0
   end
 
+  create_table "ibt_reassigns", :force => true do |t|
+    t.integer  "batch_id",      :precision => 38, :scale => 0
+    t.integer  "title_id",      :precision => 38, :scale => 0
+    t.integer  "respondent_id", :precision => 38, :scale => 0
+    t.integer  "assigned_cnt",  :precision => 38, :scale => 0
+    t.string   "state"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "ibt_search_criterias", :force => true do |t|
     t.integer   "respondent_id",              :precision => 38, :scale => 0
     t.timestamp "time_basis",    :limit => 6
@@ -95,15 +116,15 @@ ActiveRecord::Schema.define(:version => 20110222095539) do
   end
 
   create_table "ibt_sorts", :force => true do |t|
-    t.integer  "book_no",         :precision => 38, :scale => 0
-    t.integer  "ibtr_id",         :precision => 38, :scale => 0
-    t.integer  "consignment_id",  :precision => 38, :scale => 0
-    t.string   "isbn"
-    t.string   "flg_no_isbn"
-    t.string   "flg_repeat_sort"
-    t.string   "flg_success"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.integer   "book_no",                      :precision => 38, :scale => 0
+    t.integer   "ibtr_id",                      :precision => 38, :scale => 0
+    t.integer   "consignment_id",               :precision => 38, :scale => 0
+    t.string    "isbn"
+    t.string    "flg_no_isbn"
+    t.string    "flg_repeat_sort"
+    t.string    "flg_success"
+    t.timestamp "created_at",      :limit => 6
+    t.timestamp "updated_at",      :limit => 6
   end
 
   create_table "ibtr_versions", :force => true do |t|
