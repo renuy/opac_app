@@ -12,7 +12,7 @@ class IbtSort < ActiveRecord::Base
   private
   def set_details
     self.ibtr_id = 0 if self.ibtr_id.nil? 
-    self.consignment_id = 0 unless self.ibtr_id == 0
+    #self.consignment_id = 0 unless self.ibtr_id == 0
     self.flg_no_isbn =  self.flg_no_isbn.nil?  ? 'N' : self.flg_no_isbn
     ib = self.ibtr_id == 0 ? nil : IbtSort.find_by_ibtr_id(self.ibtr_id)
     if ib.nil?
@@ -20,7 +20,7 @@ class IbtSort < ActiveRecord::Base
     end
 
     self.flg_repeat_sort = ib.nil? ? 'N' : 'Y'
-    self.flg_success = self.consignment_id.nil? ? 'N' : 'Y'
+    self.flg_success = self.ibtr_id==0 ? 'N' : 'Y'
   end
   
   def ibtr_not_found
