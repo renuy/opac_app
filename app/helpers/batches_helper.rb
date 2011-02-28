@@ -1,0 +1,3 @@
+module BatchesHelper
+
+end

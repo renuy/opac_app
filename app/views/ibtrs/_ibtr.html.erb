@@ -13,23 +13,23 @@
 		<div class="span-13">
 
 			<div class="span-11" id = "<%= "div_req_#{ibtr.id}" %>">
-				<%= render :partial => 'request', :locals => { :ibtr => ibtr } %>
+				<%= render :partial => 'ibtrs/request', :locals => { :ibtr => ibtr } %>
 			</div>
 
 			<div class="span-11" id = "<%= "div_ass_#{ibtr.id}" %>" style="display:none">
-				<%= render :partial => 'assign', :locals => { :ibtr => ibtr } %>
+				<%= render :partial => 'ibtrs/assign', :locals => { :ibtr => ibtr } %>
 			</div>
 
 			<div class="span-11" id = "<%= "div_alt_#{ibtr.id}" %>" style="display:none">
-				<%= render :partial => 'alternate', :locals => { :ibtr => ibtr } %>
+				<%= render :partial => 'ibtrs/alternate', :locals => { :ibtr => ibtr } %>
 			</div>
 
 			<div class="span-11" id = "<%= "div_can_#{ibtr.id}" %>" style="display:none">
-				<%= render :partial => 'cancel', :locals => { :ibtr => ibtr } %>
+				<%= render :partial => 'ibtrs/cancel', :locals => { :ibtr => ibtr } %>
 			</div>
 
 			<div class="span-11" id = "<%= "div_pro_#{ibtr.id}" %>" style="display:none">
-				<%= render :partial => 'procure', :locals => { :ibtr => ibtr } %>
+				<%= render :partial => 'ibtrs/procure', :locals => { :ibtr => ibtr } %>
 			</div>
 
 			<div class="span-1 push-1">
@@ -50,7 +50,7 @@
 					<th>Title</th>
 					<th colspan="3">Event</th>
 				</tr>
-				<%= render :partial => 'ibtrversion', :collection => ibtr.versions.reverse %>
+				<%= render :partial => 'ibtrs/ibtrversion', :collection => ibtr.versions.reverse %>
 			</table>
 		</div>
 		<div class="span-13;" style="display:none">

@@ -19,6 +19,10 @@ class IbtrsController < ApplicationController
     @ibtrs = Ibtr.complexSearch(params)
   end
 
+  def reassign_search
+    @ibtrs = Ibtr.find(:all, :conditions=> ['id =?' ,params[:id]]).paginate(:page=>params[:page], :per_page=>10)
+    render 'index'
+  end
   def drillrpt
   
     start_d_s = params[:start]
