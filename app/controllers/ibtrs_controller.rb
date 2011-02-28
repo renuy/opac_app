@@ -58,7 +58,8 @@ class IbtrsController < ApplicationController
     isbn = params[:sort][:isbn]
     flg_no_isbn = params[:sort][:flg_no_isbn]
     # check for an existing fulfilled, or dispatched record
-    @ibtr = Ibtr.find_by_book_no_and_state(book_no, [:Dispatched,:Fulfilled])
+    ibtrs = Ibtr.find_all_by_book_no_and_state(book_no, [:Dispatched,:Fulfilled], :order => 'state desc, updated_at desc')
+    @ibtrs  = ibtrs.size == 0 ? nil : ibtrs[0]
     ib = IbtSort.new
     ib.book_no = book_no
     ib.isbn = isbn
