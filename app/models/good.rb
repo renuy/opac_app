@@ -43,6 +43,7 @@ end
   end
   
   private
+  #TODO - satellite branches (good)
   def set_good_details
     self.consignment = Consignment.find(consignment_id)
     self.book = Book.find_by_book_no(book_no)

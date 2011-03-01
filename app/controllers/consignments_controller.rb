@@ -83,12 +83,13 @@ class ConsignmentsController < ApplicationController
     end    
   end
   
+  #TODO - satellite branches (sort failed search)
   def booksearch
     book_no = params[:book_no]
     goods = Good.find(:all, :conditions => ['book_no = ? AND ibtr_id IS NULL ',  book_no], :order => 'created_at DESC')
     unless goods.size == 0 
       @good = goods[0]
-      @ibtrs= Ibtr.find_all_by_respondent_id_and_state(@good.consignment.origin_id, [:Assigned,:POPlaced])      
+      @ibtrs= Ibtr.find_all_by_respondent_id_and_state(@good.consignment.origin.satellites.collect {|x| x.id}, [:Assigned,:POPlaced])      
     else
       @good = nil
       @ibtrs = nil
