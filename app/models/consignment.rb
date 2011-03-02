@@ -54,7 +54,7 @@ class Consignment < ActiveRecord::Base
     end
 	end
 	
-	before_save :set_defaults
+	before_create :set_defaults
 
 	def processEvent!(event)
 		case 
@@ -108,7 +108,9 @@ class Consignment < ActiveRecord::Base
 	private
 	
 	def set_defaults
-	  self.waybill_no = 'IBT/'+ self.origin.name[0..1]+'/'+ self.destination.name[0..1]+'/'+Time.zone.now.strftime("%Y%m%d%I%M%S%3N")
+    if waybill_no.nil?
+      self.waybill_no = 'IBT/'+ self.origin.name[0..1]+'/'+ self.destination.name[0..1]+'/'+Time.zone.now.strftime("%Y%m%d%I%M%S%3N")
+    end
 	  if origin_address.nil?
 	    self.origin_address = origin.address
 	  end
