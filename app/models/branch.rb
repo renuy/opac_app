@@ -1,4 +1,6 @@
 class Branch < ActiveRecord::Base
+  has_many :satellites, :foreign_key => "parent_id", :class_name => "Branch"
+  
   def self.branch_id_from_subdomain(subdomain)
     # replace this by searching for a parent branch with subdomain set in the short name
     # TODO
@@ -21,6 +23,8 @@ class Branch < ActiveRecord::Base
           when 'vij'  then 26
           when 'vjn'  then 31
           when 'rrn'  then 33
+          when 'skn'  then 35
+          when 'wnr'  then 36  
           else 801
           end
     id

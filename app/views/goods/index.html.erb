@@ -15,8 +15,8 @@
     <td><%= link_to(good.consignment_id, consignment_path(good.consignment)) %></td>
     <td><%= good.id %></td>
     <td><%= good.book_no %></td>
-    <td><%= good.title.title %></td>
-		<td><%= good.ibtr.state %></td>
+    <td><%= good.title.title unless good.title.nil? %></td>
+		<td><%= good.ibtr.state unless good.ibtr.nil? %></td>
 		<td><%= good.state %></td>
 
     <td><%= link_to 'Show', good %></td>

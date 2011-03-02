@@ -1,0 +1,36 @@
+<%= javascript_tag :defer => 'defer' do -%>
+	$('#current_branch').html('<%= user_session['current_branch'].name %>');
+
+        $(document).ready(function () {          
+          $('#signups_report').submit();
+        });
+<% end -%>
+
+<p style="font-size: 14px; font-family: arial; font-weight: bold;">Signups Report</p>
+
+<%= form_tag('', :id => 'signups_report') do %>
+  <div class="span-30">
+    <div class="span-6" style="font-weight: bold; float: left;">
+      Start Date<br/>
+      <%= date_select("start", "date",
+        :order => [:day, :month, :year]) %>
+    </div>
+    <div class="span-6" style="font-weight: bold; float: left;">
+      End Date<br/>
+      <%= date_select("end", "date",
+        :order => [:day, :month, :year]) %>
+    </div>
+    <div class="span-3" style="font-weight: bold; float: left;">
+      <%= hidden_field_tag(:branch_id, user_session['current_branch'].id) %><br/>
+      <%= submit_tag 'Refresh', :id => 'refresh_signups_report' %>
+    </div>
+
+    <div class="span-7" id="signups_report_msg"
+         style="float: right;"></div>
+    <hr/>
+  </div>
+<% end -%>
+  
+<div id="signups_report_details" style="height: 600px; width: 1000px; 
+     font-size: 10px; overflow: auto"></div>
+     

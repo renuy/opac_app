@@ -59,8 +59,8 @@ IBTapp.showPanel = function (paneId, panelId) {
 				  type: 'stacked',  
 				  showAggregates:true, 
 				  showLabels:true, 
-				  Label: { type: 'HTML', size: 10, family: 'Arial', color: 'black' }, 
-				  Tips: { enable: true,  
+				  Label: {type: 'HTML', size: 10, family: 'Arial', color: 'black'}, 
+				  Tips: {enable: true,  
 				    onShow: function(tip, elem) {  
 				      tip.innerHTML = "<span class='tooltip'><b>  " + elem.name + "</b>: " + elem.value + "  </span>";
 				    }  
@@ -105,8 +105,8 @@ IBTStatApp.showChart = function(panelId, bartype, show_aggregate){
       type: bartype,  
       showAggregates:show_aggregate, 
       showLabels:true, 
-      Label: { type: 'HTML', size: 10, family: 'Arial', color: 'black' }, 
-      Tips: { enable: true,  
+      Label: {type: 'HTML', size: 10, family: 'Arial', color: 'black'}, 
+      Tips: {enable: true,  
         onShow: function(tip, elem) {  
           tip.innerHTML = "<span class='tooltip'><b>  " + elem.name + "</b>: " + elem.value + "  </span>";
         }  
@@ -145,7 +145,7 @@ IBTapp.initSearchForm = function (option, onload) {
 	}
 };
 
-$('.ibtrSearch #searchBy').live('change', function() { IBTapp.initSearchForm($('.ibtrSearch #searchBy').val(), false); });
+$('.ibtrSearch #searchBy').live('change', function() {IBTapp.initSearchForm($('.ibtrSearch #searchBy').val(), false);});
 
 IBTStatApp.initStatForm = function (option, onload) {
 	if (option == 'On' || option == 'Range') {
@@ -164,7 +164,7 @@ IBTStatApp.initStatForm = function (option, onload) {
 	}
 };
 
-$('.ibtrStat #Created').live('change', function() { IBTStatApp.initStatForm($('.ibtrStat #Created').val(), false); });
+$('.ibtrStat #Created').live('change', function() {IBTStatApp.initStatForm($('.ibtrStat #Created').val(), false);});
 
 $('#authors th a, #authors .pagination a, #authors td a').live('click', function() {
 	$.getScript(this.href);
@@ -203,17 +203,98 @@ ConsignmentApp.removeGood = function(link) {
 };
 
 ConsignmentApp.receiveGood = function(link) {
-	//$(link).prev("input[type='hidden']").val('deliver');
-	//$(link).hide();
-  curr_txt = $(link).text();
-  if (curr_txt == 'receive') {
-    $(link).prev("input[type='hidden']").val('Delivered');
-    $(link).text('unreceive');
-  }
-  else
-  {
-    $(link).prev("input[type='hidden']").val('Pickedup');
-    $(link).text('receive');
-  }
-  
+	$(link).prev("input[type='hidden']").val('deliver');
+	$(link).parents("tr").hide();
 };
+
+
+function modifyMode(modeId, branch_id, start_date, end_date){
+    var mode = 'T';
+    if(modeId.indexOf("Un-Processed") != -1){
+        mode = 'U'
+    }else if(modeId.indexOf("Processed") != -1){
+        mode = 'P'
+    }else if(modeId.indexOf("Error") != -1){
+        mode = 'E'
+    }
+    
+    $.get('/report_details?' + 'branch_id=' + branch_id + '&modifyMode=' + mode +
+        '&start_date=' + start_date + '&end_date=' + end_date,
+            function(data){
+               $('#signups_report_details').html(data);
+            });
+}
+
+$('#refresh_signups_report').live('click', function(){
+    $('#signups_report').submit();
+
+    return false;
+});
+
+$('#signups_report').live('submit', function(){
+    // flush msg box
+    $('#signups_report_msg').html("");
+
+    var start_date_month = $('#start_date_2i').val();
+    if(start_date_month < 10){
+        start_date_month = '0' + start_date_month.toString();
+    }
+
+    var start_date_yr = $('#start_date_1i').val().substr(2, 4);
+    var end_date_yr = $('#end_date_1i').val().substr(2, 4);
+        
+    var start_date = $('#start_date_3i').val() + '-' +
+        start_date_month + '-' + start_date_yr;
+
+    var end_date_month = $('#end_date_2i').val();
+    if(end_date_month < 10){
+        end_date_month = '0' + end_date_month.toString();
+    }
+    var end_date = $('#end_date_3i').val() + '-' +
+        end_date_month + '-' + end_date_yr;
+
+    // make the report_details js call
+    var branch_id = $('#branch_id').val();
+    modifyMode('T', branch_id, start_date, end_date);
+
+    return false;
+});
+
+$('#nm_reversal a').live('click', function(){
+    var card_number = $(this).attr('card_number');
+    var nm_reversal = '#nm_reversal_' + card_number;
+    var nm_reversal_confirm = '#nm_reversal_confirm_' + card_number;
+    var nm_reversal_cancel = '#nm_reversal_cancel_' + card_number;
+    $(nm_reversal).hide(400);
+    $(nm_reversal_confirm).show(1000);
+    $(nm_reversal_cancel).show(1000);
+
+    return false;
+});
+
+$('#nm_reversal_confirm a').live('click', function(){
+    var card_number = $(this).attr('card_number');
+    $.get('/newMemberReversal?' + 'card_number=' + card_number,
+        function(){
+            $('#signups_report').submit();
+
+            var report_msg = '<font color="green"><b>' +
+                "New Member Reversal done for : " +
+                card_number + '</b></font>'
+            $('#signups_report_msg').html(report_msg);
+        });       
+
+    return false;
+});
+
+$('#nm_reversal_cancel a').live('click', function(){
+    var card_number = $(this).attr('card_number');
+    var nm_reversal = '#nm_reversal_' + card_number;
+    var nm_reversal_confirm = '#nm_reversal_confirm_' + card_number;
+    var nm_reversal_cancel = '#nm_reversal_cancel_' + card_number;
+    $(nm_reversal_confirm).hide(400);
+    $(nm_reversal_cancel).hide(400);
+    $(nm_reversal).show(1000);
+
+    return false;
+});
