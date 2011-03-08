@@ -72,8 +72,8 @@ class Ibtr < ActiveRecord::Base
     when event.eql?('dispatch') then dispatch
     when event.eql?('receive') then receive
     when event.eql?('cancel') then cancel
-    when envent.eql?('deliver') then deliver
-    when envent.eql?('timeout') then timeout
+    when event.eql?('deliver') then deliver
+    when event.eql?('timeout') then timeout
     end
   end
 
