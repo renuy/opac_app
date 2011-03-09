@@ -1,0 +1,54 @@
+<div class="span-4 colborder">
+	<div class="span-4">
+		<p></p>
+		<% if user_signed_in? -%>
+    <p><%= link_to "Home", root_path  %>	</p>
+    <p><%= link_to "Unclaimed Batch", batches_path(:type => 'Unclaimed Goods')  %>	</p>
+		<% end -%>
+	</div>
+	
+</div>
+
+<div class="span-14">
+  <div class="span-14">
+    <div class="span-14">
+      <h4>Unfulfilled consignment tracking</h4>
+      <div class="span-2"><b>Batch No.: </b></div><div class="span-4"><%= @batch.id %></div>
+      <div class="span-2"><b>Type:</b></div><div class="span-4"><%=@batch.batch_type %></div>
+      <div class="span-2"><b>Status : </b></div><div class="span-4"><%=@batch.state%></div>
+      <div class="span-2"><b>User:  </b></div><div class="span-4"><%=@batch.assigned_to %></div>
+      <div class="span-2"><b>Count: </b></div><div class="span-4"><%=@batch.item_count %></div>
+      <div class="span-2"><b>Closed: </b></div><div class="span-4"><%=@batch.closed_count %></div>
+      
+      <div class="span-2"><b>Created On:  </b></div><div class="span-4"><%=@batch.created_at.strftime('%d-%m-%Y %I:%M %P') %></div>
+      <div class="span-2"><b>Expiry date: </b></div><div class="span-4"><%=@batch.expires_on.strftime('%d-%m-%Y %I:%M %P') %></div>
+      
+    </div>
+    <div class="span-14">
+      <br/>
+      <%= will_paginate(@ibt_reassign_batches) %>
+      <hr/>
+      <div class="span-14">
+        <% @ibt_reassign_batches.each do |ibt_reassign_batch| %>
+          <div class="span-14">
+            <div class="span-2 right">
+              <%= image_tag image_url(ibt_reassign_batch.good.title_id), :size => "50x80", :alt => "#{ibt_reassign_batch.good.title_id} ", :title => "#{ibt_reassign_batch.good.title_id}", :onerror => "this.src='#{default_image_url}';"  %>
+            </div>
+            <div class="span-10">
+              <p><b><%=ibt_reassign_batch.good.title.title%></b> with book number <b><%=ibt_reassign_batch.good.book_no%></b> has been collected from  <b><%=ibt_reassign_batch.good.consignment.origin.name%></b> and is not fulfilled. <br/>
+              Please check if a matching title is found and fulfill if required
+              <p><%= link_to "Sort Failed Search", consignments_booksearch_path(:book_no => ibt_reassign_batch.good.book_no) %> </p>
+              <br/>
+              This task is <b><%=get_link_name(ibt_reassign_batch.state) %></b> <!--, reassign_edit_path( :id => ibt_reassign_batch.id, :state => ibt_reassign_batch.state ) -->.
+              </p>
+            <div>
+            <hr/>
+          </div>
+          
+        <% end %>
+      </div>
+      <br/>
+    </div>
+    <hr/>
+  </div>
+</div>

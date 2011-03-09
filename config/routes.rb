@@ -11,6 +11,10 @@ Opac::Application.routes.draw do
   match 'reassign_search' => 'ibtrs#reassign_search'
   match 'reassign_edit' => 'reassign#edit'
   match 'upd_reassign' =>'batches#refresh_reassign_task', :method => :post
+  match 'upd_unclaimed' => 'batches#refresh_unclaimed_task' , :method => :post
+  match 'unclaimed' => 'reassign#unclaimed'
+  
+  match 'batch_show' => 'batches#show', :method => :get
   get "stock/show"
   get "titles/index"
   get "ibtrs/drillrpt"
