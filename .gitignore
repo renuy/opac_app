@@ -9,4 +9,12 @@ doc/app
 *.swp
 *~
 .DS_Store
+<<<<<<< HEAD
 solr/data/development/*
+app/views/devise/sessions/new.html.erb
+Gemfile
+Gemfile.lock
+config/database.yml
+=======
+solr/data/development/*
+>>>>>>> upstream

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110223100734) do
+ActiveRecord::Schema.define(:version => 20110309165437) do
 
   create_table "authentications", :force => true do |t|
     t.integer  "user_id",    :precision => 38, :scale => 0
@@ -102,10 +102,11 @@ ActiveRecord::Schema.define(:version => 20110223100734) do
     t.integer  "batch_id",      :precision => 38, :scale => 0
     t.integer  "title_id",      :precision => 38, :scale => 0
     t.integer  "respondent_id", :precision => 38, :scale => 0
-    t.integer  "assigned_cnt",  :precision => 38, :scale => 0
+    t.integer  "ibtr_id",       :precision => 38, :scale => 0
     t.string   "state"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "good_id",       :precision => 38, :scale => 0
   end
 
   create_table "ibt_search_criterias", :force => true do |t|
