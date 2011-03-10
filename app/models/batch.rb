@@ -19,5 +19,17 @@ class Batch < ActiveRecord::Base
       end
     end
   end
+  
+  def self.update_unclaimed_items(batch_id)
+    batch = Batch.find(batch_id)
+    if batch.open? 
+      unclaimed_items = IbtReassign.find(:all, :conditions => ['batch_id =? ', batch_id], :order => 'id')
+      unclaimed_items.each do |item|
+        if (!item.good.ibtr_id.nil? and  item.not_done?)
+          item.done!
+        end
+      end
+    end
+  end
 
 end

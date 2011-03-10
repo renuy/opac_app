@@ -4,6 +4,7 @@ class IbtReassign < ActiveRecord::Base
   belongs_to :title
   belongs_to :respondent, :class_name => 'Branch', :foreign_key => 'respondent_id'
   belongs_to :ibtr
+  belongs_to :good
   
 	state_machine do
   	state :Open
