@@ -1,5 +1,7 @@
 class IbAssignment < ActiveRecord::Base
 
+  belongs_to :title
+
 
 def self.allRacks(params)
 	
