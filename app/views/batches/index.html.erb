@@ -4,13 +4,14 @@
 		<% if user_signed_in? -%>
     <p><%= link_to "Home", root_path  %>	</p>
     <p><%= link_to "Reassign IBT Batch", batches_path(:type => 'Reassign')  %>	</p>
+    <p><%= link_to "Unclaimed Goods", batches_path(:type => 'Unclaimed Goods')  %>	</p>
 		<% end -%>
 	</div>
 	
 </div>
 
 <div class="span-14">
-	<h4><%= "Showing #{Branch.find(user_session['current_branch'].id.to_i).name}'s"%> <b><%=params[:criteria]%> <%= params[:show] unless params[:show] == 'all' %></b> requests</h4>
+	<h4><%= "Showing "%> <b> <%= params[:type] %></b> tasks</h4>
 	<br/>
 	<%= will_paginate(@batches) %>
 	<hr/>
@@ -29,7 +30,8 @@
   </div>
   <% @batches.each do |batch| %>
   <div class="span-20">
-    <div class="span-1"><%= link_to  batch.id , upd_reassign_path( :id => batch.id) %></div>
+    <div class="span-1">
+      <%= link_to  batch.id , batch_show_path( :id => batch.id, :type=> batch.batch_type) %></div>
     <div class="span-2"><%=batch.batch_type %></div>
     <div class="span-2"><%=batch.state%></div>
     <div class="span-2"><%=batch.item_count %></div>

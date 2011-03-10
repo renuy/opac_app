@@ -19,4 +19,9 @@ class ReassignController < ApplicationController
   def ibt_search
     redirect_to :action=>"reassign_search", :controller=>"ibtrs", :id=>params[:ibtr_id], :page=>1
   end
+  
+  def unclaimed
+    @batch = Batch.find( params[:batch_id])
+    @ibt_reassign_batches = IbtReassign.find(:all, :conditions => ['batch_id = ? ', params[:batch_id]], :order => 'state desc, id').paginate(:page => params[:page], :per_page => 10)
+  end
 end
