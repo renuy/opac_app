@@ -7,15 +7,9 @@
   <div class="span-14">
     <%= form_tag ibtrs_stats_path, :class=>'ibtrStat', :method => 'get' do -%>
         <%= field_set_tag 'Search' do %>
-          
-          <div class="span-14">
-          <%= label_tag 'Search:'%>
-          <%= select_tag :search_key, options_for_select([['Raised','New'],['Assigned','Assigned'],['Fulfilled','Fulfilled'],['Received','Received']], params[:search_key]) %>
-          </div>
-          
           <div class="span-14">
           <%= label_tag 'Show IBTR:'%>
-          <%= select_tag :Created, options_for_select([['All','All'],['Today','Today'],['On','On'],['Between','Range']], params[:Created]) %>
+          <%= select_tag :Created, options_for_select([['All','All'],['Raised today','Today'],['Raised on','On'],['Raised Between','Range']], params[:Created]) %>
           <%= hidden_field_tag :report , params[:report] %>
           </div>
           <div class="span-7" id="div_start_date">
