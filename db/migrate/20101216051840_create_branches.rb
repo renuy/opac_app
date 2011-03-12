@@ -6,7 +6,7 @@ class CreateBranches < ActiveRecord::Migration
       t.string :city
       t.string :phone
       t.string :email
-      t.string :is_a
+      t.string :category
       t.integer :parent_id
       t.string :parent_name
 
