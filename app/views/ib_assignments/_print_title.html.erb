@@ -1,7 +1,8 @@
-<table width="100%" >
+﻿<table width="100%" >
 	<tr width="100%">
+    <td width="10%"><% if print_title.picked=='p' %><%="√"%><%end%>  </td>
 		<td width="50%"><%=print_title.title.title%>  </td>
-    <td width="40%"><%=print_title.title.author.name%>  </td>
+    <td width="30%"><%=print_title.title.author.name%>  </td>
 		<td width="10%"><%=Ibtr.find(:all, :conditions=> ['state = ? AND respondent_id = ? AND title_id = ?', "Assigned" , user_session['current_branch'].id, print_title.title_id] ).size %></td>
 	</tr>
 </table>
