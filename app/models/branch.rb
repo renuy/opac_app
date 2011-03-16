@@ -1,5 +1,6 @@
 class Branch < ActiveRecord::Base
   has_many :satellites, :foreign_key => "parent_id", :class_name => "Branch"
+  belongs_to :parent, :foreign_key => "parent_id", :class_name => "Branch"
   
   def self.branch_id_from_subdomain(subdomain)
     # replace this by searching for a parent branch with subdomain set in the short name
