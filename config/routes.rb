@@ -1,6 +1,5 @@
 Opac::Application.routes.draw do
 
-  match '/signups/compute' => 'signups#compute'
   
   match '/dashboard' => 'dashboard#show'
 
@@ -31,7 +30,7 @@ Opac::Application.routes.draw do
   match 'consignments/booksearch' => 'consignments#booksearch'
   match 'consignments/:id/transition/:event' => 'consignments#transition'
   match '/titles/qryAltTitle' => 'titles#qryAltTitle'
-  resources :titles, :authors, :ibtrs, :branches, :stock, :stockitems, :authentications, :signups, :plans, :coupons, :consignments, :goods, :ibt_reassigns, :batches
+  resources :titles, :authors, :ibtrs, :branches, :stock, :stockitems, :authentications, :plans, :coupons, :consignments, :goods, :ibt_reassigns, :batches
   
   match 'statistics/:title_id' => 'statistics#view'
   
@@ -43,10 +42,6 @@ Opac::Application.routes.draw do
   match 'ibt_assigned' => 'ib_assignments#change'
   match 'ibtrs_alttitle' => 'ibtrs#setAltTitle'
   match 'ibtrs_drillrpt' =>   'ibtrs#drillrpt'
-
-  match 'report' => 'signups_report#signups_report'
-  match 'report_details' => 'signups_report#report_details'
-  match 'newMemberReversal' => 'signups_report#newMemberReversal'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
