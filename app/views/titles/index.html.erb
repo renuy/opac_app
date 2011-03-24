@@ -40,16 +40,18 @@
   <h4 class="alt">Refine by Publisher</h4>
   <ol class="facet">
     <% for row in @searchResults.facet(:publisher_id).rows -%>
-    <li>
-			<%= link_to_function(row.instance.name) do |page|
-				page[:facetPublisher].value = row.value;
-				page[:searchForm].submit();
-			end -%> 
-			(<%= row.count %>)
-			<%= button_to_function('X') do |page| 
-				page[:facetPublisher].value = nil;
-				page[:searchForm].submit();						
-			end if params[:facetPublisher].to_i > 0 -%></li>
+      <% if defined?(row.instance) -%>
+        <li>
+    			<%= link_to_function(row.instance.name) do |page|
+    				page[:facetPublisher].value = row.value;
+    				page[:searchForm].submit();
+    			end -%> 
+    			(<%= row.count %>)
+    			<%= button_to_function('X') do |page| 
+    				page[:facetPublisher].value = nil;
+    				page[:searchForm].submit();						
+    			end if params[:facetPublisher].to_i > 0 -%></li>
+    	<% end -%>
     <% end -%>
   </ol>
 </div>
