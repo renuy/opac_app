@@ -40,7 +40,7 @@
   <h4 class="alt">Refine by Publisher</h4>
   <ol class="facet">
     <% for row in @searchResults.facet(:publisher_id).rows -%>
-      <% if defined?(row.instance) -%>
+      <% unless row.instance.nil? -%>
         <li>
     			<%= link_to_function(row.instance.name) do |page|
     				page[:facetPublisher].value = row.value;
