@@ -9,7 +9,9 @@ class TitlesController < ApplicationController
       if Title.exists?(params[:queryTitleId])
         @title = Title.find(params[:queryTitleId])
         if params[:query].blank?
-          params[:query] = @title.title
+          # not yet fixed solr search, and all non aplha characters are restricting matches
+          # hence removed those characters from the search string
+          params[:query] = @title.title.gsub(/[^a-zA-Z\s]/,'')
         else
           params[:queryTitleId] = ""
         end
