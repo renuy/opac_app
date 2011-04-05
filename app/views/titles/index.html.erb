@@ -21,8 +21,9 @@
 </div>
 <div class="span-4 colborder">
 	<h4 class="alt"> Refine by Category </h4>
-	  <ol class="facet">
-	    <% for row in @searchResults.facet(:category_id).rows -%>
+	<ol class="facet">
+	  <% for row in @searchResults.facet(:category_id).rows -%>
+      <% unless row.instance.nil? -%>
 	      <li>
 					<%= link_to_function(row.instance.name) do |page|
 						page[:facetCategory].value = row.value;
@@ -34,7 +35,8 @@
 						page[:searchForm].submit();						
 					end if params[:facetCategory].to_i > 0 -%></li>
 	    <% end -%>
-	  </ol>
+	  <% end -%>
+	</ol>
 </div>
 <div class="span-4 colborder">
   <h4 class="alt">Refine by Publisher</h4>
@@ -59,16 +61,18 @@
   <h4 class="alt">Refine by Author</h4>
   <ol class="facet">
     <% for row in @searchResults.facet(:author_id).rows -%>
-    <li>
-			<%= link_to_function(row.instance.name) do |page|
-				page[:facetAuthor].value = row.value;
-				page[:searchForm].submit();
-			end -%> 
-			(<%= row.count %>)
-			<%= button_to_function('X') do |page| 
-				page[:facetAuthor].value = nil;
-				page[:searchForm].submit();						
-			end if params[:facetAuthor].to_i > 0 -%></li>
+      <% unless row.instance.nil? -%>
+        <li>
+      		<%= link_to_function(row.instance.name) do |page|
+      			page[:facetAuthor].value = row.value;
+      			page[:searchForm].submit();
+      		end -%> 
+      		(<%= row.count %>)
+      		<%= button_to_function('X') do |page| 
+      			page[:facetAuthor].value = nil;
+      			page[:searchForm].submit();						
+      		end if params[:facetAuthor].to_i > 0 -%></li>
+    	<% end -%>
     <% end -%>
   </ol>
 </div>
