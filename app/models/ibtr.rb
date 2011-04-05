@@ -102,6 +102,11 @@ class Ibtr < ActiveRecord::Base
     states << params[:Cancelled] unless params[:Cancelled].nil?
     states << params[:Fulfilled] unless params[:Fulfilled].nil?
     states << params[:Declined] unless params[:Declined].nil?
+    states << params[:Delivered] unless params[:Delivered].nil?
+    states << params[:Dispatched] unless params[:Dispatched].nil?
+    states << params[:Duplicate] unless params[:Duplicate].nil?
+    states << params[:POPlaced] unless params[:POPlaced].nil?
+    states << params[:Received] unless params[:Received].nil?
 
     
     case 

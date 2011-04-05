@@ -22,6 +22,16 @@
 				<%= check_box_tag :Fulfilled,:Fulfilled,params[:Fulfilled] %>
 				<%= label_tag :Declined %>
 				<%= check_box_tag :Declined,:Declined,params[:Declined] %>
+				<%= label_tag :Delivered %>
+				<%= check_box_tag :Delivered,:Delivered,params[:Delivered] %>
+				<%= label_tag :Dispatched %>
+				<%= check_box_tag :Dispatched,:Dispatched,params[:Dispatched] %>
+				<%= label_tag :Duplicate %>
+				<%= check_box_tag :Duplicate,:Duplicate,params[:Duplicate] %>
+				<%= label_tag :POPlaced %>
+				<%= check_box_tag :POPlaced,:POPlaced,params[:POPlaced] %>
+				<%= label_tag :Received %>
+				<%= check_box_tag :Received,:Received,params[:Received] %>
 
 				<%= submit_tag "Submit", :name => nil %>
 			<% end -%>
