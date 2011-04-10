@@ -26,6 +26,7 @@ class Branch < ActiveRecord::Base
           when 'rrn'  then 33
           when 'skn'  then 35
           when 'wan'  then 36  
+          when 'kdr'  then 37  
           else 801
           end
     id
