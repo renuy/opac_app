@@ -7,7 +7,7 @@
 	<%= form_tag ibtrs_search_path, :class=>'ibtrSearch', :method => 'get' do -%>
 			<%= field_set_tag 'Search' do %>
 				<%= label_tag 'Search By:'%>
-				<%= select_tag :searchBy, options_for_select([['Card',:card_id],['Member',:member_id],['Title',:title_id],['Requesting Branch',:branch_id],['Respondent Branch',:respondent_id]], params[:searchBy]) %>
+				<%= select_tag :searchBy, options_for_select([['Card',:card_id],['Member',:member_id],['Title',:title],['Requesting Branch',:branch_id],['Respondent Branch',:respondent_id]], params[:searchBy]) %>
 				<%= text_field_tag :searchText, params[:searchText] %>
 				<%= select_tag :branchVal, options_from_collection_for_select(Branch.all, :id, :name, params[:branchVal]) %>
 				<br/>
