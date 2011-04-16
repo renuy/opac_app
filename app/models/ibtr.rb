@@ -140,9 +140,9 @@ class Ibtr < ActiveRecord::Base
     conditions << states if states.length > 0
     
     if joins.length > 0 then      
-      paginate :page => params[:page], :joins => joins[0], :conditions => conditions, :order => 'created_at, id DESC'
+      paginate :page => params[:page], :joins => joins[0], :conditions => conditions, :order => 'created_at DESC'
     else
-      paginate :page => params[:page], :conditions => conditions, :order => 'created_at, id DESC'
+      paginate :page => params[:page], :conditions => conditions, :order => 'created_at DESC'
     end
 
   end 
