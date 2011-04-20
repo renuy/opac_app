@@ -24,6 +24,7 @@ class Branch < ActiveRecord::Base
           when 'vij'  then 26
           when 'vjn'  then 31
           when 'rrn'  then 33
+          when 'vmn'  then 34
           when 'skn'  then 35
           when 'wan'  then 36  
           when 'kdr'  then 37  
