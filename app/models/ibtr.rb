@@ -77,21 +77,6 @@ class Ibtr < ActiveRecord::Base
     end
   end
 
-  def self.search(params)
-    unless (params[:card_id].nil?) then
-      paginate :page => params[:page], :conditions => ['card_id = ?', params[:card_id]], :order => 'created_at, id DESC'
-    else
-      unless (params[:member_id].nil?) then
-        paginate :page => params[:page], :conditions => ['member_id = ?', params[:member_id]], :order => 'created_at, id DESC'
-      else
-        unless (params[:state].nil?) then
-          paginate :page => params[:page], :conditions => ['state = ?', params[:state]], :order => 'created_at, id DESC'
-        else
-          paginate :page => params[:page], :order => 'created_at, id DESC'
-        end
-      end
-    end
-  end  
   
   def self.complexSearch(params)
     clause = []
@@ -109,31 +94,39 @@ class Ibtr < ActiveRecord::Base
     states << params[:Duplicate] unless params[:Duplicate].nil?
     states << params[:POPlaced] unless params[:POPlaced].nil?
     states << params[:Received] unless params[:Received].nil?
-        
-    case 
-      when params[:searchBy].eql?("card_id")
-        clause << 'card_id = ?'
-        values = params[:searchText]
-      when params[:searchBy].eql?("member_id") 
-        clause << 'member_id = ?'
-        values = params[:searchText]
-      when params[:searchBy].eql?("branch_id") 
-        clause << 'branch_id = ?'
-        values = params[:branchVal]
-      when params[:searchBy].eql?("respondent_id")
-        clause << 'respondent_id = ?'
-        values = params[:branchVal]
-      when params[:searchBy].eql?("title") 
+
+    clause << "state IN (?)"  if states.length > 0
+    conditions << states if states.length > 0
+
+    unless params[:searchText].nil? then
+      if params[:searchText].length > 0 then
+        case 
+          when params[:searchBy].eql?("card_id")
+            clause << 'card_id = ?'
+            conditions << params[:searchText]
+          when params[:searchBy].eql?("member_id") 
+            clause << 'member_id = ?'
+            conditions << params[:searchText]
+          when params[:searchBy].eql?("branch_id") 
+            clause << 'branch_id = ?'
+            conditions << params[:branchVal]
+          when params[:searchBy].eql?("respondent_id")
+            clause << 'respondent_id = ?'
+            conditions << params[:branchVal]
+        end
+      end
+    end
+
+    unless params[:searchTitleText].nil? then
+      if params[:searchTitleText].length > 0 then
         clause << 'titles.title like ?'
         joins << :title
-        values = '%' + params[:searchText] + '%'
+        conditions << '%' + params[:searchTitleText] + '%'
+      end
     end
-    
-    clause << "state IN (?)"  if states.length > 0
 
-    conditions << clause.join(" AND ")
-    conditions << values unless values.nil?
-    conditions << states if states.length > 0
+    # the clause should be the first element of the array
+    conditions.unshift(clause.join(" AND "))
     
     if joins.length > 0 then      
       paginate :page => params[:page], :joins => joins[0], :conditions => conditions, :order => 'created_at DESC'
