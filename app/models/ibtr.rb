@@ -110,27 +110,23 @@ class Ibtr < ActiveRecord::Base
     states << params[:POPlaced] unless params[:POPlaced].nil?
     states << params[:Received] unless params[:Received].nil?
         
-    unless params[:searchText].nil? then
-      if params[:searchText].length > 0 then
-        case 
-          when params[:searchBy].eql?("card_id")
-            clause << 'card_id = ?'
-            values = params[:searchText]
-          when params[:searchBy].eql?("member_id") 
-            clause << 'member_id = ?'
-            values = params[:searchText]
-          when params[:searchBy].eql?("branch_id") 
-            clause << 'branch_id = ?'
-            values = params[:branchVal]
-          when params[:searchBy].eql?("respondent_id")
-            clause << 'respondent_id = ?'
-            values = params[:branchVal]
-          when params[:searchBy].eql?("title") 
-            clause << 'titles.title like ?'
-            joins << :title
-            values = '%' + params[:searchText] + '%'
-        end
-      end
+    case 
+      when params[:searchBy].eql?("card_id")
+        clause << 'card_id = ?'
+        values = params[:searchText]
+      when params[:searchBy].eql?("member_id") 
+        clause << 'member_id = ?'
+        values = params[:searchText]
+      when params[:searchBy].eql?("branch_id") 
+        clause << 'branch_id = ?'
+        values = params[:branchVal]
+      when params[:searchBy].eql?("respondent_id")
+        clause << 'respondent_id = ?'
+        values = params[:branchVal]
+      when params[:searchBy].eql?("title") 
+        clause << 'titles.title like ?'
+        joins << :title
+        values = '%' + params[:searchText] + '%'
     end
     
     clause << "state IN (?)"  if states.length > 0
