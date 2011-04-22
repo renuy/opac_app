@@ -77,6 +77,22 @@ class Ibtr < ActiveRecord::Base
     end
   end
 
+
+  def self.search(params)
+    unless (params[:card_id].nil?) then
+      paginate :page => params[:page], :conditions => ['card_id = ?', params[:card_id]], :order => 'created_at, id DESC'
+    else
+      unless (params[:member_id].nil?) then
+        paginate :page => params[:page], :conditions => ['member_id = ?', params[:member_id]], :order => 'created_at, id DESC'
+      else
+        unless (params[:state].nil?) then
+          paginate :page => params[:page], :conditions => ['state = ?', params[:state]], :order => 'created_at, id DESC'
+        else
+          paginate :page => params[:page], :order => 'created_at, id DESC'
+        end
+      end
+    end
+  end
   
   def self.complexSearch(params)
     clause = []
@@ -107,13 +123,15 @@ class Ibtr < ActiveRecord::Base
           when params[:searchBy].eql?("member_id") 
             clause << 'member_id = ?'
             conditions << params[:searchText]
-          when params[:searchBy].eql?("branch_id") 
-            clause << 'branch_id = ?'
-            conditions << params[:branchVal]
-          when params[:searchBy].eql?("respondent_id")
-            clause << 'respondent_id = ?'
-            conditions << params[:branchVal]
         end
+      end
+      case
+        when params[:searchBy].eql?("branch_id") 
+          clause << 'branch_id = ?'
+          conditions << params[:branchVal]
+        when params[:searchBy].eql?("respondent_id")
+          clause << 'respondent_id = ?'
+          conditions << params[:branchVal]
       end
     end
 
