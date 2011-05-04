@@ -27,6 +27,11 @@
 </div>
 
 <div class="span-14">
+  <section class="span-14 round">
+	<% flash.each do |key, value| %>
+		<div class="flash <%= key %>"><%= value %></div>
+	<% end %>
+  </section>  
 	<h4><%= "Showing All #{params[:state]} Requests" %><%= " for #{params[:card_id]}" unless params[:card_id].nil? %> (<%= @ibtrs.total_entries %>)</h4>
 	<br/>
 	<%= will_paginate(@ibtrs) %>

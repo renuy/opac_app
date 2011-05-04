@@ -1,4 +1,6 @@
 class IbtrsController < ApplicationController
+  before_filter :authenticate_strata_user!, :only => [:create, :update, :destroy, :setAltTitle, :titleupd]
+  
   def index
     @ibtrs = Ibtr.search(params)
   end
@@ -149,4 +151,15 @@ class IbtrsController < ApplicationController
     redirect_to :action=>"booksearch" , :controller => "consignments"
   end
 
+  def authenticate_strata_user!
+    if  !current_user.strata_employee? 
+      flash[:error] = "Not authorized to update"
+      respond_to do |format|
+        format.html {redirect_to ibtrs_path}# new.html.erb
+        format.xml  
+        format.js {render 'update'}
+      end
+    end
+  end
+  
 end

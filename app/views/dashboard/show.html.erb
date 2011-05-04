@@ -27,18 +27,18 @@
 
 
 	<div class='span-24'>
-		<% if current_user.strata_employee? %>
-			<div class='span-24'>
-				<div class='span-2 menu-button menu-color'>
-					<div class='menu-icon'>
-						<%= link_to ibtrs_path do -%>
-							<%= image_tag 'IBT.png' %>
-						<% end -%>
-					</div>
-					<div class='span-1 menu-text'>
-						IBT
-					</div>
+		<div class='span-24'>
+			<div class='span-2 menu-button menu-color'>
+				<div class='menu-icon'>
+					<%= link_to ibtrs_path do -%>
+						<%= image_tag 'IBT.png' %>
+					<% end -%>
 				</div>
+				<div class='span-1 menu-text'>
+					IBT
+				</div>
+			</div>
+			<% if current_user.strata_employee? %>
 				<div class='span-2 menu-button menu-color'>
 					<div class='menu-icon'>
 						<%= link_to :controller => 'batches', :action=>'index', :type => 'Reassign' do -%>
@@ -49,9 +49,9 @@
 						System Notice
 					</div>
 				</div>
-      </div>
+			<% end -%>
+    </div>
       
-		<% end -%>
 		<div class='span-24' style='height:10px'>
 		</div>
     <div class='span-24'>  
