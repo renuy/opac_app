@@ -34,5 +34,7 @@ class Title < ActiveRecord::Base
     integer :category_id, :references => Category, :stored => true
     integer :publisher_id, :references => Publisher, :stored => true
     integer :author_id, :references => Author, :stored => true
+    integer :no_of_rented, :stored => true
+    string :title_type, :stored => true    
   end   
 end
