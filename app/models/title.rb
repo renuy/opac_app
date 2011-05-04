@@ -3,7 +3,7 @@ class Title < ActiveRecord::Base
   belongs_to :author
   belongs_to :category
   
-  attr_accessible :title, :yearofpublication, :edition, :isbn10, :isbn13, :noofpages, :language 
+  attr_accessible :title, :yearofpublication, :edition, :isbn10, :isbn13, :noofpages, :language, :no_of_rented, :title_type
   
   validates :title, :presence => true
   
