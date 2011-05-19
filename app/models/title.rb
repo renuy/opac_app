@@ -2,6 +2,7 @@ class Title < ActiveRecord::Base
   belongs_to :publisher
   belongs_to :author
   belongs_to :category
+  has_many   :stock, :class_name =>"Stock"
   
   attr_accessible :title, :yearofpublication, :edition, :isbn10, :isbn13, :noofpages, :language, :no_of_rented, :title_type
   
@@ -35,6 +36,9 @@ class Title < ActiveRecord::Base
     integer :publisher_id, :references => Publisher, :stored => true
     integer :author_id, :references => Author, :stored => true
     integer :no_of_rented, :stored => true
-    string :title_type, :stored => true    
+    string :title_type, :stored => true
+    integer :branch, :multiple => true do
+      stock.collect{|x| x.branch_id}
+    end    
   end   
 end
