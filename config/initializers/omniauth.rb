@@ -27,6 +27,7 @@ Rails.application.config.middleware.use OmniAuth::Builder do
   provider :google_apps, OpenID::Store::Filesystem.new('/tmp'), :name => 'vmn', :domain => 'vmn.justbooksclc.com'
 
   provider :google_apps, OpenID::Store::Filesystem.new('/tmp'), :name => 'mgp', :domain => 'mgp.justbooksclc.com'
+  provider :google_apps, OpenID::Store::Filesystem.new('/tmp'), :name => 'bsk', :domain => 'bsk.justbooksclc.com'
     
   provider :google_apps, OpenID::Store::Filesystem.new('/tmp'), :name => 'strata', :domain => 'strata.co.in'
   
